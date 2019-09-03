@@ -1,0 +1,26 @@
+<ion-card>
+    <ion-header translucent>
+        <ion-toolbar>
+          <ion-title>Detalhes</ion-title>
+          <ion-buttons slot="start">
+              <ion-back-button defaultHref="home"></ion-back-button>
+            </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+    <img [src]="eventOne.urlImage" />
+    <ion-card-header>
+      <ion-card-title>{{eventOne.name}}</ion-card-title>
+      <ion-card-subtitle>{{ eventOne.briefInformation }}</ion-card-subtitle>
+    </ion-card-header>
+    <ion-card-content>
+      {{ eventOne.about}}
+    </ion-card-content>
+    <ion-text color="tertiary">
+        <h3>R${{ eventOne.price }}</h3>
+    </ion-text>
+  </ion-card>
+  <ion-button>
+    <ion-text>
+      Adiquirir convite
+    </ion-text>
+  </ion-button>

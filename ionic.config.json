@@ -1,0 +1,7 @@
+{
+  "name": "Rangulos",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
