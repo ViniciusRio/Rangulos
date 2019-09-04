@@ -1,2 +1,1 @@
 # Rangulos
-MVP em ionic
