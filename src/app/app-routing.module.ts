@@ -9,15 +9,21 @@ const routes: Routes = [
   },
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
+    loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule)
   },
   {
-    path: 'list',
-    loadChildren: () => import('./list/list.module').then(m => m.ListPageModule)
+    path: 'profile',
+    loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfilePageModule)
   },
-  { path: 'event/:id', loadChildren: './event/event.module#EventPageModule' },
-  { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule' },
-  { path: 'login', loadChildren: './login/login.module#LoginPageModule' }
+  {
+    path: 'login',
+    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
+  },
+  {
+    path: 'event/:id',
+    loadChildren: () => import('./pages/event/event.module').then(m => m.EventPageModule)
+  },
+  { path: 'events', loadChildren: './pages/events/events.module#EventsPageModule' },
 ];
 
 @NgModule({
@@ -26,4 +32,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

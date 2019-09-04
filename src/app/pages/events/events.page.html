@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Eventos
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-segment (ionChange)="onSegmentChanged($event)" [value]="selectedSegment">
+    <ion-segment-button class="segmentTextSize" value="pastEvents">
+      <ion-label>Eventos anteriores</ion-label>
+    </ion-segment-button>
+    <ion-segment-button class="segmentTextSize" value="currentEvent">
+      <ion-label>Evento atual</ion-label>
+    </ion-segment-button>
+    <ion-segment-button class="segmentTextSize" value="myEvents">
+      <ion-label>Meus eventos</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+  <div [ngSwitch]="selectedSegment">
+    <div *ngSwitchCase="segments.PAST_EVENTS">
+      past events
+    </div>
+    <div *ngSwitchCase="segments.CURRENT_EVENT">
+      current event
+    </div>
+    <div *ngSwitchCase="segments.MY_EVENTS">
+      my events
+    </div>
+  </div>
+</ion-content>

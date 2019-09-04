@@ -4,7 +4,7 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
-      Histórico
+      Históricos
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -20,15 +20,15 @@
       </div>
     </ion-item>
     -->
-    <ion-item *ngFor="let history of history">
+    <ion-item *ngFor="let historic of historic">
       <ion-label>
         <h2>
-          {{history.name}}
+          {{historic.name}}
         </h2>
-        <p color="danger"> R${{history.price}}</p>
+        <p color="danger"> R${{historic.price}}</p>
       </ion-label>
       <ion-thumbnail slot="end">
-          <ion-img [src]="history.urlImage"></ion-img>
+          <ion-img [src]="historic.urlImage"></ion-img>
         </ion-thumbnail>
     </ion-item>
   </ion-list>

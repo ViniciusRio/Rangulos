@@ -17,8 +17,8 @@ export class AppComponent {
       icon: 'home'
     },
     {
-      title: 'Histórico',
-      url: '/list',
+      title: 'Eventos',
+      url: '/events',
       icon: 'paper'
     },
     {
