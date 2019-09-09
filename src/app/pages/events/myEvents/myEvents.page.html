@@ -1,0 +1,59 @@
+<ion-app>
+  <ion-header>
+    <ion-toolbar color="tertiary">
+      <ion-title>Meu evento</ion-title>
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="myEvents"></ion-back-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-card>
+            <ion-card-header>
+              <ion-card-title>Criar Evento</ion-card-title>
+            </ion-card-header>
+            <ion-card-content>
+              <ion-avatar>
+                
+              </ion-avatar>
+              <ion-item>
+                <ion-label position="floating">Nome do evento</ion-label>
+                <ion-input type="text"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Categoria</ion-label>
+                <ion-select placeholder="Tipo do seu evento" interface="action-sheet">
+                  <ion-select-option value="sport">Esportes</ion-select-option>
+                  <ion-select-option value="music">Musicas</ion-select-option>
+                  <ion-select-option value="show">Show ao vivo</ion-select-option>
+                </ion-select>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Entretenimento</ion-label>
+                <ion-input type="text"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Alimentação</ion-label>
+                <ion-input type="text"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Convites disponíveis</ion-label>
+                <ion-input type="number"></ion-input>
+              </ion-item>
+              <ion-item>
+                <ion-label position="floating">Preço do convite</ion-label>
+                <ion-input type="text"></ion-input>
+              </ion-item>
+              <div margin-vertical text-right>
+                <ion-button>Criar</ion-button>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-content>
+</ion-app>
