@@ -12,7 +12,6 @@ export class EventPage implements OnInit {
   eventThree;
   eventFour;
 
-
   constructor(
     private route: ActivatedRoute
   ) {
