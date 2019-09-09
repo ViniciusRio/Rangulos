@@ -26,11 +26,6 @@ export class AppComponent {
       url: '/profile',
       icon: 'people'
     },
-    {
-      title: 'Login',
-      url: '/login',
-      icon: 'person'
-    }
   ];
 
   constructor(
