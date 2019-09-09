@@ -1,11 +1,16 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="tertiary">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>
       Eventos
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="navigateToOtherPage()">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content>
@@ -22,13 +27,46 @@
   </ion-segment>
   <div [ngSwitch]="selectedSegment">
     <div *ngSwitchCase="segments.PAST_EVENTS">
-      past events
+      <ion-list>
+        <ion-item *ngFor="let pastEvent of pastEvents">
+          <ion-label>
+            <h6>{{ pastEvent.date }}</h6>
+            <h2>{{ pastEvent.name }}</h2>
+            <p>R${{ pastEvent.price }}</p>
+          </ion-label>
+          <ion-thumbnail slot="end">
+            <ion-img [src]="pastEvent.urlImage"></ion-img>
+          </ion-thumbnail>
+        </ion-item>
+      </ion-list>
     </div>
     <div *ngSwitchCase="segments.CURRENT_EVENT">
-      current event
+        <ion-list>
+            <ion-item>
+              <ion-label>
+                <h6>{{ currentEvent.date }}</h6>
+                <h2>{{ currentEvent.name }}</h2>
+                <p>R${{ currentEvent.price }}</p>
+              </ion-label>
+              <ion-thumbnail slot="end">
+                <ion-img [src]="currentEvent.urlImage"></ion-img>
+              </ion-thumbnail>
+            </ion-item>
+          </ion-list>
     </div>
     <div *ngSwitchCase="segments.MY_EVENTS">
-      my events
+        <ion-list>
+            <ion-item>
+              <ion-label>
+                <h6>{{ myEvents.date }}</h6>
+                <h2>{{ myEvents.name }}</h2>
+                <p>R${{ myEvents.price }}</p>
+              </ion-label>
+              <ion-thumbnail slot="end">
+                <ion-img [src]="myEvents.urlImage"></ion-img>
+              </ion-thumbnail>
+            </ion-item>
+          </ion-list>
     </div>
   </div>
 </ion-content>
