@@ -28,7 +28,7 @@
   <div [ngSwitch]="selectedSegment">
     <div *ngSwitchCase="segments.PAST_EVENTS">
       <ion-list>
-        <ion-item *ngFor="let pastEvent of pastEvents">
+        <ion-item *ngFor="let pastEvent of events">
           <ion-label>
             <h6>{{ pastEvent.date }}</h6>
             <h2>{{ pastEvent.name }}</h2>
@@ -58,12 +58,12 @@
         <ion-list>
             <ion-item>
               <ion-label>
-                <h6>{{ myEvents.date }}</h6>
-                <h2>{{ myEvents.name }}</h2>
-                <p>R${{ myEvents.price }}</p>
+                <h6>{{ myEvent.date }}</h6>
+                <h2>{{ myEvent.name }}</h2>
+                <p>R${{ myEvent.price }}</p>
               </ion-label>
               <ion-thumbnail slot="end">
-                <ion-img [src]="myEvents.urlImage"></ion-img>
+                <ion-img [src]="myEvent.urlImage"></ion-img>
               </ion-thumbnail>
             </ion-item>
           </ion-list>
