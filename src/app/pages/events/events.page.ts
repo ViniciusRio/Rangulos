@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
 import { MyEventsPage } from './myEvents/myEvents.page';
 import { Router } from '@angular/router';
+import { EventsService } from './events.service';
+import { Event } from '../events/event.model';
+
 
 @Component({
   selector: 'app-events',
@@ -17,72 +20,20 @@ export class EventsPage implements OnInit {
   };
   // evento padrão
   selectedSegment = this.segments.PAST_EVENTS;
-  pastEvents = [];
+  events: Event[];
   currentEvent;
-  myEvents;
+  myEvent;
 
-
-  constructor(private router: Router) {
-    this.pastEvents = [
-      {
-        id: 1,
-        name: 'Pizza em casa, mas fora',
-        about: 'Melhor pizza do bairro, local amigável',
-        briefInformation: 'Varios sabores',
-        price: 25,
-        date: '19/02/2019',
-        urlImage: 'https://baconmockup.com/640/360'
-      },
-      {
-        id: 2,
-        name: 'Burger Street',
-        about: 'Melhor burguer do bairro, local amigável',
-        briefInformation: 'Artesanal',
-        price: 35,
-        date: '22/03/2019',
-        urlImage: 'https://baconmockup.com/640/360'
-      },
-      {
-        id: 3,
-        name: 'Nossa Rosquinha',
-        about: 'Melhor rosquinha do bairro, local amigável',
-        briefInformation: 'Bem crocante',
-        price: 50,
-        date: '29/06/2019',
-        urlImage: 'https://baconmockup.com/640/360'
-      },
-      {
-        id: 4,
-        name: 'Sorvete Gelado',
-        about: 'Melhor sorvete do bairro, local amigável',
-        briefInformation: 'Frutas e artificiais',
-        price: 20,
-        date: '30/06/2019',
-        urlImage: 'https://baconmockup.com/640/360'
-      }
-    ];
-    this.currentEvent = {
-        id: 1,
-        name: 'Sorvete Gelado',
-        about: 'Melhor sorvete do bairro, local amigável',
-        briefInformation: 'Frutas e artificiais',
-        price: 20,
-        date: '30/06/2019',
-        urlImage: 'https://baconmockup.com/640/360'
-    };
-    this.myEvents = {
-      id: 1,
-      name: 'Sorvete Gelado',
-      about: 'Melhor sorvete do bairro, local amigável',
-      briefInformation: 'Frutas e artificiais',
-      price: 20,
-      date: '30/06/2019',
-      duration: 6,
-      urlImage: 'https://baconmockup.com/640/360'
-  };
-   }
+  constructor(
+    private router: Router,
+    private eventsService: EventsService
+    ) {}
 
   ngOnInit() {
+    this.events = this.eventsService.getAllEvents();
+    this.currentEvent = this.events.find(onlyEvent => onlyEvent.id === 2);
+    this.myEvent = this.events.find(onlyEvent => onlyEvent.id === 3);
+
   }
   onSegmentChanged(event) {
     this.selectedSegment = event.detail.value;
