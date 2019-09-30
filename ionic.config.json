@@ -1,7 +1,8 @@
 {
   "name": "Rangulos",
   "integrations": {
-    "cordova": {}
+    "cordova": {},
+    "capacitor": {}
   },
   "type": "angular"
 }

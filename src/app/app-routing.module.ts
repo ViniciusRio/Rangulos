@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'events', pathMatch: 'full' },
@@ -8,7 +9,8 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: './home/home.module#HomePageModule'
+        loadChildren: './home/home.module#HomePageModule',
+        canLoad: [AuthGuard]
       },
       {
         path: ':eventId',
@@ -21,7 +23,8 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: './events/events.module#EventsPageModule'
+        loadChildren: './events/events.module#EventsPageModule',
+        canLoad: [AuthGuard]
       },
       {
         path: ':eventId',
@@ -30,6 +33,7 @@ const routes: Routes = [
     ]
   },
   { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule' },
+  { path: 'auth', loadChildren: './auth/auth.module#AuthPageModule' },
 ];
 
 @NgModule({
