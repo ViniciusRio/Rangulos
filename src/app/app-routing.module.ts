@@ -2,36 +2,34 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'home',
-    pathMatch: 'full'
-  },
+  { path: '', redirectTo: 'events', pathMatch: 'full' },
   {
     path: 'home',
-    loadChildren: () => import('./pages/home/home.module').then(m => m.HomePageModule)
+    children: [
+      {
+        path: '',
+        loadChildren: './home/home.module#HomePageModule'
+      },
+      {
+        path: ':eventId',
+        loadChildren: './home/home-detail/home-detail.module#HomeDetailPageModule'
+      }
+    ]
   },
   {
-    path: 'profile',
-    loadChildren: () => import('./pages/profile/profile.module').then(m => m.ProfilePageModule)
+    path: 'events',
+    children: [
+      {
+        path: '',
+        loadChildren: './events/events.module#EventsPageModule'
+      },
+      {
+        path: ':eventId',
+        loadChildren: './events/event-detail/event-detail.module#EventDetailPageModule'
+      },
+    ]
   },
-  {
-    path: 'login',
-    loadChildren: () => import('./pages/login/login.module').then(m => m.LoginPageModule)
-  },
-  {
-    path: 'event/:id',
-    loadChildren: () => import('./pages/event/event.module').then(m => m.EventPageModule)
-  },
-  {
-    path: 'myEvents',
-    loadChildren: () => import('./pages/events/myEvents/myEvents.module').then(m => m.MyEventsPageModule)
-  },
-  // {
-  //   path: 'events/:id',
-  //   loadChildren: () => import('./pages/events/events.module').then(m => m.EventsPageModule)
-  // },
-  { path: 'events', loadChildren: './pages/events/events.module#EventsPageModule' },
+  { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule' },
 ];
 
 @NgModule({

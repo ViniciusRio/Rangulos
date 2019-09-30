@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar color="tertiary">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ loadedEvent.name }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid no-padding>
+    <ion-row>
+      <ion-col no-padding>
+        <ion-img [src]="loadedEvent.urlImage"></ion-img>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-text color="secondary">
+          <h2 text-center>R${{ loadedEvent.price }}</h2>
+        </ion-text>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-list>
+          <ion-item>
+            {{ loadedEvent.about }}
+          </ion-item>
+          <ion-item>
+              {{ loadedEvent.briefInformation }}
+          </ion-item>
+          <ion-item>
+              {{ loadedEvent.entertainment }}
+          </ion-item>
+          <ion-item>
+              {{ loadedEvent.date }}
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <ion-button expand="full">
+            GARANTIR CONVITE
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
