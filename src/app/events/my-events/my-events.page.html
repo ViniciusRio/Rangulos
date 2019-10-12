@@ -1,0 +1,10 @@
+  <ion-item [routerLink]="['./', myEvents.id]">
+    <ion-label>
+      <h6>{{ myEvents.date }}</h6>
+      <h2>{{ myEvents.name }}</h2>
+      <p>R${{ myEvents.price }}</p>
+    </ion-label>
+    <ion-thumbnail slot="end">
+      <ion-img [src]="myEvents.urlImage"></ion-img>
+    </ion-thumbnail>
+  </ion-item>

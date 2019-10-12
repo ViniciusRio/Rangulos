@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController } from '@ionic/angular';
+import { NavController, IonItemSliding } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { EventsService } from './events.service';
 import { Event } from './event.model';
@@ -22,7 +22,7 @@ export class EventsPage implements OnInit {
   events: Event[];
   pastEvents;
   currentEvent;
-  myEvent;
+  myEventsList;
 
   constructor(
     private router: Router,
@@ -35,14 +35,19 @@ export class EventsPage implements OnInit {
       return event.verifiedPayment === true;
     });
     this.currentEvent = this.events.find(onlyEvent => onlyEvent.id === '2');
-    this.myEvent = this.events.find(onlyEvent => onlyEvent.id === '3');
+    this.myEventsList = this.events.filter(event => {
+      return event.iCreated === true;
+    });
 
   }
   onSegmentChanged(event) {
     this.selectedSegment = event.detail.value;
   }
 
-  navigateToOtherPage(): void {
-    this.router.navigate(['my-event']);
- }
+  onEdit(eventId: string, slidingItem: IonItemSliding) {
+    slidingItem.close();
+    this.router.navigate(['/', 'events', 'edit-my-events', eventId]);
+    console.log('edit');
+  }
+
 }

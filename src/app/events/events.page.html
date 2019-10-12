@@ -7,7 +7,7 @@
       Eventos
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="navigateToOtherPage()">
+      <ion-button>
         <ion-icon name="add"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -55,18 +55,16 @@
           </ion-list>
     </div>
     <div *ngSwitchCase="segments.MY_EVENTS">
-        <ion-list>
-            <ion-item [routerLink]="['./', myEvent.id]">
-              <ion-label>
-                <h6>{{ myEvent.date }}</h6>
-                <h2>{{ myEvent.name }}</h2>
-                <p>R${{ myEvent.price }}</p>
-              </ion-label>
-              <ion-thumbnail slot="end">
-                <ion-img [src]="myEvent.urlImage"></ion-img>
-              </ion-thumbnail>
-            </ion-item>
-          </ion-list>
+      <ion-list>
+        <ion-item-sliding *ngFor="let event of myEventsList" #slidingItem>
+          <app-my-events [myEvents] = event></app-my-events>
+          <ion-item-options>
+            <ion-item-option (click)="onEdit(event.id, slidingItem)">
+              <ion-icon name="create" slot="icon-only"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
     </div>
   </div>
 </ion-content>

@@ -1,28 +1,26 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { IonicModule } from '@ionic/angular';
 
-import { EventsPage } from './events.page';
-import { MyEventsPageModule } from './my-events/my-events.module';
-import { MyEventsPage } from './my-events/my-events.page';
+import { EditMyEventsPage } from './edit-my-events.page';
 
 const routes: Routes = [
   {
     path: '',
-    component: EventsPage
+    component: EditMyEventsPage
   }
 ];
 
 @NgModule({
   imports: [
     CommonModule,
-    FormsModule,
+    ReactiveFormsModule,
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [EventsPage, MyEventsPage]
+  declarations: [EditMyEventsPage]
 })
-export class EventsPageModule {}
+export class EditMyEventsPageModule {}
