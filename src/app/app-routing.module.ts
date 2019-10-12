@@ -30,10 +30,21 @@ const routes: Routes = [
         path: ':eventId',
         loadChildren: './events/event-detail/event-detail.module#EventDetailPageModule'
       },
+      {
+        path: 'myEvent/:eventId',
+        loadChildren: './events/my-events/my-events.module#MyEventsPageModule'
+      },
+      {
+        path: 'edit-my-events/:eventId',
+        loadChildren: './events/my-events/edit-my-events/edit-my-events.module#EditMyEventsPageModule'
+      }
     ]
   },
   { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule' },
   { path: 'auth', loadChildren: './auth/auth.module#AuthPageModule' },
+  { path: 'my-events', loadChildren: './events/my-events/my-events.module#MyEventsPageModule' },
+  { path: 'my-events-detail', loadChildren: './events/my-events/my-events-detail/my-events-detail.module#MyEventsDetailPageModule' },
+  { path: 'edit-my-events', loadChildren: './events/my-events/edit-my-events/edit-my-events.module#EditMyEventsPageModule' },
 ];
 
 @NgModule({
