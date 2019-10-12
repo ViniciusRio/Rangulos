@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Event } from '../../events/event.model';
 import { EventsService } from '../../events/events.service';
 import { ActivatedRoute } from '@angular/router';
+import { ModalController } from '@ionic/angular';
+import { GetInvitationComponent } from 'src/app/get-invitation/get-invitation.component';
 
 @Component({
   selector: 'app-home-detail',
@@ -12,7 +14,8 @@ export class HomeDetailPage implements OnInit {
   loadedEvent: Event;
   constructor(
     private eventService: EventsService,
-    private activedRoute: ActivatedRoute
+    private activedRoute: ActivatedRoute,
+    private ctrlModal: ModalController
   ) { }
 
   ngOnInit() {
@@ -24,5 +27,17 @@ export class HomeDetailPage implements OnInit {
       this.loadedEvent = this.eventService.getEvent(eventId);
     });
   }
-
+  onGetInvitation() {
+    this.ctrlModal.create({
+      component: GetInvitationComponent,
+      componentProps: {eventInvitation: this.loadedEvent}
+    })
+    .then(modalElement => {
+      modalElement.present();
+      return modalElement.onDidDismiss();
+    })
+    .then(resultDate => {
+      console.log(resultDate.data, resultDate.role)
+    });
+  }
 }
