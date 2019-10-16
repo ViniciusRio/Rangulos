@@ -27,6 +27,10 @@ const routes: Routes = [
         canLoad: [AuthGuard]
       },
       {
+        path: 'new',
+        loadChildren: './events/new-event/new-event.module#NewEventPageModule'
+      },
+      {
         path: ':eventId',
         loadChildren: './events/event-detail/event-detail.module#EventDetailPageModule'
       },
@@ -45,6 +49,7 @@ const routes: Routes = [
   { path: 'my-events', loadChildren: './events/my-events/my-events.module#MyEventsPageModule' },
   { path: 'my-events-detail', loadChildren: './events/my-events/my-events-detail/my-events-detail.module#MyEventsDetailPageModule' },
   { path: 'edit-my-events', loadChildren: './events/my-events/edit-my-events/edit-my-events.module#EditMyEventsPageModule' },
+  { path: 'new-event', loadChildren: './events/new-event/new-event.module#NewEventPageModule' },
 ];
 
 @NgModule({
