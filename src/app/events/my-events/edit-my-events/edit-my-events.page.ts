@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Event } from '../../event.model';
 import { EventsService } from '../../events.service';
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { NavController, LoadingController } from '@ionic/angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
@@ -13,10 +13,12 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 export class EditMyEventsPage implements OnInit {
   event: Event;
   form: FormGroup;
+  
   constructor(
     private eventsService: EventsService,
     private route: ActivatedRoute,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private loadingCtrl: LoadingController
   ) { }
 
   ngOnInit() {
@@ -25,7 +27,7 @@ export class EditMyEventsPage implements OnInit {
         this.navCtrl.navigateBack('/events');
         return;
       }
-      this.event = this.eventsService.getEvent(paramMap.get('eventId'));
+      // this.event = this.eventsService.getEvent(paramMap.get('eventId'));
       this.form = new FormGroup({
         name: new FormControl(this.event.name, {
           updateOn: 'blur',
@@ -55,7 +57,11 @@ export class EditMyEventsPage implements OnInit {
           updateOn: 'blur',
           validators: [Validators.required]
         }),
-        date: new FormControl(this.event.date, {
+        startDate: new FormControl(this.event.startDate, {
+          updateOn: 'blur',
+          validators: [Validators.required]
+        }),
+        endDate: new FormControl(this.event.endDate, {
           updateOn: 'blur',
           validators: [Validators.required]
         })
@@ -63,8 +69,4 @@ export class EditMyEventsPage implements OnInit {
 
     });
   }
-  onUpdateEvent() {
-    console.log(this.form);
-  }
-
 }

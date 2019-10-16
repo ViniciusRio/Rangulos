@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { NavController, IonItemSliding } from '@ionic/angular';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { NavController, IonItemSliding, AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { EventsService } from './events.service';
 import { Event } from './event.model';
+import { MyEventsPage } from './my-events/my-events.page';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -10,7 +12,7 @@ import { Event } from './event.model';
   templateUrl: './events.page.html',
   styleUrls: ['./events.page.scss'],
 })
-export class EventsPage implements OnInit {
+export class EventsPage implements OnInit, OnDestroy{
   // eventos possiveis
   segments = {
     PAST_EVENTS: 'pastEvents',
@@ -18,6 +20,8 @@ export class EventsPage implements OnInit {
     MY_EVENTS: 'myEvents'
   };
   // evento padrão
+  private eventsSub: Subscription;
+
   selectedSegment = this.segments.PAST_EVENTS;
   events: Event[];
   pastEvents;
@@ -26,20 +30,26 @@ export class EventsPage implements OnInit {
 
   constructor(
     private router: Router,
-    private eventsService: EventsService
+    private eventsService: EventsService,
+    private alertCtrl: AlertController,
     ) {}
 
   ngOnInit() {
-    this.events = this.eventsService.getAllEvents();
+    this.eventsSub = this.eventsService.events.subscribe(events => {
+      this.events = events;
+    });
+
+
     this.pastEvents = this.events.filter(event => {
       return event.verifiedPayment === true;
     });
-    this.currentEvent = this.events.find(onlyEvent => onlyEvent.id === '2');
+    this.currentEvent = this.events.find(onlyEvent => onlyEvent.id === '3');
     this.myEventsList = this.events.filter(event => {
       return event.iCreated === true;
     });
-
+    console.log('will enter events');
   }
+
   onSegmentChanged(event) {
     this.selectedSegment = event.detail.value;
   }
@@ -48,6 +58,38 @@ export class EventsPage implements OnInit {
     slidingItem.close();
     this.router.navigate(['/', 'events', 'edit-my-events', eventId]);
     console.log('edit');
+  }
+
+  onDelete(eventId: string, slidingItem: IonItemSliding) {
+    slidingItem.close();
+    this.alertCtrl.create({
+      header: 'Tem certeza disso?',
+      subHeader: 'Realmente deseja excluir o evento?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('cancelar');
+          }
+        },
+        {
+          text: 'Excluir',
+          cssClass: 'deleteColor',
+          handler: () => {
+            // this.eventsService.deleteEvent(eventId);
+            // this.router.navigate(['events']);
+            console.log('excluir');
+          }
+        }
+      ]
+    }).then(alertElement => {
+      alertElement.present();
+    });
+
+  }
+  ngOnDestroy() {
+    console.log('onDestroy: events');
   }
 
 }

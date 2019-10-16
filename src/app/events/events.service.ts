@@ -1,78 +1,129 @@
 import { Injectable } from '@angular/core';
 import { Event } from './event.model';
+import { BehaviorSubject } from 'rxjs';
+import { take, map, tap, delay } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventsService {
-  events: Event[] = [
-    {
-      id: '1',
-      name: 'Pizza em casa, mas fora',
-      about: 'Melhor pizza do bairro, local amigável',
-      adicionalInformation: 'Varios sabores',
-      entertainment: 'Música na caixa',
-      food: 'Pizza',
-      price: 30,
-      date: '10/10/2019',
-      numberGuests: 4,
-      verifiedPayment: true,
-      iCreated: false,
-      urlImage: 'https://mirepoa.com.br/wp-content/uploads/2019/04/pizza-de-liquidificador.jpg'
-    },
-    {
-      id: '2',
-      name: 'Burger Street',
-      about: 'Melhor burguer do bairro, local amigável',
-      adicionalInformation: 'Artesanal',
-      entertainment: 'TV digital',
-      food: 'Hambúrger',
-      price: 30,
-      date: '10/10/2019',
-      numberGuests: 4,
-      verifiedPayment: true,
-      iCreated: true,
-      urlImage: 'https://u.tfstatic.com/restaurant_photos/169/523169/169/612/burguer-place-1-f8c95.jpg'
-    },
-    {
-      id: '3',
-      name: 'Nossa Rosquinha',
-      about: 'Melhor rosquinha do bairro, local amigável',
-      adicionalInformation: 'Bem crocante',
-      entertainment: 'Sport TV liberado',
-      food: 'Rosquinhas',
-      price: 30,
-      date: '10/10/2019',
-      numberGuests: 4,
-      verifiedPayment: false,
-      iCreated: true,
-      urlImage: 'https://img.elo7.com.br/product/main/22B9825/chaveiro-rosquinhas-donuts.jpg'
-    },
-    {
-      id: '4',
-      name: 'Sorvete Gelado',
-      about: 'Melhor sorvete do bairro, local amigável',
-      adicionalInformation: 'Frutas e artificiais',
-      entertainment: 'Música ao vivo (Ópera)',
-      food: 'Sorvetes variádos',
-      price: 30,
-      date: '10/10/2019',
-      numberGuests: 4,
-      verifiedPayment: false,
-      iCreated: false,
-      urlImage: 'https://estrangeira.com.br/wp-content/uploads/2016/09/Captura-de-Tela-2016-09-12-a%CC%80s-18.36.47-602x500.png'
-    }
-  ];
+  private _events = new BehaviorSubject<Event[]>([
+    new Event(
+      '1',
+      'Pizza em casa, mas fora',
+      'Melhor pizza do bairro, local amigável',
+      'Varios sabores',
+      'Música na caixa',
+      'Pizza',
+       30,
+      new Date('10-10-2019'),
+      new Date('10-10-2019'),
+      4,
+      true,
+      false,
+      'https://mirepoa.com.br/wp-content/uploads/2019/04/pizza-de-liquidificador.jpg'
+    ),
+    new Event(
+      '2',
+      'Burger Street',
+      'Melhor burguer do bairro, local amigável',
+      'Artesanal',
+      'TV digital',
+      'Hambúrger',
+       30,
+      new Date('10-10-2019'),
+      new Date('10-10-2019'),
+      4,
+      true,
+      true,
+      'https://u.tfstatic.com/restaurant_photos/169/523169/169/612/burguer-place-1-f8c95.jpg'
+    ),
+    new Event(
+      '3',
+      'Nossa Rosquinha',
+      'Melhor rosquinha do bairro, local amigável',
+      'Bem crocante',
+      'Sport TV liberado',
+      'Rosquinhas',
+      30,
+      new Date('10-10-2019'),
+      new Date('10-10-2019'),
+      4,
+      false,
+      true,
+      'https://img.elo7.com.br/product/main/22B9825/chaveiro-rosquinhas-donuts.jpg'
+    ),
+    new Event(
+      '4',
+      'Sorvete Gelado',
+      'Melhor sorvete do bairro, local amigável',
+      'Frutas e artificiais',
+      'Música ao vivo (Ópera)',
+      'Sorvetes variádos',
+      30,
+      new Date('10-10-2019'),
+      new Date('10-10-2019'),
+      4,
+      false,
+      false,
+      'https://estrangeira.com.br/wp-content/uploads/2016/09/Captura-de-Tela-2016-09-12-a%CC%80s-18.36.47-602x500.png'
+    )
+  ]);
   constructor() { }
 
-  getAllEvents() {
-    return [...this.events];
+  get events() {
+    return this._events.asObservable();
   }
+
   getEvent(eventId: string) {
-    return {
-        ...this.events.find(event => {
-        return event.id === eventId;
+
+    return this.events.pipe(
+      take(1),
+      map(events => {
+        return { ...events.find(p => p.id === eventId) };
       })
-    };
+    );
   }
+
+  addEvent(
+    name: string,
+    about: string,
+    adicionalInformation: string,
+    entertainment: string,
+    food: string,
+    price: number,
+    startDate: Date,
+    endDate: Date
+  ) {
+    const newEvent = new Event(
+      Math.random.toString(),
+      name,
+      about,
+      adicionalInformation,
+      entertainment,
+      food,
+      price,
+      startDate,
+      endDate,
+      2,
+      false,
+      true,
+      'https://estrangeira.com.br/wp-content/uploads/2016/09/Captura-de-Tela-2016-09-12-a%CC%80s-18.36.47-602x500.png'
+    );
+
+    return this.events.pipe(
+      take(1),
+      delay(1000),
+      tap(events => {
+        this._events.next(events.concat(newEvent));
+      })
+    );
+  }
+
+  // deleteEvent(eventId: string) {
+  //   this.events = this.events.filter(event => {
+  //     return event.id !== eventId;
+  //   });
+  // }
 }
