@@ -12,7 +12,7 @@
     <ion-item *ngFor="let event of loadEvents" [routerLink]="['./', event.id]">
       <ion-label>
         <h2>{{ event.name }}</h2>
-        <p>{{ event.briefInformation }}</p>
+        <p>{{ event.adicionalInformation }}</p>
       </ion-label>
       <ion-thumbnail slot="end">
         <img [src]="event.urlImage"/>
