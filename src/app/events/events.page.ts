@@ -37,6 +37,9 @@ export class EventsPage implements OnInit, OnDestroy{
   ngOnInit() {
     this.eventsSub = this.eventsService.events.subscribe(events => {
       this.events = events;
+      this.myEventsList = this.events.filter(event => {
+        return event.iCreated === true;
+      });
     });
 
 
@@ -89,7 +92,9 @@ export class EventsPage implements OnInit, OnDestroy{
 
   }
   ngOnDestroy() {
-    console.log('onDestroy: events');
+    if (this.eventsSub) {
+      this.eventsSub.unsubscribe();
+    }
   }
 
 }

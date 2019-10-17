@@ -121,6 +121,49 @@ export class EventsService {
     );
   }
 
+  updateEvent(
+    eventId: string,
+    name: string,
+    about: string,
+    adicionalInformation: string,
+    entertainment: string,
+    food: string,
+    price: number,
+    startDate: Date,
+    endDate: Date
+  ) {
+    return this.events.pipe(
+      take(1),
+      delay(1000),
+      tap(events => {
+        // find do evento que vou manipular
+        const updateEventId = events.findIndex(event => event.id === eventId);
+        // todos os eventos
+        const updateEvents = [...events];
+        // evento que vou manipular de fato, aqui é o obj antigo ja
+        const oldEvent = updateEvents[updateEventId];
+        // update de fato no objeto, substituir tudo que há
+        updateEvents[updateEventId] = new Event(
+          oldEvent.id,
+          name,
+          about,
+          adicionalInformation,
+          entertainment,
+          food,
+          +price,
+          new Date(startDate),
+          new Date(endDate),
+          oldEvent.numberGuests,
+          oldEvent.verifiedPayment,
+          oldEvent.iCreated,
+          oldEvent.urlImage
+        );
+        // aqui de fato esta adicionando o valor no obj
+        this._events.next(updateEvents);
+      })
+    );
+  }
+
   // deleteEvent(eventId: string) {
   //   this.events = this.events.filter(event => {
   //     return event.id !== eventId;
