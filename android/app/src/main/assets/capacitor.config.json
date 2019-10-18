@@ -1,7 +1,30 @@
 {
-  "appId": "io.ionic.starter",
+  "appId": "com.rangulos.app",
   "appName": "Rangulos",
   "bundledWebRuntime": false,
   "npmClient": "npm",
-  "webDir": "www"
+  "webDir": "www",
+  "linuxAndroidStudioPath": "/home/vlmdr/.local/share/JetBrains/Toolbox/apps/AndroidStudio/ch-0/191.5791312/bin/studio.sh",
+
+  "backgroundColor": "#7044ff",
+  "android": {
+    "backgroundColor": "#7044ff",
+    "allowMixedContent": true,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": true
+  },
+
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1000,
+      "launchAutoHide": true,
+      "backgroundColor": "#3880ff",
+      "androidSplashResourceName": "splash",
+      "androidScaleType": "CENTER_CROP",
+      "androidSpinnerStyle": "large",
+      "iosSpinnerStyle": "small",
+      "spinnerColor": "#eee",
+      "showSpinner": true
+    }
+  }
 }

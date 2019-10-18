@@ -1,6 +1,7 @@
   <ion-item [routerLink]="['./', myEvents.id]">
     <ion-label>
-      <h6>{{ myEvents.date }}</h6>
+      <h6>{{ myEvents.startDate }}</h6>
+      <h6>{{ myEvents.endDate }}</h6>
       <h2>{{ myEvents.name }}</h2>
       <p>R${{ myEvents.price }}</p>
     </ion-label>
