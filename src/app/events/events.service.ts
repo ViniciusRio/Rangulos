@@ -164,9 +164,13 @@ export class EventsService {
     );
   }
 
-  // deleteEvent(eventId: string) {
-  //   this.events = this.events.filter(event => {
-  //     return event.id !== eventId;
-  //   });
-  // }
+  deleteEvent(eventId: string) {
+    return this.events.pipe(
+      take(1),
+      delay(1000),
+      tap(events => {
+        this._events.next(events.filter(event => event.id !== eventId));
+      })
+    );
+  }
 }

@@ -1,10 +1,15 @@
   <ion-item [routerLink]="['./', myEvents.id]">
     <ion-label>
-      <h6>{{ myEvents.startDate }}</h6>
-      <h6>{{ myEvents.endDate }}</h6>
-      <h2>{{ myEvents.name }}</h2>
-      <p>R${{ myEvents.price }}</p>
-    </ion-label>
+        <div class="events-details">
+          <ion-icon name="calendar" color="primary"></ion-icon>
+          <ion-text color="tertiary" class="space-left">
+              {{ myEvents.startDate | date }}
+          </ion-text>
+        </div>
+        <h2>{{ myEvents.name }}</h2>
+        <p>R${{ myEvents.price }}</p>
+      </ion-label>
+
     <ion-thumbnail slot="end">
       <ion-img [src]="myEvents.urlImage"></ion-img>
     </ion-thumbnail>

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavController, IonItemSliding, AlertController } from '@ionic/angular';
+import { NavController, IonItemSliding, AlertController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { EventsService } from './events.service';
 import { Event } from './event.model';
@@ -32,6 +32,7 @@ export class EventsPage implements OnInit, OnDestroy{
     private router: Router,
     private eventsService: EventsService,
     private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController
     ) {}
 
   ngOnInit() {
@@ -80,9 +81,16 @@ export class EventsPage implements OnInit, OnDestroy{
           text: 'Excluir',
           cssClass: 'deleteColor',
           handler: () => {
-            // this.eventsService.deleteEvent(eventId);
-            // this.router.navigate(['events']);
-            console.log('excluir');
+            this.loadingCtrl.create({
+              message: 'Deletando...'
+            }).then(loadingElement => {
+              loadingElement.present();
+              this.eventsService.deleteEvent(eventId).subscribe(() => {
+                loadingElement.dismiss();
+              });
+              this.router.navigate(['events']);
+              console.log('excluir');
+            });
           }
         }
       ]

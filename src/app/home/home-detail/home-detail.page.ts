@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Event } from '../../events/event.model';
 import { EventsService } from '../../events/events.service';
 import { ActivatedRoute } from '@angular/router';
-import { ModalController, NavController } from '@ionic/angular';
+import { ModalController, NavController, LoadingController } from '@ionic/angular';
 import { GetInvitationComponent } from 'src/app/get-invitation/get-invitation.component';
 import { Subscription } from 'rxjs';
 
@@ -19,7 +19,8 @@ export class HomeDetailPage implements OnInit, OnDestroy {
     private eventService: EventsService,
     private activedRoute: ActivatedRoute,
     private ctrlModal: ModalController,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private loadingCtrl: LoadingController
 
   ) { }
 
@@ -46,8 +47,32 @@ export class HomeDetailPage implements OnInit, OnDestroy {
       modalElement.present();
       return modalElement.onDidDismiss();
     })
-    .then(resultDate => {
-      console.log(resultDate.data, resultDate.role)
+    .then(resultData => {
+      console.log(resultData.data, resultData.role);
+
+      if (resultData.role === 'confirmed') {
+        this.loadingCtrl
+          .create({ message: 'Garantindo convite(s)...' })
+          .then(loadingElement => {
+            loadingElement.present();
+            const data = resultData.data.invitationData;
+            // this.bookingService
+            //   .addBooking(
+            //     this.place.id,
+            //     this.place.title,
+            //     this.place.imageUrl,
+            //     data.firstName,
+            //     data.lastName,
+            //     data.guestNumber,
+            //     data.startDate,
+            //     data.endDate
+            //   )
+            //   .subscribe(() => {
+            //     loadingEl.dismiss();
+            //   });
+          });
+      }
+
     });
   }
   ngOnDestroy() {
