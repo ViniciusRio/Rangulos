@@ -54,9 +54,28 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <ion-button>
-            AVALIAR
+        <ion-button *ngIf="loadedEvent.iCreated" (click)="onDelete(loadedEvent.id)">
+          Encerrar evento
         </ion-button>
+        <ion-button *ngIf="loadedEvent.verifiedPayment && !loadedEvent.iCreated">
+            Avaliar
+          </ion-button>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="
+      !loadedEvent.verifiedPayment
+      &&
+      !loadedEvent.iCreated &&
+      loadedEvent.currentEvent">
+        <ion-col>
+          <ion-button>
+            Avaliar
+          </ion-button>
+        </ion-col>
+        <ion-col offset="5">
+          <ion-button color="danger">
+              Cancelar
+          </ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

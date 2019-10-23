@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Event } from '../event.model';
 import { EventsService } from '../events.service';
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { NavController, LoadingController, AlertController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -17,7 +17,9 @@ export class EventDetailPage implements OnInit, OnDestroy {
   constructor(
     private eventService: EventsService,
     private activedRoute: ActivatedRoute,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController
     ) { }
 
   ngOnInit() {
@@ -31,6 +33,41 @@ export class EventDetailPage implements OnInit, OnDestroy {
         .subscribe(event => {
           this.loadedEvent = event;
         });
+      console.log(this.loadedEvent);
+    });
+  }
+
+  onDelete(eventId: string) {
+    this.alertCtrl.create({
+      header: 'Tem certeza disso?',
+      subHeader: 'Realmente deseja excluir o evento?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('cancelar');
+          }
+        },
+        {
+          text: 'Excluir',
+          cssClass: 'deleteColor',
+          handler: () => {
+            this.loadingCtrl.create({
+              message: 'Deletando...'
+            }).then(loadingElement => {
+              loadingElement.present();
+              this.eventService.deleteEvent(eventId).subscribe(() => {
+                loadingElement.dismiss();
+              });
+              this.navCtrl.pop();
+              console.log('excluir');
+            });
+          }
+        }
+      ]
+    }).then(alertElement => {
+      alertElement.present();
     });
   }
 
