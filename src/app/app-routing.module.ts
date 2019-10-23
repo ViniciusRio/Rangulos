@@ -47,7 +47,6 @@ const routes: Routes = [
   { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule' },
   { path: 'auth', loadChildren: './auth/auth.module#AuthPageModule' },
   { path: 'my-events', loadChildren: './events/my-events/my-events.module#MyEventsPageModule' },
-  { path: 'my-events-detail', loadChildren: './events/my-events/my-events-detail/my-events-detail.module#MyEventsDetailPageModule' },
   { path: 'edit-my-events', loadChildren: './events/my-events/edit-my-events/edit-my-events.module#EditMyEventsPageModule' },
   { path: 'new-event', loadChildren: './events/new-event/new-event.module#NewEventPageModule' },
 ];
