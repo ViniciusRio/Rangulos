@@ -34,10 +34,10 @@
               {{ loadedEvent.entertainment }}
           </ion-item>
           <ion-item>
-              {{ loadedEvent.startDate }}
+              {{ loadedEvent.startDate | date }}
           </ion-item>
           <ion-item>
-            {{ loadedEvent.endDate }}
+            {{ loadedEvent.endDate | date }}
         </ion-item>
         </ion-list>
       </ion-col>
