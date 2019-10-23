@@ -1,3 +1,19 @@
 .segmentTextSize {
     font-size: 10px;
 }
+
+h1 {
+    font-size: 18px;
+    padding: 8px;
+    border-radius: 5px;
+  }
+  
+  .event-details {
+    display: flex;
+    align-items: center;
+  
+    .space-left {
+      margin-left: 5px;
+    }
+  }
+  

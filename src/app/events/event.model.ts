@@ -12,6 +12,7 @@ export class Event {
         public numberGuests: number,
         public verifiedPayment: boolean,
         public iCreated: boolean,
+        public currentEvent: boolean,
         public urlImage: string
     ) {}
 }

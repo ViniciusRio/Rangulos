@@ -3,7 +3,6 @@ import { Event } from './event.model';
 import { BehaviorSubject } from 'rxjs';
 import { take, map, tap, delay } from 'rxjs/operators';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -22,6 +21,7 @@ export class EventsService {
       4,
       true,
       false,
+      false,
       'https://mirepoa.com.br/wp-content/uploads/2019/04/pizza-de-liquidificador.jpg'
     ),
     new Event(
@@ -35,8 +35,9 @@ export class EventsService {
       new Date('10-10-2019'),
       new Date('10-10-2019'),
       4,
-      true,
-      true,
+      false,
+      false,
+      false,
       'https://u.tfstatic.com/restaurant_photos/169/523169/169/612/burguer-place-1-f8c95.jpg'
     ),
     new Event(
@@ -51,7 +52,8 @@ export class EventsService {
       new Date('10-10-2019'),
       4,
       false,
-      true,
+      false,
+      false,
       'https://img.elo7.com.br/product/main/22B9825/chaveiro-rosquinhas-donuts.jpg'
     ),
     new Event(
@@ -66,6 +68,7 @@ export class EventsService {
       new Date('10-10-2019'),
       4,
       false,
+      true,
       false,
       'https://estrangeira.com.br/wp-content/uploads/2016/09/Captura-de-Tela-2016-09-12-a%CC%80s-18.36.47-602x500.png'
     )
@@ -107,6 +110,43 @@ export class EventsService {
       startDate,
       endDate,
       2,
+      false,
+      true,
+      false,
+      'https://estrangeira.com.br/wp-content/uploads/2016/09/Captura-de-Tela-2016-09-12-a%CC%80s-18.36.47-602x500.png'
+    );
+
+    return this.events.pipe(
+      take(1),
+      delay(1000),
+      tap(events => {
+        this._events.next(events.concat(newEvent));
+      })
+    );
+  }
+
+  addCurrentEvent(
+    name: string,
+    about: string,
+    adicionalInformation: string,
+    entertainment: string,
+    food: string,
+    price: number,
+    startDate: Date,
+    endDate: Date
+  ) {
+    const newEvent = new Event(
+      Math.random.toString(),
+      name,
+      about,
+      adicionalInformation,
+      entertainment,
+      food,
+      price,
+      startDate,
+      endDate,
+      2,
+      false,
       false,
       true,
       'https://estrangeira.com.br/wp-content/uploads/2016/09/Captura-de-Tela-2016-09-12-a%CC%80s-18.36.47-602x500.png'
@@ -156,6 +196,7 @@ export class EventsService {
           oldEvent.numberGuests,
           oldEvent.verifiedPayment,
           oldEvent.iCreated,
+          oldEvent.currentEvent,
           oldEvent.urlImage
         );
         // aqui de fato esta adicionando o valor no obj

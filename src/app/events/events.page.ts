@@ -41,17 +41,14 @@ export class EventsPage implements OnInit, OnDestroy{
       this.myEventsList = this.events.filter(event => {
         return event.iCreated === true;
       });
+      this.currentEvent = this.events.filter(event => {
+        return event.currentEvent === true;
+      });
+      this.pastEvents = this.events.filter(event => {
+        return event.verifiedPayment === true;
+      });
+      console.log('current: ', this.currentEvent);
     });
-
-
-    this.pastEvents = this.events.filter(event => {
-      return event.verifiedPayment === true;
-    });
-    this.currentEvent = this.events.find(onlyEvent => onlyEvent.id === '3');
-    this.myEventsList = this.events.filter(event => {
-      return event.iCreated === true;
-    });
-    console.log('will enter events');
   }
 
   onSegmentChanged(event) {
