@@ -17,10 +17,10 @@ export class GetInvitationComponent implements OnInit {
   ngOnInit() {}
 
   onConfirmInvitation() {
-    this.ctrlModal.dismiss({message: 'confirmed'}, 'role confirmed');
+    this.ctrlModal.dismiss({message: 'convite adquirido'}, 'confirmed');
   }
 
   onCancel() {
-    this.ctrlModal.dismiss(null, 'role cancel');
+    this.ctrlModal.dismiss(null, 'cancel');
   }
 }
