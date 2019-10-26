@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Event } from './event.model';
 import { BehaviorSubject } from 'rxjs';
-import { take, map, tap, delay } from 'rxjs/operators';
+import { take, map, tap, delay, switchMap } from 'rxjs/operators';
+import { AuthService } from '../auth/auth.service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -73,7 +75,8 @@ export class EventsService {
       'https://estrangeira.com.br/wp-content/uploads/2016/09/Captura-de-Tela-2016-09-12-a%CC%80s-18.36.47-602x500.png'
     )
   ]);
-  constructor() { }
+
+  constructor(private authService: AuthService, private http: HttpClient) { }
 
   get events() {
     return this._events.asObservable();
@@ -99,6 +102,7 @@ export class EventsService {
     startDate: Date,
     endDate: Date
   ) {
+    let generateId: string;
     const newEvent = new Event(
       Math.random.toString(),
       name,
@@ -115,14 +119,33 @@ export class EventsService {
       false,
       'https://estrangeira.com.br/wp-content/uploads/2016/09/Captura-de-Tela-2016-09-12-a%CC%80s-18.36.47-602x500.png'
     );
-
-    return this.events.pipe(
-      take(1),
-      delay(1000),
-      tap(events => {
-        this._events.next(events.concat(newEvent));
-      })
-    );
+    return this.http
+      .post<{ name: string }>(
+        'https://rangulos-cae9a.firebaseio.com/events.json',
+        {
+          ...newEvent,
+          id: null
+        }
+      )
+      .pipe(
+        switchMap(responseData => {
+          generateId = responseData.name;
+          console.log('gererateId', generateId);
+          return this.events;
+        }),
+        take(1),
+        tap(events => {
+          newEvent.id = generateId;
+          this._events.next(events.concat(newEvent));
+        })
+      );
+    // return this.events.pipe(
+    //   take(1),
+    //   delay(1000),
+    //   tap(events => {
+    //     this._events.next(events.concat(newEvent));
+    //   })
+    // );
   }
 
   addCurrentEvent(
