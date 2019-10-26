@@ -8,15 +8,32 @@
 </ion-header>
 
 <ion-content>
-  <ion-list>
-    <ion-item *ngFor="let event of loadEvents" [routerLink]="['./', event.id]">
-      <ion-label>
-        <h2>{{ event.name }}</h2>
-        <p>{{ event.adicionalInformation }}</p>
-      </ion-label>
-      <ion-thumbnail slot="end">
-        <img [src]="event.urlImage"/>
-      </ion-thumbnail>
-    </ion-item>
-  </ion-list>
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <div class="ion-text-center" *ngIf="isLoading">
+          <ion-spinner color="primary"></ion-spinner>
+        </div>
+        <div *ngIf="!isLoading && loadEvents.length <= 0">
+          <ion-item>
+              <ion-text >Não há eventos por perto</ion-text>
+            </ion-item>
+            <div class="ion-text-center ion-margin">
+              <ion-button routerLink="/events" >Que tal criar um?</ion-button>
+            </div>
+        </div>
+        <ion-list *ngIf="!isLoading && loadEvents.length > 0">
+          <ion-item *ngFor="let event of loadEvents" [routerLink]="['./', event.id]">
+            <ion-label>
+              <h2>{{ event.name }}</h2>
+              <p>{{ event.adicionalInformation }}</p>
+            </ion-label>
+            <ion-thumbnail slot="end">
+              <img [src]="event.urlImage"/>
+            </ion-thumbnail>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
