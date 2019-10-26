@@ -4,7 +4,7 @@
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
-  "linuxAndroidStudioPath": "/home/vlmdr/.local/share/JetBrains/Toolbox/apps/AndroidStudio/ch-0/191.5791312/bin/studio.sh",
+  "linuxAndroidStudioPath": "/home/nitro/.local/share/JetBrains/Toolbox/apps/AndroidStudio/ch-0/191.5900203/bin/studio.sh",
 
   "backgroundColor": "#7044ff",
   "android": {
