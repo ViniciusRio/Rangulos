@@ -5,76 +5,28 @@ import { take, map, tap, delay, switchMap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { HttpClient } from '@angular/common/http';
 
+
+interface EventData {
+    about: string;
+    adicionalInformation: string;
+    currentEvent: boolean;
+    endDate: string;
+    entertainment: string;
+    food: string;
+    iCreated: boolean;
+    name: string;
+    numberGuests: number;
+    price: number;
+    startDate: string;
+    urlImage: string;
+    verifiedPayment: boolean;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class EventsService {
-  private _events = new BehaviorSubject<Event[]>([
-    new Event(
-      '1',
-      'Pizza em casa, mas fora',
-      'Melhor pizza do bairro, local amigável',
-      'Varios sabores',
-      'Música na caixa',
-      'Pizza',
-       30,
-      new Date('10-10-2019'),
-      new Date('10-10-2019'),
-      4,
-      true,
-      false,
-      false,
-      'https://mirepoa.com.br/wp-content/uploads/2019/04/pizza-de-liquidificador.jpg'
-    ),
-    new Event(
-      '2',
-      'Burger Street',
-      'Melhor burguer do bairro, local amigável',
-      'Artesanal',
-      'TV digital',
-      'Hambúrger',
-       30,
-      new Date('10-10-2019'),
-      new Date('10-10-2019'),
-      4,
-      false,
-      false,
-      false,
-      'https://u.tfstatic.com/restaurant_photos/169/523169/169/612/burguer-place-1-f8c95.jpg'
-    ),
-    new Event(
-      '3',
-      'Nossa Rosquinha',
-      'Melhor rosquinha do bairro, local amigável',
-      'Bem crocante',
-      'Sport TV liberado',
-      'Rosquinhas',
-      30,
-      new Date('10-10-2019'),
-      new Date('10-10-2019'),
-      4,
-      false,
-      false,
-      false,
-      'https://img.elo7.com.br/product/main/22B9825/chaveiro-rosquinhas-donuts.jpg'
-    ),
-    new Event(
-      '4',
-      'Sorvete Gelado',
-      'Melhor sorvete do bairro, local amigável',
-      'Frutas e artificiais',
-      'Música ao vivo (Ópera)',
-      'Sorvetes variádos',
-      30,
-      new Date('10-10-2019'),
-      new Date('10-10-2019'),
-      4,
-      false,
-      true,
-      false,
-      'https://estrangeira.com.br/wp-content/uploads/2016/09/Captura-de-Tela-2016-09-12-a%CC%80s-18.36.47-602x500.png'
-    )
-  ]);
+  private _events = new BehaviorSubject<Event[]>([]);
 
   constructor(private authService: AuthService, private http: HttpClient) { }
 
@@ -82,6 +34,38 @@ export class EventsService {
     return this._events.asObservable();
   }
 
+  fetchEvent() {
+    return this.http
+    .get<{[ key: string]: EventData }>('https://rangulos-cae9a.firebaseio.com/events.json')
+    .pipe(map(resultData => {
+      const events = [];
+      for (const key in resultData) {
+        if (resultData.hasOwnProperty(key)) {
+          events.push(new Event(
+            key,
+            resultData[key].name,
+            resultData[key].about,
+            resultData[key].adicionalInformation,
+            resultData[key].entertainment,
+            resultData[key].food,
+            +resultData[key].price,
+            new Date(resultData[key].startDate),
+            new Date(resultData[key].endDate),
+            +resultData[key].numberGuests,
+            resultData[key].verifiedPayment,
+            resultData[key].iCreated,
+            resultData[key].currentEvent,
+            resultData[key].urlImage
+          ));
+        }
+      }
+      return events;
+    }),
+    tap(events => {
+      this._events.next(events);
+    })
+  );
+}
   getEvent(eventId: string) {
 
     return this.events.pipe(
