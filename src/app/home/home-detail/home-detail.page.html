@@ -25,19 +25,29 @@
       <ion-col>
         <ion-list>
           <ion-item>
-            {{ loadedEvent.about }}
+            <ion-text>
+              <b>Sobre: </b> {{ loadedEvent.about }}
+            </ion-text>
           </ion-item>
           <ion-item>
-              {{ loadedEvent.adicionalInformation }}
+            <ion-text>
+              <b>Observações: </b>{{ loadedEvent.adicionalInformation }}
+            </ion-text>
           </ion-item>
           <ion-item>
-              {{ loadedEvent.entertainment }}
+            <ion-text>
+              <b>Entretenimento: </b>{{ loadedEvent.entertainment }}
+            </ion-text>
           </ion-item>
           <ion-item>
-              {{ loadedEvent.startDate | date }}
+            <ion-text>
+              <b>Inicio: </b> {{ loadedEvent.startDate | date }}
+            </ion-text>
           </ion-item>
           <ion-item>
-            {{ loadedEvent.endDate | date }}
+            <ion-text>
+                <b>Fim: </b> {{ loadedEvent.endDate | date }}
+            </ion-text>
         </ion-item>
         </ion-list>
       </ion-col>
