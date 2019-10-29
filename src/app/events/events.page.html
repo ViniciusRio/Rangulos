@@ -28,6 +28,16 @@
   <div [ngSwitch]="selectedSegment">
     <div *ngSwitchCase="segments.PAST_EVENTS">
      <ion-list>
+        <div *ngIf="!currentEvent || currentEvent.length <= 0">
+            <ion-item *ngIf="!currentEvent || currentEvent.length <= 0">
+              <ion-label>
+                <ion-text>Sem histórico de eventos ainda</ion-text>
+              </ion-label>
+            </ion-item>
+            <div class="ion-text-center ion-margin">
+              <ion-button routerLink="/home">Procure um evento</ion-button>
+            </div>
+          </div>
         <ion-item *ngFor="let pastEvent of pastEvents" [routerLink]="['./', pastEvent.id]">
           <ion-label>
               <div class="events-details">
@@ -47,11 +57,16 @@
     </div>
     <div *ngSwitchCase="segments.CURRENT_EVENT">
         <ion-list>
-          <ion-item *ngIf="!currentEvent || currentEvent.length <= 0">
-            <ion-label>
-              <ion-text>Ainda não estou indo para nenhum evento</ion-text>
-            </ion-label>
-          </ion-item>
+          <div *ngIf="!currentEvent || currentEvent.length <= 0">
+            <ion-item *ngIf="!currentEvent || currentEvent.length <= 0">
+              <ion-label>
+                <ion-text>Ainda não estou indo para nenhum evento</ion-text>
+              </ion-label>
+            </ion-item>
+            <div class="ion-text-center ion-margin">
+              <ion-button routerLink="/home" >Que tal procurar por um?</ion-button>
+            </div>
+          </div>
             <ion-item 
             *ngIf="currentEvent.length > 0"
             [routerLink]="['./', currentEvent[0].id]">
@@ -71,22 +86,22 @@
             </ion-item>
           </ion-list>
     </div>
-    <div *ngSwitchCase="segments.MY_EVENTS">
-      <ion-list>
-        <ion-item-sliding *ngFor="let event of myEventsList" #slidingItem>
-          <app-my-events [myEvents] = event></app-my-events>
-          <ion-item-options>
-            <ion-item-option (click)="onEdit(event.id, slidingItem)">
-              <ion-icon name="create" slot="icon-only"></ion-icon>
-            </ion-item-option>
-          </ion-item-options>
-          <ion-item-options side="start">
-            <ion-item-option color="danger" (click)="onDelete(event.id, slidingItem)">
-              <ion-icon name="trash" slot="icon-only"></ion-icon>
-            </ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
-      </ion-list>
+      <div *ngSwitchCase="segments.MY_EVENTS">
+        <ion-list>
+          <ion-item-sliding *ngFor="let event of myEventsList" #slidingItem>
+            <app-my-events [myEvents] = event></app-my-events>
+            <ion-item-options>
+              <ion-item-option (click)="onEdit(event.id, slidingItem)">
+                <ion-icon name="create" slot="icon-only"></ion-icon>
+              </ion-item-option>
+            </ion-item-options>
+            <ion-item-options side="start">
+              <ion-item-option color="danger" (click)="onDelete(event.id, slidingItem)">
+                <ion-icon name="trash" slot="icon-only"></ion-icon>
+              </ion-item-option>
+            </ion-item-options>
+          </ion-item-sliding>
+        </ion-list>
+      </div>
     </div>
-  </div>
 </ion-content>

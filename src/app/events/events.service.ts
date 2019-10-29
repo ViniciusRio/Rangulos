@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Event } from './event.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, of } from 'rxjs';
 import { take, map, tap, delay, switchMap } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 import { HttpClient } from '@angular/common/http';
@@ -11,6 +11,7 @@ interface EventData {
     adicionalInformation: string;
     currentEvent: boolean;
     endDate: string;
+    userId;
     entertainment: string;
     food: string;
     iCreated: boolean;
@@ -43,6 +44,7 @@ export class EventsService {
         if (resultData.hasOwnProperty(key)) {
           events.push(new Event(
             key,
+            resultData[key].userId,
             resultData[key].name,
             resultData[key].about,
             resultData[key].adicionalInformation,
@@ -89,6 +91,7 @@ export class EventsService {
     let generateId: string;
     const newEvent = new Event(
       Math.random.toString(),
+      this.authService.userId,
       name,
       about,
       adicionalInformation,
@@ -144,6 +147,7 @@ export class EventsService {
   ) {
     const newEvent = new Event(
       Math.random.toString(),
+      this.authService.userId,
       name,
       about,
       adicionalInformation,
@@ -179,19 +183,24 @@ export class EventsService {
     startDate: Date,
     endDate: Date
   ) {
+    // variavel para ser usada fora do metodoswitchmap
+    let updatedEvents: Event[];
     return this.events.pipe(
       take(1),
-      delay(1000),
-      tap(events => {
-        // find do evento que vou manipular
-        const updateEventId = events.findIndex(event => event.id === eventId);
-        // todos os eventos
-        const updateEvents = [...events];
-        // evento que vou manipular de fato, aqui é o obj antigo ja
-        const oldEvent = updateEvents[updateEventId];
-        // update de fato no objeto, substituir tudo que há
-        updateEvents[updateEventId] = new Event(
+      switchMap(events => {
+        if (!events || events.length <= 0) {
+          return this.fetchEvent();
+        } else {
+          return of(events);
+        }
+      }),
+      switchMap(events => {
+        const updatedEventIndex = events.findIndex(event => event.id === eventId);
+        updatedEvents = [...events];
+        const oldEvent = updatedEvents[updatedEventIndex];
+        updatedEvents[updatedEventIndex] = new Event(
           oldEvent.id,
+          oldEvent.userId,
           name,
           about,
           adicionalInformation,
@@ -206,19 +215,37 @@ export class EventsService {
           oldEvent.currentEvent,
           oldEvent.urlImage
         );
-        // aqui de fato esta adicionando o valor no obj
-        this._events.next(updateEvents);
+        return this.http.put(
+          // variave na ur para dizer qua vai suistituir
+          `https://rangulos-cae9a.firebaseio.com/events/${eventId}.json`,
+        // cópia do objeto inteiro, menos o id, que esta como null, pq ja tem o id do Fire
+          { ...updatedEvents[updatedEventIndex], id: null }
+        );
+      }),
+      tap(() => {
+        this._events.next(updatedEvents);
       })
     );
   }
 
   deleteEvent(eventId: string) {
-    return this.events.pipe(
+    return this.http.delete(`https://rangulos-cae9a.firebaseio.com/events/${eventId}.json`)
+    .pipe(
+      switchMap(() => {
+        return this.events;
+      }),
       take(1),
-      delay(1000),
       tap(events => {
         this._events.next(events.filter(event => event.id !== eventId));
       })
     );
+
+    // return this.events.pipe(
+    //   take(1),
+    //   delay(1000),
+    //   tap(events => {
+    //     this._events.next(events.filter(event => event.id !== eventId));
+    //   })
+    // );
   }
 }

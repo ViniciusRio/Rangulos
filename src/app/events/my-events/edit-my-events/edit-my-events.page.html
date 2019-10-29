@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="tertiary">
-    <ion-title>{{ event.name }}#{{ event.id }}</ion-title>
+    <ion-title>Editando: {{ event.name }}</ion-title>
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/events"></ion-back-button>
     </ion-buttons>
@@ -13,7 +13,10 @@
 </ion-header>
 
 <ion-content>
-  <form [formGroup]="form">
+  <div *ngIf="isLoading" class="ion-text-center ion-margin">
+    <ion-spinner color="primary"></ion-spinner>
+  </div>
+  <form [formGroup]="form" *ngIf="!isLoading">
     <ion-grid>
       <ion-row>
         <ion-col>

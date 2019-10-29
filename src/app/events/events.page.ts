@@ -27,6 +27,7 @@ export class EventsPage implements OnInit, OnDestroy{
   pastEvents;
   currentEvent;
   myEventsList;
+  isLoading = false;
 
   constructor(
     private router: Router,
@@ -48,6 +49,13 @@ export class EventsPage implements OnInit, OnDestroy{
         return event.verifiedPayment === true;
       });
       console.log('current: ', this.currentEvent);
+    });
+  }
+
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.eventsService.fetchEvent().subscribe(() => {
+      this.isLoading = false;
     });
   }
 

@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Event } from '../../event.model';
 import { EventsService } from '../../events.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NavController, LoadingController } from '@ionic/angular';
+import { NavController, LoadingController, AlertController } from '@ionic/angular';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import {  Subscription } from 'rxjs';
 
@@ -14,6 +14,7 @@ import {  Subscription } from 'rxjs';
 export class EditMyEventsPage implements OnInit, OnDestroy {
   event: Event;
   form: FormGroup;
+  isLoading = false;
   private eventSub: Subscription;
 
   constructor(
@@ -21,7 +22,8 @@ export class EditMyEventsPage implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private navCtrl: NavController,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController
   ) { }
 
   ngOnInit() {
@@ -31,25 +33,26 @@ export class EditMyEventsPage implements OnInit, OnDestroy {
         return;
       }
       const eventId = paramMap.get('eventId');
+      this.isLoading = true;
       this.eventSub = this.eventsService
       .getEvent(eventId)
       .subscribe(event => {
         this.event = event;
         this.form = new FormGroup({
           name: new FormControl(this.event.name, {
-            updateOn: 'blur',
+            updateOn: 'change',
             validators: [Validators.required]
           }),
           about: new FormControl(this.event.about, {
-            updateOn: 'blur',
+            updateOn: 'change',
             validators: [Validators.required, Validators.maxLength(100)]
           }),
           adicionalInformation: new FormControl(this.event.adicionalInformation, {
-            updateOn: 'blur',
+            updateOn: 'change',
             validators: [Validators.required]
           }),
           entertainment: new FormControl(this.event.entertainment, {
-            updateOn: 'blur',
+            updateOn: 'change',
             validators: [Validators.required]
           }),
           food: new FormControl(this.event.food, {
@@ -72,6 +75,22 @@ export class EditMyEventsPage implements OnInit, OnDestroy {
             updateOn: 'blur',
             validators: [Validators.required]
           })
+        });
+        this.isLoading = false;
+      }, error => {
+        this.alertCtrl.create({
+          header: 'Algo não está certo',
+          message: 'Evento não pode ser editado. Tente novamente.',
+          buttons: [
+            {
+              text: 'Ok',
+              handler: () => {
+                this.router.navigate(['/events']);
+              }
+            }
+          ]
+        }).then(alertElement => {
+          alertElement.present();
         });
       });
     });
