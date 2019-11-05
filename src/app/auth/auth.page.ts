@@ -17,23 +17,22 @@ export class AuthPage implements OnInit {
     private router: Router,
     private authService: AuthService,
     private loadingCtrl: LoadingController
-    ) { }
+  ) { }
 
   ngOnInit() {
   }
 
   onLogin() {
     this.isLoading = true;
-    this.authService.login();
     this.loadingCtrl.create({ keyboardClose: true, message: 'Autenticando...' })
-    .then(loadingEl => {
-      loadingEl.present();
-      setTimeout(() => {
-        this.isLoading = false;
-        loadingEl.dismiss();
-        this.router.navigateByUrl('/events');
-      }, 1500);
-    });
+      .then(loadingEl => {
+        loadingEl.present();
+        setTimeout(() => {
+          this.isLoading = false;
+          loadingEl.dismiss();
+          this.router.navigateByUrl('/events');
+        }, 1500);
+      });
     this.router.navigateByUrl('/home');
   }
 
@@ -45,14 +44,17 @@ export class AuthPage implements OnInit {
     if (!form.valid) {
       return;
     }
-    const email = form.value.email;
-    const password = form.value.password;
-    console.log(email, password);
+    const credentials = {
+      email: form.value.email,
+      password: form.value.password
+    };
 
     if (this.isLogin) {
-      // Send a request to login servers
-    } else {
-      // Send a request to signup servers
+      this.authService.login(credentials).then(result => {
+        console.log(result);
+      }, error => {
+        console.log(error);
+      });
     }
   }
 }
