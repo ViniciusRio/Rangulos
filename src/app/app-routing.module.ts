@@ -39,7 +39,7 @@ const routes: Routes = [
         loadChildren: './events/my-events/my-events.module#MyEventsPageModule'
       },
       {
-        path: 'edit-my-events/:eventId',
+        path: 'edit-my-events/:id',
         loadChildren: './events/my-events/edit-my-events/edit-my-events.module#EditMyEventsPageModule'
       }
     ]
