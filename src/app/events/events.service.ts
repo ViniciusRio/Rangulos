@@ -40,6 +40,35 @@ export class EventsService {
     });
   }
 
+  getPastEvents() {
+    const url = `${environment.urlApi}/events/past`;
+    const params = {
+      token: localStorage.getItem('token')
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.get(url, { params }).subscribe((data: any) => {
+        resolve(data);
+      }, (error) => {
+        reject(error);
+      });
+    });
+  }
+
+  getMyEvents() {
+    const url = `${environment.urlApi}/events/my`;
+    const params = {
+      token: localStorage.getItem('token')
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.get(url, { params }).subscribe((data: any) => {
+        resolve(data);
+      }, (error) => {
+        reject(error);
+      });
+    });
+  }
 
   getCurrent() {
     const url = `${environment.urlApi}/event/current`;
@@ -72,6 +101,7 @@ export class EventsService {
   }
 
   updateEvent(
+    id: string,
     title: string,
     about: string,
     address: string,
@@ -84,7 +114,7 @@ export class EventsService {
     end_date: Date
   ) {
     const event = new Event(
-      null,
+      id,
       title,
       about,
       address,
@@ -95,7 +125,7 @@ export class EventsService {
       'https://estrangeira.com.br/wp-content/uploads/2016/09/Captura-de-Tela-2016-09-12-a%CC%80s-18.36.47-602x500.png',
       null
     );
-    const url = `${environment.urlApi}/event`;
+    const url = `${environment.urlApi}/event/${id}`;
     const params = {
       token: localStorage.getItem('token')
     };
@@ -109,8 +139,22 @@ export class EventsService {
   }
 
   deleteGuest(id: string) {
-    // const url = `${environment.urlApi}/event/current`;
     const url = `${environment.urlApi}/guest/${id}`;
+    const params = {
+      token: localStorage.getItem('token')
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.delete(url, { params }).subscribe((data: any) => {
+        resolve(data);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
+  deleteEvent(id: string) {
+    const url = `${environment.urlApi}/event/${id}`;
     const params = {
       token: localStorage.getItem('token')
     };

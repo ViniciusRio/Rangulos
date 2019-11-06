@@ -6,13 +6,12 @@ import { Event } from './event.model';
 import { MyEventsPage } from './my-events/my-events.page';
 import { Subscription } from 'rxjs';
 
-
 @Component({
   selector: 'app-events',
   templateUrl: './events.page.html',
   styleUrls: ['./events.page.scss'],
 })
-export class EventsPage implements OnInit, OnDestroy{
+export class EventsPage implements OnInit, OnDestroy {
   // eventos possiveis
   segments = {
     PAST_EVENTS: 'pastEvents',
@@ -26,7 +25,7 @@ export class EventsPage implements OnInit, OnDestroy{
   events: Event[];
   pastEvents;
   currentEvent;
-  myEventsList;
+  myEvents;
   isLoading = false;
 
   constructor(
@@ -34,29 +33,55 @@ export class EventsPage implements OnInit, OnDestroy{
     private eventsService: EventsService,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController
-    ) {}
+  ) { }
 
   ngOnInit() {
 
   }
 
   ionViewWillEnter() {
+    this.loadCurrentEvent();
+    this.loadMyEvents();
+    this.loadPastEvents();
+  }
+
+  loadCurrentEvent() {
     this.isLoading = true;
     this.eventsService.getCurrent().then(result => {
       this.currentEvent = result;
+      this.isLoading = false;
+    }, error => {
+      this.isLoading = false;
     });
-    // this.eventsService.fetchEvent().subscribe(() => {
-      // this.isLoading = false;
-    // });
+  }
+
+  loadPastEvents() {
+    this.isLoading = true;
+    this.eventsService.getPastEvents().then(result => {
+      this.pastEvents = result;
+      this.isLoading = false;
+    }, error => {
+      this.isLoading = false;
+    });
+  }
+
+  loadMyEvents() {
+    this.isLoading = true;
+    this.eventsService.getMyEvents().then(result => {
+      this.myEvents = result;
+      this.isLoading = false;
+    }, error => {
+      this.isLoading = false;
+    });
   }
 
   onSegmentChanged(event) {
     this.selectedSegment = event.detail.value;
   }
 
-  onEdit(eventId: string, slidingItem: IonItemSliding) {
+  onEdit(id: string, slidingItem: IonItemSliding) {
     slidingItem.close();
-    this.router.navigate(['/', 'events', 'edit-my-events', eventId]);
+    this.router.navigate(['/', 'events', 'edit-my-events', id]);
   }
 
   onDelete(eventId: string, slidingItem: IonItemSliding) {
@@ -80,11 +105,10 @@ export class EventsPage implements OnInit, OnDestroy{
               message: 'Deletando...'
             }).then(loadingElement => {
               loadingElement.present();
-              // this.eventsService.deleteEvent(eventId).subscribe(() => {
-              //   loadingElement.dismiss();
-              // });
-              this.router.navigate(['events']);
-              console.log('excluir');
+              this.eventsService.deleteEvent(eventId).then(() => {
+                loadingElement.dismiss();
+                this.loadMyEvents();
+              });
             });
           }
         }
@@ -92,8 +116,8 @@ export class EventsPage implements OnInit, OnDestroy{
     }).then(alertElement => {
       alertElement.present();
     });
-
   }
+
   ngOnDestroy() {
     if (this.eventsSub) {
       this.eventsSub.unsubscribe();

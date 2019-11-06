@@ -40,7 +40,7 @@ export class EventDetailPage implements OnInit, OnDestroy {
   onDeleteCurrent(id: string) {
     this.alertCtrl.create({
       header: 'Tem certeza disso?',
-      subHeader: 'A ação não poderá ser disfeita',
+      subHeader: 'A ação não poderá ser desfeita',
       buttons: [
         {
           text: 'Cancelar',
