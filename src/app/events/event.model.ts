@@ -1,19 +1,19 @@
 export class Event {
     constructor(
         public id: string,
-        public userId: string,
-        public name: string,
+        public title: string,
         public about: string,
-        public adicionalInformation: string,
-        public entertainment: string,
-        public food: string,
+        public address: string,
         public price: number,
-        public startDate: Date,
-        public endDate: Date,
-        public numberGuests: number,
-        public verifiedPayment: boolean,
-        public iCreated: boolean,
-        public currentEvent: boolean,
-        public urlImage: string
+        // tslint:disable-next-line: variable-name
+        public max_guests: number,
+        // tslint:disable-next-line: variable-name
+        public start_date: Date,
+        // tslint:disable-next-line: variable-name
+        public end_date: Date,
+        // tslint:disable-next-line: variable-name
+        public url_image: string,
+        // tslint:disable-next-line: variable-name
+        public user_creator_id: number
     ) {}
 }
