@@ -19,7 +19,7 @@ export class NewEventPage implements OnInit {
 
   ngOnInit() {
     this.form = new FormGroup({
-      name: new FormControl(null, {
+      title: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required]
       }),
@@ -27,19 +27,15 @@ export class NewEventPage implements OnInit {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(100)]
       }),
-      adicionalInformation: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [Validators.required]
-      }),
-      entertainment: new FormControl(null, {
-        updateOn: 'blur',
-        validators: [Validators.required]
-      }),
-      food: new FormControl(null, {
+      address: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required]
       }),
       price: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required]
+      }),
+      maxGuests: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required]
       }),
@@ -66,12 +62,11 @@ export class NewEventPage implements OnInit {
         loadingEl.present();
         this.eventsService
           .addEvent(
-            this.form.value.name,
+            this.form.value.title,
             this.form.value.about,
-            this.form.value.adicionalInformation,
-            this.form.value.entertainment,
-            this.form.value.food,
+            this.form.value.address,
             +this.form.value.price,
+            this.form.value.maxGuests,
             new Date(this.form.value.startDate),
             new Date(this.form.value.endDate)
           )

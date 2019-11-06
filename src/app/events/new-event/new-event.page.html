@@ -18,10 +18,10 @@
       <ion-row>
         <ion-col>
           <ion-item>
-              <ion-label position="floating">Nome do evento</ion-label>
+              <ion-label position="floating">Titulo do evento</ion-label>
               <ion-input
               type="text"
-              formControlName="name"
+              formControlName="title"
               >
   
               </ion-input>
@@ -30,8 +30,8 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <div *ngIf="form.get('name').invalid && form.get('name').dirty">
-            <ion-badge color="danger">"Nome" obrigatório</ion-badge>
+          <div *ngIf="form.get('title').invalid && form.get('title').dirty">
+            <ion-badge color="danger">"Título" obrigatório</ion-badge>
           </div>
         </ion-col>
       </ion-row>
@@ -57,27 +57,14 @@
         <ion-row>
             <ion-col>
               <ion-item>
-                  <ion-label position="floating">Informações adicionais</ion-label>
+                  <ion-label position="floating">Endereço</ion-label>
                   
-                  <ion-textarea formControlName="adicionalInformation">
+                  <ion-textarea formControlName="address">
   
                   </ion-textarea>
               </ion-item>
             </ion-col>
           </ion-row>
-          <ion-row>
-              <ion-col>
-                <ion-item>
-                    <ion-label position="floating">Entretenimento</ion-label>
-                    <ion-input
-                    type="text"
-                    formControlName="entertainment"
-                    >
-        
-                    </ion-input>
-                </ion-item>
-              </ion-col>
-            </ion-row>
             <ion-row>
               <ion-col>
                 <ion-item>
@@ -96,6 +83,18 @@
                   <div *ngIf="form.get('price').invalid && form.get('price').dirty">
                       <ion-badge color="danger">"Preço" obrigatório</ion-badge>
                   </div>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-item>
+                      <ion-label position="floating">Máximo de convidados</ion-label>
+                      <ion-input
+                      type="number"
+                      formControlName="maxGuests"
+                      >
+                      </ion-input>      
+                  </ion-item>
                 </ion-col>
               </ion-row>
             <ion-row>
@@ -138,26 +137,6 @@
                   </div>
                 </ion-col>
               </ion-row>
-            <ion-row>
-                <ion-col>
-                  <ion-item>
-                      <ion-label position="floating">Comida</ion-label>
-                      <ion-input
-                      type="text"
-                      formControlName="food"
-                      >
-          
-                      </ion-input>
-                  </ion-item>
-                </ion-col>
-              </ion-row>
-              <ion-row>
-                  <ion-col>
-                    <div *ngIf="form.get('food').invalid && form.get('food').dirty">
-                        <ion-badge color="danger">"Comida" obrigatória</ion-badge>
-                    </div>
-                  </ion-col>
-                </ion-row>
     </ion-grid>
   </form>
 </ion-content>
