@@ -29,12 +29,10 @@ export class EventDetailPage implements OnInit, OnDestroy {
         return;
       }
 
-      console.log('event-detail: ', paramMap.get('id'));
       this.eventService
         .getEvent(paramMap.get('id'))
         .then(event => {
           this.loadedEvent = event;
-          console.log('event detail ts:', this.loadedEvent.url_image);
         });
     });
   }

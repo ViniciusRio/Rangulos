@@ -37,34 +37,17 @@ export class EventsPage implements OnInit, OnDestroy{
     ) {}
 
   ngOnInit() {
-    this.eventsSub = this.eventsService.events.subscribe(events => {
-      this.events = events;
-      this.myEventsList = this.events.filter(event => {
-        // return event.iCreated === true;
-      });
-      this.currentEvent = this.events.filter(event => {
-        // return event.currentEvent === true;
-      });
-      this.pastEvents = this.events.filter(event => {
-        // return event.verifiedPayment === true;
-      });
-      console.log('current: ', this.currentEvent);
-    });
+
   }
 
   ionViewWillEnter() {
     this.isLoading = true;
     this.eventsService.getCurrent().then(result => {
       this.currentEvent = result;
-      console.log(this.currentEvent);
-      console.log('entrando na pagina: ionViewWillEnter');
     });
     // this.eventsService.fetchEvent().subscribe(() => {
       // this.isLoading = false;
     // });
-  }
-  ionViewWillLeave() {
-    console.log('saindo da pagina: ionViewWillLeave');
   }
 
   onSegmentChanged(event) {
@@ -74,7 +57,6 @@ export class EventsPage implements OnInit, OnDestroy{
   onEdit(eventId: string, slidingItem: IonItemSliding) {
     slidingItem.close();
     this.router.navigate(['/', 'events', 'edit-my-events', eventId]);
-    console.log('edit');
   }
 
   onDelete(eventId: string, slidingItem: IonItemSliding) {
