@@ -25,9 +25,9 @@ export class HomePage implements OnInit, OnDestroy {
   }
   ionViewWillEnter() {
     this.isLoading = true;
-    this.eventsService.fetchEvent().subscribe(() => {
-      this.isLoading = false;
-    });
+  //   this.eventsService.fetchEvent().subscribe(() => {
+  //     this.isLoading = false;
+  //   });
   }
 
   ngOnDestroy() {

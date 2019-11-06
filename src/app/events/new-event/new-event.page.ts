@@ -70,7 +70,7 @@ export class NewEventPage implements OnInit {
             new Date(this.form.value.startDate),
             new Date(this.form.value.endDate)
           )
-          .subscribe(() => {
+          .then(() => {
             loadingEl.dismiss();
             this.form.reset();
             this.router.navigate(['/home']);

@@ -30,11 +30,11 @@ export class HomeDetailPage implements OnInit, OnDestroy {
         this.navCtrl.navigateBack('/home');
         return;
       }
-      this.eventSub = this.eventService
-        .getEvent(paramMap.get('eventId'))
-        .subscribe(event => {
-          this.loadedEvent = event;
-        });
+      // this.eventSub = this.eventService
+        // .getEvent(paramMap.get('eventId'))
+        // .subscribe(event => {
+        //   this.loadedEvent = event;
+        // });
 
     });
   }
@@ -55,22 +55,22 @@ export class HomeDetailPage implements OnInit, OnDestroy {
           .then(loadingElement => {
             loadingElement.present();
             const data = resultData.data.invitationData;
-            this.eventService
-              .addCurrentEvent(
-                this.loadedEvent.name,
-                this.loadedEvent.about,
-                this.loadedEvent.adicionalInformation,
-                this.loadedEvent.entertainment,
-                this.loadedEvent.food,
-                +this.loadedEvent.price,
-                new Date(this.loadedEvent.startDate),
-                new Date(this.loadedEvent.endDate),
-              )
-              .subscribe(() => {
-                loadingElement.dismiss();
-                this.router.navigate(['/events']);
+            // this.eventService
+              // .addCurrentEvent(
+              //   this.loadedEvent.name,
+              //   this.loadedEvent.about,
+              //   this.loadedEvent.adicionalInformation,
+              //   this.loadedEvent.entertainment,
+              //   this.loadedEvent.food,
+              //   +this.loadedEvent.price,
+              //   new Date(this.loadedEvent.startDate),
+              //   new Date(this.loadedEvent.endDate),
+              // )
+              // .subscribe(() => {
+              //   loadingElement.dismiss();
+              //   this.router.navigate(['/events']);
 
-              });
+              // });
           });
       }
     });

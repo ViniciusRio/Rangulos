@@ -36,39 +36,39 @@ export class EventsService {
     return this._events.asObservable();
   }
 
-  //   fetchEvent() {
-  //     return this.http
-  //     .get<{[ key: string]: EventData }>('https://rangulos-cae9a.firebaseio.com/events.json')
-  //     .pipe(map(resultData => {
-  //       const events = [];
-  //       for (const key in resultData) {
-  //         if (resultData.hasOwnProperty(key)) {
-  //           events.push(new Event(
-  //             key,
-  //             resultData[key].userId,
-  //             resultData[key].name,
-  //             resultData[key].about,
-  //             resultData[key].adicionalInformation,
-  //             resultData[key].entertainment,
-  //             resultData[key].food,
-  //             +resultData[key].price,
-  //             new Date(resultData[key].startDate),
-  //             new Date(resultData[key].endDate),
-  //             +resultData[key].numberGuests,
-  //             resultData[key].verifiedPayment,
-  //             resultData[key].iCreated,
-  //             resultData[key].currentEvent,
-  //             resultData[key].urlImage
-  //           ));
-  //         }
-  //       }
-  //       return events;
-  //     }),
-  //     tap(events => {
-  //       this._events.next(events);
-  //     })
-  //   );
-  // }
+    fetchEvent() {
+      return this.http
+      .get<{[ key: string]: EventData }>('https://rangulos-cae9a.firebaseio.com/events.json')
+      .pipe(map(resultData => {
+        const events = [];
+        for (const key in resultData) {
+          if (resultData.hasOwnProperty(key)) {
+            events.push(new Event(
+              key,
+              resultData[key].userId,
+              resultData[key].name,
+              resultData[key].about,
+              resultData[key].adicionalInformation,
+              resultData[key].entertainment,
+              resultData[key].food,
+              +resultData[key].price,
+              new Date(resultData[key].startDate),
+              new Date(resultData[key].endDate),
+              +resultData[key].numberGuests,
+              resultData[key].verifiedPayment,
+              resultData[key].iCreated,
+              resultData[key].currentEvent,
+              resultData[key].urlImage
+            ));
+          }
+        }
+        return events;
+      }),
+      tap(events => {
+        this._events.next(events);
+      })
+    );
+  }
   getEvent(id: string) {
 
     const url = `${environment.urlApi}/event/${id}`;
@@ -123,23 +123,31 @@ export class EventsService {
       'https://estrangeira.com.br/wp-content/uploads/2016/09/Captura-de-Tela-2016-09-12-a%CC%80s-18.36.47-602x500.png',
       null
     );
-    return this.http
-      .post<any>(
-        'http://localhost:8080/api/events/',
-        {
-          ...newEvent,
-          id: null
-        }
-      )
-      .pipe(
-        switchMap(() => {
-          return this.events;
-        }),
-        take(1),
-        tap(events => {
-          this._events.next(events.concat(newEvent));
-        })
-      );
+
+    // const url = `${environment.urlApi}/event/current`;
+    const url = `${environment.urlApi}/events?token=${localStorage.getItem('token')}`;
+    const params = {
+      // token: localStorage.getItem('token'),
+      newEvent,
+      // title: newEvent.title,
+      // about: newEvent.about,
+      // address: newEvent.address,
+      // price: newEvent.price,
+      // maxGuests: newEvent.max_guests,
+      // startDate: newEvent.start_date,
+      // endDate: newEvent.end_date,
+      // url_image: 'https://estrangeira.com.br/wp-content/uploads/2016/09/Captura-de-Tela-2016-09-12-a%CC%80s-18.36.47-602x500.png',
+      // user_creator_id: null
+    };
+    console.log(newEvent);
+    return new Promise((resolve, reject) => {
+      this.http.post(url, { params }).subscribe((data: any) => {
+        resolve(data);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
     // return this.events.pipe(
     //   take(1),
     //   delay(1000),
@@ -147,7 +155,7 @@ export class EventsService {
     //     this._events.next(events.concat(newEvent));
     //   })
     // );
-  }
+  // }
 
   // addCurrentEvent(
   //   name: string,
