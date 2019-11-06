@@ -13,7 +13,7 @@ const routes: Routes = [
         canLoad: [AuthGuard]
       },
       {
-        path: ':eventId',
+        path: ':id',
         loadChildren: './home/home-detail/home-detail.module#HomeDetailPageModule'
       }
     ]

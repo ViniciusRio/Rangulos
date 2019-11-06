@@ -51,9 +51,9 @@ export class AuthPage implements OnInit {
 
     if (this.isLogin) {
       this.authService.login(credentials).then(result => {
-        console.log(result);
+        // console.log(result);
       }, error => {
-        console.log(error);
+        // console.log(error);
       });
     }
   }
