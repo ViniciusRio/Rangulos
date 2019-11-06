@@ -3,17 +3,18 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ loadedEvent.name }}</ion-title>
+    <ion-title>Detalhes do evento</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-grid no-padding>
+  <ion-grid no-padding *ngIf="loadedEvent">
     <ion-row>
       <ion-col no-padding>
-        <ion-img [src]="loadedEvent.urlImage"></ion-img>
+        <ion-img [src]="loadedEvent.url_image"></ion-img>
       </ion-col>
     </ion-row>
+    
     <ion-row>
       <ion-col>
         <ion-text color="secondary">
@@ -24,58 +25,35 @@
     <ion-row>
       <ion-col>
         <ion-list>
+            <ion-item>
+              <ion-label class="ion-text-wrap">
+                <h2>{{ loadedEvent.title }}</h2>
+                <p>{{ loadedEvent.about }}</p>
+              </ion-label>
+            </ion-item>
           <ion-item>
             <ion-text>
-              <b>Sobre: </b> {{ loadedEvent.about }}
+              <b>Inicio: </b> {{ loadedEvent.start_date | date }}
             </ion-text>
           </ion-item>
           <ion-item>
             <ion-text>
-              <b>Observações: </b>{{ loadedEvent.adicionalInformation }}
-            </ion-text>
-          </ion-item>
-          <ion-item>
-            <ion-text>
-              <b>Entretenimento: </b>{{ loadedEvent.entertainment }}
-            </ion-text>
-          </ion-item>
-          <ion-item>
-            <ion-text>
-              <b>Inicio: </b> {{ loadedEvent.startDate | date }}
-            </ion-text>
-          </ion-item>
-          <ion-item>
-            <ion-text>
-                <b>Fim: </b> {{ loadedEvent.endDate | date }}
+                <b>Fim: </b> {{ loadedEvent.end_date | date }}
             </ion-text>
         </ion-item>
         </ion-list>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-button *ngIf="loadedEvent.iCreated" (click)="onDelete(loadedEvent.id)">
-          Encerrar evento
-        </ion-button>
-        <ion-button *ngIf="loadedEvent.verifiedPayment && !loadedEvent.iCreated">
-            Avaliar
+        <ion-col offset-md="3">
+          <div>
+            <ion-button 
+            fill="outline"
+            color="danger"
+            class="ion-margin"
+            (click)="onDeleteCurrent(loadedEvent.id)"
+            >
+            CANCELAR CONVITE
           </ion-button>
+          </div>
         </ion-col>
-      </ion-row>
-      <ion-row *ngIf="
-      !loadedEvent.verifiedPayment
-      &&
-      !loadedEvent.iCreated &&
-      loadedEvent.currentEvent">
-        <ion-col>
-          <ion-button>
-            Avaliar
-          </ion-button>
-        </ion-col>
-        <ion-col offset="5">
-          <ion-button color="danger">
-              Cancelar
-          </ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

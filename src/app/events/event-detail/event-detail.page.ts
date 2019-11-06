@@ -3,7 +3,7 @@ import { Event } from '../event.model';
 import { EventsService } from '../events.service';
 import { ActivatedRoute } from '@angular/router';
 import { NavController, LoadingController, AlertController } from '@ionic/angular';
-import { Subscription } from 'rxjs';
+import { Subscription, of } from 'rxjs';
 
 @Component({
   selector: 'app-event-detail',
@@ -11,7 +11,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./event-detail.page.scss'],
 })
 export class EventDetailPage implements OnInit, OnDestroy {
-  loadedEvent: Event;
+  loadedEvent: any;
   private eventSub: Subscription;
 
   constructor(
@@ -24,44 +24,41 @@ export class EventDetailPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.activedRoute.paramMap.subscribe(paramMap => {
-      if (!paramMap.has('eventId')) {
+      if (!paramMap.has('id')) {
         this.navCtrl.navigateBack('/home');
         return;
       }
-      this.eventSub = this.eventService
-        .getEvent(paramMap.get('eventId'))
-        .subscribe(event => {
+
+      console.log('event-detail: ', paramMap.get('id'));
+      this.eventService
+        .getEvent(paramMap.get('id'))
+        .then(event => {
           this.loadedEvent = event;
+          console.log('event detail ts:', this.loadedEvent.url_image);
         });
-      console.log(this.loadedEvent);
     });
   }
 
-  onDelete(eventId: string) {
+  onDeleteCurrent(id: string) {
     this.alertCtrl.create({
       header: 'Tem certeza disso?',
-      subHeader: 'Realmente deseja excluir o evento?',
+      subHeader: 'A ação não poderá ser disfeita',
       buttons: [
         {
           text: 'Cancelar',
-          role: 'cancel',
-          handler: () => {
-            console.log('cancelar');
-          }
+          role: 'cancel'
         },
         {
-          text: 'Excluir',
-          cssClass: 'deleteColor',
+          text: 'Confirmar',
           handler: () => {
             this.loadingCtrl.create({
-              message: 'Deletando...'
+              message: 'Removendo...'
             }).then(loadingElement => {
               loadingElement.present();
-              this.eventService.deleteEvent(eventId).subscribe(() => {
+              this.eventService.deleteGuest(id).then(() => {
                 loadingElement.dismiss();
+                this.navCtrl.pop();
               });
-              this.navCtrl.pop();
-              console.log('excluir');
             });
           }
         }
@@ -70,6 +67,44 @@ export class EventDetailPage implements OnInit, OnDestroy {
       alertElement.present();
     });
   }
+
+  // onDelete(eventId: string) {
+  //   this.alertCtrl.create({
+  //     header: 'Tem certeza disso?',
+  //     subHeader: 'Realmente deseja excluir o evento?',
+  //     buttons: [
+  //       {
+  //         text: 'Cancelar',
+  //         role: 'cancel',
+  //         handler: () => {
+  //           this.loadingCtrl.create({
+  //             message: 'Removendo...'
+  //           }).then(loadingElement => {
+  //             loadingElement.present();
+  //           });
+  //         }
+  //       },
+  //       {
+  //         text: 'Excluir',
+  //         cssClass: 'deleteColor',
+  //         handler: () => {
+  //           this.loadingCtrl.create({
+  //             message: 'Deletando...'
+  //           }).then(loadingElement => {
+  //             loadingElement.present();
+  //             // this.eventService.deleteEvent(eventId).subscribe(() => {
+  //             //   loadingElement.dismiss();
+  //             // });
+              
+  //             console.log('excluir');
+  //           });
+  //         }
+  //       }
+  //     ]
+  //   }).then(alertElement => {
+  //     alertElement.present();
+  //   });
+  // }
 
   ngOnDestroy() {
     if (this.eventSub) {
