@@ -28,10 +28,10 @@
   <div [ngSwitch]="selectedSegment">
     <div *ngSwitchCase="segments.PAST_EVENTS">
      <ion-list>
-        <div *ngIf="!currentEvent || currentEvent.length <= 0">
-            <ion-item *ngIf="!currentEvent || currentEvent.length <= 0">
+        <div *ngIf="!pastEvents || pastEvents.length <= 0">
+            <ion-item *ngIf="!pastEvents || pastEvents.length <= 0" class="ion-text-center">
               <ion-label>
-                <ion-text>Sem histórico de eventos ainda</ion-text>
+                <ion-text>Sem histórico de eventos ainda.</ion-text>
               </ion-label>
             </ion-item>
             <div class="ion-text-center ion-margin">
@@ -43,14 +43,14 @@
               <div class="events-details">
                   <ion-icon name="calendar" color="primary"></ion-icon>
                   <ion-text color="tertiary" class="space-left">
-                      {{ pastEvent.startDate | date }}
+                      {{ pastEvent.start_date | date }}
                   </ion-text>
                 </div>
-            <h2>{{ pastEvent.name }}</h2>
+            <h2>{{ pastEvent.title }}</h2>
             <p>R${{ pastEvent.price }}</p>
           </ion-label>
           <ion-thumbnail slot="end">
-            <ion-img [src]="pastEvent.urlImage"></ion-img>
+            <ion-img [src]="pastEvent.url_image"></ion-img>
           </ion-thumbnail>
         </ion-item>
       </ion-list> 
@@ -58,9 +58,9 @@
     <div *ngSwitchCase="segments.CURRENT_EVENT">
         <ion-list>
           <div *ngIf="!currentEvent || currentEvent.length <= 0">
-            <ion-item *ngIf="!currentEvent || currentEvent.length <= 0">
+            <ion-item *ngIf="!currentEvent || currentEvent.length <= 0" class="ion-text-center">
               <ion-label>
-                <ion-text>Ainda não estou indo para nenhum evento</ion-text>
+                <ion-text>Ainda não estou indo para nenhum evento.</ion-text>
               </ion-label>
             </ion-item>
             <div class="ion-text-center ion-margin">
@@ -88,7 +88,14 @@
     </div>
       <div *ngSwitchCase="segments.MY_EVENTS">
         <ion-list>
-          <ion-item-sliding *ngFor="let event of myEventsList" #slidingItem>
+            <div *ngIf="!myEvents || myEvents.length <= 0">
+                <ion-item *ngIf="!myEvents || myEvents.length <= 0" class="ion-text-center">
+                  <ion-label>
+                    <h2>Não criei nenhum evento.</h2>
+                  </ion-label>
+                </ion-item>
+              </div>
+          <ion-item-sliding *ngFor="let event of myEvents" #slidingItem>
             <app-my-events [myEvents] = event></app-my-events>
             <ion-item-options>
               <ion-item-option (click)="onEdit(event.id, slidingItem)">
