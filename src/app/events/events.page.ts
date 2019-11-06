@@ -22,7 +22,7 @@ export class EventsPage implements OnInit, OnDestroy{
   // evento padrão
   private eventsSub: Subscription;
 
-  selectedSegment = this.segments.PAST_EVENTS;
+  selectedSegment = this.segments.CURRENT_EVENT;
   events: Event[];
   pastEvents;
   currentEvent;
@@ -40,13 +40,13 @@ export class EventsPage implements OnInit, OnDestroy{
     this.eventsSub = this.eventsService.events.subscribe(events => {
       this.events = events;
       this.myEventsList = this.events.filter(event => {
-        return event.iCreated === true;
+        // return event.iCreated === true;
       });
       this.currentEvent = this.events.filter(event => {
-        return event.currentEvent === true;
+        // return event.currentEvent === true;
       });
       this.pastEvents = this.events.filter(event => {
-        return event.verifiedPayment === true;
+        // return event.verifiedPayment === true;
       });
       console.log('current: ', this.currentEvent);
     });
@@ -54,9 +54,17 @@ export class EventsPage implements OnInit, OnDestroy{
 
   ionViewWillEnter() {
     this.isLoading = true;
-    this.eventsService.fetchEvent().subscribe(() => {
-      this.isLoading = false;
+    this.eventsService.getCurrent().then(result => {
+      this.currentEvent = result;
+      console.log(this.currentEvent);
+      console.log('entrando na pagina: ionViewWillEnter');
     });
+    // this.eventsService.fetchEvent().subscribe(() => {
+      // this.isLoading = false;
+    // });
+  }
+  ionViewWillLeave() {
+    console.log('saindo da pagina: ionViewWillLeave');
   }
 
   onSegmentChanged(event) {
@@ -90,9 +98,9 @@ export class EventsPage implements OnInit, OnDestroy{
               message: 'Deletando...'
             }).then(loadingElement => {
               loadingElement.present();
-              this.eventsService.deleteEvent(eventId).subscribe(() => {
-                loadingElement.dismiss();
-              });
+              // this.eventsService.deleteEvent(eventId).subscribe(() => {
+              //   loadingElement.dismiss();
+              // });
               this.router.navigate(['events']);
               console.log('excluir');
             });
