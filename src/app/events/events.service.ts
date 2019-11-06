@@ -36,39 +36,39 @@ export class EventsService {
     return this._events.asObservable();
   }
 
-    fetchEvent() {
-      return this.http
-      .get<{[ key: string]: EventData }>('https://rangulos-cae9a.firebaseio.com/events.json')
-      .pipe(map(resultData => {
-        const events = [];
-        for (const key in resultData) {
-          if (resultData.hasOwnProperty(key)) {
-            events.push(new Event(
-              key,
-              resultData[key].userId,
-              resultData[key].name,
-              resultData[key].about,
-              resultData[key].adicionalInformation,
-              resultData[key].entertainment,
-              resultData[key].food,
-              +resultData[key].price,
-              new Date(resultData[key].startDate),
-              new Date(resultData[key].endDate),
-              +resultData[key].numberGuests,
-              resultData[key].verifiedPayment,
-              resultData[key].iCreated,
-              resultData[key].currentEvent,
-              resultData[key].urlImage
-            ));
-          }
-        }
-        return events;
-      }),
-      tap(events => {
-        this._events.next(events);
-      })
-    );
-  }
+  //   fetchEvent() {
+  //     return this.http
+  //     .get<{[ key: string]: EventData }>('https://rangulos-cae9a.firebaseio.com/events.json')
+  //     .pipe(map(resultData => {
+  //       const events = [];
+  //       for (const key in resultData) {
+  //         if (resultData.hasOwnProperty(key)) {
+  //           events.push(new Event(
+  //             key,
+  //             resultData[key].userId,
+  //             resultData[key].name,
+  //             resultData[key].about,
+  //             resultData[key].adicionalInformation,
+  //             resultData[key].entertainment,
+  //             resultData[key].food,
+  //             +resultData[key].price,
+  //             new Date(resultData[key].startDate),
+  //             new Date(resultData[key].endDate),
+  //             +resultData[key].numberGuests,
+  //             resultData[key].verifiedPayment,
+  //             resultData[key].iCreated,
+  //             resultData[key].currentEvent,
+  //             resultData[key].urlImage
+  //           ));
+  //         }
+  //       }
+  //       return events;
+  //     }),
+  //     tap(events => {
+  //       this._events.next(events);
+  //     })
+  //   );
+  // }
   getEvent(id: string) {
 
     const url = `${environment.urlApi}/event/${id}`;
