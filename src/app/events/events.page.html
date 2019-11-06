@@ -68,20 +68,20 @@
             </div>
           </div>
             <ion-item 
-            *ngIf="currentEvent.length > 0"
-            [routerLink]="['./', currentEvent[0].id]">
+            *ngIf="currentEvent"
+            [routerLink]="['./', currentEvent.id]">
               <ion-label>
                 <div class="events-details">
                     <ion-icon name="calendar" color="primary"></ion-icon>
                     <ion-text color="tertiary" class="space-left">
-                        {{ currentEvent[0].startDate | date }}
+                        {{ currentEvent.start_date | date }}
                     </ion-text>
                 </div>
-                <h2>{{ currentEvent[0].name }}</h2>
-                <p>R${{ currentEvent[0].price }}</p>
+                <h2>{{ currentEvent.title }}</h2>
+                <p>R${{ currentEvent.price }}</p>
               </ion-label>
               <ion-thumbnail slot="end">
-                <ion-img [src]="currentEvent[0].urlImage"></ion-img>
+                <ion-img [src]="currentEvent.url_image"></ion-img>
               </ion-thumbnail>
             </ion-item>
           </ion-list>
