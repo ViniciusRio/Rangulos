@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Event } from '../../events/event.model';
 import { EventsService } from '../../events/events.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController, NavController, LoadingController } from '@ionic/angular';
@@ -12,8 +11,9 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./home-detail.page.scss'],
 })
 export class HomeDetailPage implements OnInit, OnDestroy {
-  loadedEvent: Event;
+  loadedEvent: any;
   private eventSub: Subscription;
+  isLoading = false;
 
   constructor(
     private eventService: EventsService,
@@ -21,20 +21,23 @@ export class HomeDetailPage implements OnInit, OnDestroy {
     private ctrlModal: ModalController,
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
-    private router: Router
   ) { }
 
   ngOnInit() {
     this.activedRoute.paramMap.subscribe(paramMap => {
-      if (!paramMap.has('eventId')) {
-        this.navCtrl.navigateBack('/home');
+      if (!paramMap.has('id')) {
+        this.navCtrl.navigateBack('/events');
         return;
       }
-      // this.eventSub = this.eventService
-        // .getEvent(paramMap.get('eventId'))
-        // .subscribe(event => {
-        //   this.loadedEvent = event;
-        // });
+      this.isLoading = true;
+      this.eventService
+        .getEvent(paramMap.get('id'))
+        .then(event => {
+          this.loadedEvent = event;
+          this.isLoading = false;
+          console.log('home-detail: ', event);
+
+        });
 
     });
   }

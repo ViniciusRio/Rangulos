@@ -3,15 +3,18 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/home"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ loadedEvent.name }}</ion-title>
+    <ion-title> {{ loadedEvent?.title }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-grid no-padding>
+  <div *ngIf="isLoading" class="ion-text-center ion-padding">
+    <ion-spinner color="primary"></ion-spinner>
+  </div>
+  <ion-grid no-padding *ngIf="loadedEvent">
     <ion-row>
       <ion-col no-padding>
-        <ion-img [src]="loadedEvent.urlImage"></ion-img>
+        <ion-img [src]="loadedEvent.url_image"></ion-img>
       </ion-col>
     </ion-row>
     <ion-row>
@@ -31,22 +34,12 @@
           </ion-item>
           <ion-item>
             <ion-text>
-              <b>Observações: </b>{{ loadedEvent.adicionalInformation }}
+              <b>Inicio: </b> {{ loadedEvent.start_date | date }}
             </ion-text>
           </ion-item>
           <ion-item>
             <ion-text>
-              <b>Entretenimento: </b>{{ loadedEvent.entertainment }}
-            </ion-text>
-          </ion-item>
-          <ion-item>
-            <ion-text>
-              <b>Inicio: </b> {{ loadedEvent.startDate | date }}
-            </ion-text>
-          </ion-item>
-          <ion-item>
-            <ion-text>
-                <b>Fim: </b> {{ loadedEvent.endDate | date }}
+                <b>Fim: </b> {{ loadedEvent.start_date | date }}
             </ion-text>
         </ion-item>
         </ion-list>

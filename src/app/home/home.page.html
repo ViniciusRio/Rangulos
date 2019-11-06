@@ -1,39 +1,33 @@
 <ion-header>
   <ion-toolbar color="tertiary">
-      <ion-buttons slot="start">
-        <ion-menu-button></ion-menu-button>
-      </ion-buttons>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
     <ion-title>Inicío</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <div class="ion-text-center" *ngIf="isLoading">
-          <ion-spinner color="primary"></ion-spinner>
-        </div>
-        <div *ngIf="!isLoading && loadEvents.length <= 0">
-          <ion-item>
-              <ion-text >Não há eventos por perto</ion-text>
-            </ion-item>
-            <div class="ion-text-center ion-margin">
-              <ion-button routerLink="/events" >Que tal criar um?</ion-button>
-            </div>
-        </div>
-        <ion-list *ngIf="!isLoading && loadEvents.length > 0">
-          <ion-item *ngFor="let event of loadEvents" [routerLink]="['./', event.id]">
-            <ion-label>
-              <h2>{{ event.name }}</h2>
-              <p>{{ event.adicionalInformation }}</p>
-            </ion-label>
-            <ion-thumbnail slot="end">
-              <img [src]="event.urlImage"/>
-            </ion-thumbnail>
-          </ion-item>
-        </ion-list>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <div class="ion-text-center" *ngIf="isLoading">
+    <ion-spinner color="primary"></ion-spinner>
+  </div>
+  <div *ngIf="!isLoading && loadEvents && loadEvents.length == 0">
+    <ion-item>
+      <ion-text>Não há eventos por perto</ion-text>
+    </ion-item>
+    <div class="ion-text-center ion-margin">
+      <ion-button routerLink="/events/new">Que tal criar um?</ion-button>
+    </div>
+  </div>
+  <ion-list *ngIf="loadEvents">
+    <ion-item *ngFor="let event of loadEvents" [routerLink]="['./', event.id]">
+      <ion-label class="ion-text-wrap">
+        <h2>{{ event.title }}</h2>
+        <p>{{ event.about }}</p>
+      </ion-label>
+      <ion-thumbnail *ngIf="event.url_image" slot="end">
+        <img [src]="event.url_image" />
+      </ion-thumbnail>
+    </ion-item>
+  </ion-list>
 </ion-content>
