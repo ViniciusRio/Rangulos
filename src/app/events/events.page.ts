@@ -47,7 +47,8 @@ export class EventsPage implements OnInit, OnDestroy {
 
   loadCurrentEvent() {
     this.isLoading = true;
-    this.eventsService.getCurrent().then(result => {
+    this.eventsService.getCurrentEvents().then(result => {
+      console.log('currents', result);
       this.currentEvent = result;
       this.isLoading = false;
     }, error => {
@@ -117,6 +118,7 @@ export class EventsPage implements OnInit, OnDestroy {
       alertElement.present();
     });
   }
+
 
   ngOnDestroy() {
     if (this.eventsSub) {

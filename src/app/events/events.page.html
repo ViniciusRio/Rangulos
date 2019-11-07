@@ -67,23 +67,25 @@
               <ion-button routerLink="/home" >Que tal procurar por um?</ion-button>
             </div>
           </div>
+          <div *ngIf="currentEvent">
             <ion-item 
-            *ngIf="currentEvent"
-            [routerLink]="['./', currentEvent.id]">
+            *ngFor="let event of currentEvent"
+            [routerLink]="['./', event.id]">
               <ion-label>
                 <div class="events-details">
                     <ion-icon name="calendar" color="primary"></ion-icon>
                     <ion-text color="tertiary" class="space-left">
-                        {{ currentEvent.start_date | date }}
+                        {{ event.start_date | date }}
                     </ion-text>
                 </div>
-                <h2>{{ currentEvent.title }}</h2>
-                <p>R${{ currentEvent.price }}</p>
+                <h2>{{ event.title }}</h2>
+                <p>R${{ event.price }}</p>
               </ion-label>
               <ion-thumbnail slot="end">
-                <ion-img [src]="currentEvent.url_image"></ion-img>
+                <ion-img [src]="event.url_image"></ion-img>
               </ion-thumbnail>
             </ion-item>
+          </div>
           </ion-list>
     </div>
       <div *ngSwitchCase="segments.MY_EVENTS">

@@ -11,12 +11,14 @@ export class EventsService {
 
   fetchEvent() {
     const url = `${environment.urlApi}/events`;
-    const params = {
-      token: localStorage.getItem('token')
+    const options = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`
+      }
     };
 
     return new Promise((resolve, reject) => {
-      this.http.get(url, { params }).subscribe((data: any) => {
+      this.http.get(url, options).subscribe((data: any) => {
         resolve(data);
       }, (error) => {
         reject(error);
@@ -70,8 +72,8 @@ export class EventsService {
     });
   }
 
-  getCurrent() {
-    const url = `${environment.urlApi}/event/current`;
+  getCurrentEvents() {
+    const url = `${environment.urlApi}/events/current`;
     const params = {
       token: localStorage.getItem('token')
     };
@@ -138,8 +140,9 @@ export class EventsService {
     });
   }
 
-  deleteGuest(id: string) {
-    const url = `${environment.urlApi}/guest/${id}`;
+
+  deleteEvent(id: string) {
+    const url = `${environment.urlApi}/event/${id}`;
     const params = {
       token: localStorage.getItem('token')
     };
@@ -153,8 +156,40 @@ export class EventsService {
     });
   }
 
-  deleteEvent(id: string) {
-    const url = `${environment.urlApi}/event/${id}`;
+  ensureInvitation(
+   eventId: string
+    ) {
+    const url = `${environment.urlApi}/guest/${eventId}`;
+    const params = {
+      token: localStorage.getItem('token')
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post(url, eventId, { params }).subscribe((data: any) => {
+        resolve(data);
+      }, (error) => {
+        reject(error);
+      });
+    });
+  }
+
+  payEvent(eventId: string) {
+    const url = `${environment.urlApi}/guest/pay/${eventId}`;
+    const params = {
+      token: localStorage.getItem('token')
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post(url, {}, { params }).subscribe((data: any) => {
+        resolve(data);
+      }, (error) => {
+        reject(error);
+      });
+    });
+  }
+
+  deleteGuest(id: string) {
+    const url = `${environment.urlApi}/guest/${id}`;
     const params = {
       token: localStorage.getItem('token')
     };
