@@ -6,8 +6,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { HomeDetailPage } from './home-detail.page';
-import { GetInvitationComponent } from 'src/app/get-invitation/get-invitation.component';
-
 const routes: Routes = [
   {
     path: '',
@@ -22,7 +20,7 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [HomeDetailPage, GetInvitationComponent],
-  entryComponents: [GetInvitationComponent]
+  declarations: [HomeDetailPage],
+  entryComponents: []
 })
 export class HomeDetailPageModule {}

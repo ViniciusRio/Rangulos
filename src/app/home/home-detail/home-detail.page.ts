@@ -1,8 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { EventsService } from '../../events/events.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ModalController, NavController, LoadingController } from '@ionic/angular';
-import { GetInvitationComponent } from 'src/app/get-invitation/get-invitation.component';
+import { NavController, LoadingController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -18,7 +17,6 @@ export class HomeDetailPage implements OnInit, OnDestroy {
   constructor(
     private eventService: EventsService,
     private activedRoute: ActivatedRoute,
-    private ctrlModal: ModalController,
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
   ) { }
@@ -41,41 +39,9 @@ export class HomeDetailPage implements OnInit, OnDestroy {
 
     });
   }
-  onGetInvitation() {
-    this.ctrlModal.create({
-      component: GetInvitationComponent,
-      componentProps: {eventInvitation: this.loadedEvent }
-    })
-    .then(modalElement => {
-      modalElement.present();
-      return modalElement.onDidDismiss();
-    })
-    .then(resultData => {
-      console.log(resultData.data, resultData.role);
-      if (resultData.role === 'confirmed') {
-        this.loadingCtrl
-          .create({ message: 'Garantindo convite(s)...' })
-          .then(loadingElement => {
-            loadingElement.present();
-            const data = resultData.data.invitationData;
-            // this.eventService
-              // .addCurrentEvent(
-              //   this.loadedEvent.name,
-              //   this.loadedEvent.about,
-              //   this.loadedEvent.adicionalInformation,
-              //   this.loadedEvent.entertainment,
-              //   this.loadedEvent.food,
-              //   +this.loadedEvent.price,
-              //   new Date(this.loadedEvent.startDate),
-              //   new Date(this.loadedEvent.endDate),
-              // )
-              // .subscribe(() => {
-              //   loadingElement.dismiss();
-              //   this.router.navigate(['/events']);
-
-              // });
-          });
-      }
+  onEnsureInvitation(eventId) {
+    this.eventService.ensureInvitation(eventId).then(() => {
+      this.navCtrl.navigateForward('/events');
     });
   }
 
