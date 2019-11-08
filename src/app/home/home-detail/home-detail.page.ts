@@ -3,6 +3,8 @@ import { EventsService } from '../../events/events.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController, LoadingController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
+import * as moment from 'moment';
+
 
 @Component({
   selector: 'app-home-detail',
@@ -11,6 +13,8 @@ import { Subscription } from 'rxjs';
 })
 export class HomeDetailPage implements OnInit, OnDestroy {
   loadedEvent: any;
+  startHour: any;
+  endHour: any;
   private eventSub: Subscription;
   isLoading = false;
 
@@ -18,7 +22,6 @@ export class HomeDetailPage implements OnInit, OnDestroy {
     private eventService: EventsService,
     private activedRoute: ActivatedRoute,
     private navCtrl: NavController,
-    private loadingCtrl: LoadingController,
   ) { }
 
   ngOnInit() {
@@ -33,10 +36,9 @@ export class HomeDetailPage implements OnInit, OnDestroy {
         .then(event => {
           this.loadedEvent = event;
           this.isLoading = false;
-          console.log('home-detail: ', event);
-
+          this.startHour = moment(this.loadedEvent.start_date).format('HH:mm');
+          this.endHour = moment(this.loadedEvent.endHour).format('HH:mm');
         });
-
     });
   }
   onEnsureInvitation(eventId) {

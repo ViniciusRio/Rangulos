@@ -19,15 +19,26 @@
       <ion-button routerLink="/events/new">Que tal criar um?</ion-button>
     </div>
   </div>
-  <ion-list *ngIf="loadEvents">
-    <ion-item *ngFor="let event of loadEvents" [routerLink]="['./', event.id]">
-      <ion-label class="ion-text-wrap">
-        <h2>{{ event.title }}</h2>
-        <p>{{ event.about }}</p>
-      </ion-label>
-      <ion-thumbnail *ngIf="event.url_image" slot="end">
-        <img [src]="event.url_image" />
-      </ion-thumbnail>
-    </ion-item>
-  </ion-list>
+
+  <ion-list>
+      <div *ngIf="loadEvents">
+        <ion-item *ngFor="let event of loadEvents" [routerLink]="['./', event.id]">
+          <ion-label>
+            <div class="events-details">
+              <ion-text color="tertiary" class="space-left">
+                {{ event.title }}
+              </ion-text>
+            </div>
+            <p>
+              <b>R${{ event.price }}</b> -
+              {{ event.start_date | date }}
+            </p>
+          </ion-label>
+          <ion-badge slot="end" color="success" *ngIf="event.payment_confirmed">Pago</ion-badge>
+          <ion-thumbnail slot="end">
+            <ion-img [src]="event.url_image"></ion-img>
+          </ion-thumbnail>
+        </ion-item>
+      </div>
+    </ion-list>
 </ion-content>

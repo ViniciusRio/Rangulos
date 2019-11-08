@@ -24,7 +24,9 @@ export class HomePage implements OnInit, OnDestroy {
     this.eventsService.fetchEvent().then(result => {
       this.loadEvents = result;
       this.isLoading = false;
-      console.log(this.loadEvents);
+    }, error => {
+      this.loadEvents = [];
+      this.isLoading = false;
     });
   }
 
