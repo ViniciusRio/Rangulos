@@ -4,6 +4,7 @@ import { EventsService } from '../events.service';
 import { ActivatedRoute } from '@angular/router';
 import { NavController, LoadingController, AlertController } from '@ionic/angular';
 import { Subscription, of } from 'rxjs';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-event-detail',
@@ -12,6 +13,8 @@ import { Subscription, of } from 'rxjs';
 })
 export class EventDetailPage implements OnInit, OnDestroy {
   loadedEvent: any;
+  startHour: any;
+  endHour: any;
   private eventSub: Subscription;
 
   constructor(
@@ -33,6 +36,8 @@ export class EventDetailPage implements OnInit, OnDestroy {
         .getEvent(paramMap.get('id'))
         .then(event => {
           this.loadedEvent = event;
+          this.startHour = moment(this.loadedEvent.start_date).format('HH:mm');
+          this.endHour = moment(this.loadedEvent.endHour).format('HH:mm');
         });
     });
   }
@@ -82,9 +87,12 @@ export class EventDetailPage implements OnInit, OnDestroy {
               message: 'Pagando..'
             }).then(loadingElement => {
               loadingElement.present();
+              console.log('lodedevent: ', this.loadedEvent);
               this.eventService.payEvent(this.loadedEvent.id).then(() => {
                 loadingElement.dismiss();
                 this.navCtrl.pop();
+              }, () => {
+                loadingElement.dismiss();
               });
             });
           }

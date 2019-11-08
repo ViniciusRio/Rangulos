@@ -60,6 +60,7 @@ export class EventsPage implements OnInit, OnDestroy {
     this.isLoading = true;
     this.eventsService.getPastEvents().then(result => {
       this.pastEvents = result;
+      console.log('past: ', this.pastEvents);
       this.isLoading = false;
     }, error => {
       this.isLoading = false;

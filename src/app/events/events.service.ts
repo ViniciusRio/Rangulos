@@ -174,13 +174,13 @@ export class EventsService {
   }
 
   payEvent(eventId: string) {
-    const url = `${environment.urlApi}/guest/pay/${eventId}`;
+    const url = `${environment.urlApi}/event/pay`;
     const params = {
       token: localStorage.getItem('token')
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post(url, {}, { params }).subscribe((data: any) => {
+      this.http.post(url, {id: eventId}, { params }).subscribe((data: any) => {
         resolve(data);
       }, (error) => {
         reject(error);

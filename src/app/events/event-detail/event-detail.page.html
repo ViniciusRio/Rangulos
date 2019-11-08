@@ -8,56 +8,35 @@
 </ion-header>
 
 <ion-content>
-  <ion-grid no-padding *ngIf="loadedEvent">
-    <ion-row>
-      <ion-col no-padding>
-        <ion-img [src]="loadedEvent.url_image"></ion-img>
-      </ion-col>
-    </ion-row>
-    
-    <ion-row>
-      <ion-col>
-        <ion-text color="secondary">
-          <h2 text-center>R${{ loadedEvent.price }}</h2>
-        </ion-text>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col>
-        <ion-list>
-            <ion-item>
-              <ion-label class="ion-text-wrap">
-                <h2>{{ loadedEvent.title }}</h2>
-                <p>{{ loadedEvent.about }}</p>
-              </ion-label>
-            </ion-item>
+  <ion-card *ngIf="loadedEvent">
+    <ion-img [src]="loadedEvent.url_image"></ion-img>
+    <ion-card-header>
+      <ion-card-subtitle>{{ loadedEvent.start_date| date }} - {{ loadedEvent.end_date | date}}</ion-card-subtitle>
+      <ion-card-title>{{ loadedEvent.title }} - 
+          <ion-text color="primary">{{ loadedEvent.price | currency }}</ion-text>
+      </ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      {{ loadedEvent.about }}
+      <ion-list>
+          <ion-icon name="alarm"></ion-icon>
+          <ion-text>Horário: </ion-text>
           <ion-item>
-            <ion-text>
-              <b>Inicio: </b> {{ loadedEvent.start_date | date }}
-            </ion-text>
+              <ion-label displayFormat="HH mm">{{ startHour }} até {{ endHour }}</ion-label>
           </ion-item>
+          <ion-icon class="padding" name="people"></ion-icon>
+          <ion-text> Qtd. máxima: </ion-text>
           <ion-item>
-            <ion-text>
-                <b>Fim: </b> {{ loadedEvent.end_date | date }}
-            </ion-text>
+            <ion-label>
+                {{ loadedEvent.max_guests }} pessoas</ion-label>
+          </ion-item>
+            <ion-icon name="globe"></ion-icon>
+          <ion-text>Endereço: </ion-text>
+        <ion-item>
+            <ion-label>{{ loadedEvent.address }}</ion-label>
         </ion-item>
-        </ion-list>
-        <ion-col offset-md="3">
-          <div>
-            <ion-button 
-            fill="outline"
-            color="danger"
-            class="ion-margin"
-            (click)="onDeleteCurrent(loadedEvent.id)"
-            >
-            CANCELAR CONVITE
-          </ion-button>
-          </div>
-        </ion-col>
-      </ion-col>
-    </ion-row>
-      <div>
-        <ion-button (click)="onPayEvent()">PAGAR</ion-button>
-      </div>
-  </ion-grid>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
