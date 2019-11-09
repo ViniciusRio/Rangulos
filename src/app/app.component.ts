@@ -13,28 +13,9 @@ const { StatusBar } = Plugins;
   styleUrls: ['app.component.scss']
 })
 export class AppComponent {
-  public appPages = [
-    {
-      title: 'Início',
-      url: '/home',
-      icon: 'home'
-    },
-    {
-      title: 'Eventos',
-      url: '/events',
-      icon: 'paper'
-    },
-    {
-      title: 'Perfil',
-      url: '/profile',
-      icon: 'people'
-    },
-  ];
 
   constructor(
     private platform: Platform,
-    private authService: AuthService,
-    private router: Router
   ) {
     this.initializeApp();
   }
@@ -44,10 +25,5 @@ export class AppComponent {
       StatusBar.setBackgroundColor({ color: '#7044ff' }).then(() => { }, () => { })
       .catch(() => { });
     });
-  }
-
-  onLogout() {
-    this.authService.logout();
-    this.router.navigateByUrl('/auth');
   }
 }
