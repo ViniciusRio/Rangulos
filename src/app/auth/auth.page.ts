@@ -30,8 +30,8 @@ export class AuthPage implements OnInit {
         setTimeout(() => {
           this.isLoading = false;
           loadingEl.dismiss();
-          this.router.navigateByUrl('/events');
-        }, 1500);
+          this.router.navigateByUrl('/tabs/events');
+        });
       });
     this.router.navigateByUrl('/home');
   }

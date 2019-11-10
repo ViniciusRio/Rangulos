@@ -7,7 +7,7 @@
       Eventos
     </ion-title>
     <ion-buttons slot="primary">
-      <ion-button routerLink="/events/new">
+      <ion-button routerLink="/tabs/events/new">
         <ion-icon name="add" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -35,7 +35,7 @@
             </ion-label>
           </ion-item>
           <div class="ion-text-center ion-margin">
-            <ion-button routerLink="/home">Procure um evento</ion-button>
+            <ion-button routerLink="/tabs/home">Procure um evento</ion-button>
           </div>
         </div>
         <ion-item *ngFor="let pastEvent of pastEvents" [routerLink]="['./', pastEvent.id]">
@@ -64,11 +64,11 @@
             </ion-label>
           </ion-item>
           <div class="ion-text-center ion-margin">
-            <ion-button routerLink="/home">Que tal procurar por um?</ion-button>
+            <ion-button routerLink="/tabs/home">Que tal procurar por um?</ion-button>
           </div>
         </div>
         <div *ngIf="currentEvent">
-          <ion-item *ngFor="let event of currentEvent" [routerLink]="['./', event.id]">
+          <ion-item *ngFor="let event of currentEvent" [routerLink]="['./', 'tabs' ,event.id]">
             <ion-label>
               <div class="events-details">
                 <ion-text color="tertiary" class="space-left">
