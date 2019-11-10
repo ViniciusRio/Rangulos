@@ -83,7 +83,7 @@ export class EventsPage implements OnInit, OnDestroy {
 
   onEdit(id: string, slidingItem: IonItemSliding) {
     slidingItem.close();
-    this.router.navigate(['/', 'events', 'edit-my-events', id]);
+    this.router.navigate(['/', 'tabs', 'events', 'edit-my-events', id]);
   }
 
   onDelete(eventId: string, slidingItem: IonItemSliding) {
@@ -101,7 +101,7 @@ export class EventsPage implements OnInit, OnDestroy {
         },
         {
           text: 'Excluir',
-          cssClass: 'deleteColor',
+          cssClass: 'alertDangerColor',
           handler: () => {
             this.loadingCtrl.create({
               message: 'Deletando...'
@@ -110,6 +110,22 @@ export class EventsPage implements OnInit, OnDestroy {
               this.eventsService.deleteEvent(eventId).then(() => {
                 loadingElement.dismiss();
                 this.loadMyEvents();
+              }, () => {
+                loadingElement.dismiss();
+                this.alertCtrl.create({
+                  header: 'Algo de inesperado ocorreu',
+                  subHeader: 'Não foi possível excluir',
+                  buttons: [
+                    {
+                      text: 'OK',
+                      handler: () => {
+                        this.router.navigateByUrl('/tabs/events');
+                      }
+                    }
+                  ]
+                }).then(alertElementError => {
+                  alertElementError.present();
+                });
               });
             });
           }

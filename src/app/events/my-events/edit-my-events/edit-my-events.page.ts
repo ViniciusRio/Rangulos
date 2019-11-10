@@ -96,6 +96,7 @@ export class EditMyEventsPage  {
     this.loadingCtrl.create({
       message: 'Atualizando evento...'
     }).then(loadingEvent => {
+      console.log('ID EVENTO', this.event.id);
       loadingEvent.present();
       this.eventsService.updateEvent(
         this.event.id,
@@ -109,8 +110,24 @@ export class EditMyEventsPage  {
         ).then(() => {
           this.loadingCtrl.dismiss();
           this.form.reset();
-          this.router.navigate(['/events']);
+          this.navCtrl.pop();
           console.log('update event');
+      }, () => {
+        loadingEvent.dismiss();
+        this.alertCtrl.create({
+          header: 'Ops, algo inesperado ocorreu...',
+          subHeader: 'Não foi possível editar o evento.',
+          buttons: [
+            {
+              text: 'OK',
+              handler: () => {
+                this.navCtrl.pop();
+              }
+            }
+          ]
+        }).then(alertElementError => {
+          alertElementError.present();
+        });
       });
     });
   }

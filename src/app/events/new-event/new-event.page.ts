@@ -1,7 +1,7 @@
 import { Event } from './../event.model';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, AlertController, NavController } from '@ionic/angular';
 import { EventsService } from '../events.service';
 import { Router } from '@angular/router';
 
@@ -15,7 +15,9 @@ export class NewEventPage implements OnInit {
   constructor(
     private loadingCtrl: LoadingController,
     private eventsService: EventsService,
-    private router: Router
+    private router: Router,
+    private alertCtrl: AlertController,
+    private navCtrl: NavController
   ) { }
 
   ngOnInit() {
@@ -75,14 +77,29 @@ export class NewEventPage implements OnInit {
           'https://estrangeira.com.br/wp-content/uploads/2016/09/Captura-de-Tela-2016-09-12-a%CC%80s-18.36.47-602x500.png',
           null
         );
+        console.log('NOVO EVENTO: ', newEvent);
         this.eventsService
           .addEvent(newEvent)
           .then(() => {
             loadingEl.dismiss();
             this.form.reset();
-            this.router.navigate(['/home']);
+            this.router.navigate(['/tabs/home']);
           }, () => {
             loadingEl.dismiss();
+            this.alertCtrl.create({
+              header: 'Ops, algo inesperado ocorreu...',
+              subHeader: 'Não foi possível salvar evento.',
+              buttons: [
+                {
+                  text: 'OK',
+                  handler: () => {
+                    this.navCtrl.pop();
+                  }
+                }
+              ]
+            }).then(alertElementError => {
+              alertElementError.present();
+            });
           });
       });
   }
