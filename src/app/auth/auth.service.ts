@@ -9,12 +9,21 @@ import { HttpClient } from '@angular/common/http';
 export class AuthService {
   private userAuthenticate;
   // tslint:disable-next-line: variable-name
+  local = null;
 
   get userAuth() {
     return this.userAuthenticate;
   }
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+    this.local = localStorage.getItem('token');
+
+    if(this.local != null) {
+      this.userAuthenticate = true;
+    } else {
+      this.userAuthenticate = false;
+    }
+   }
 
   login(credentials) {
     const url = `${environment.urlApi}/login`;
@@ -25,7 +34,9 @@ export class AuthService {
           localStorage.setItem('token', data.token);
           this.userAuthenticate = true;
         }
+        this.userAuthenticate = true;
         resolve(data);
+
       }, (err) => {
         this.userAuthenticate = false;
         reject(err);
