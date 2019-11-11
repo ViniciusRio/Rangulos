@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="tertiary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home"></ion-back-button>
+      <ion-back-button defaultHref="/tabs/events"></ion-back-button>
     </ion-buttons>
     <ion-title>Detalhes do evento</ion-title>
   </ion-toolbar>
@@ -11,32 +11,62 @@
   <ion-card *ngIf="loadedEvent">
     <ion-img [src]="loadedEvent.url_image"></ion-img>
     <ion-card-header>
-      <ion-card-subtitle>{{ loadedEvent.start_date| date }} - {{ loadedEvent.end_date | date}}</ion-card-subtitle>
-      <ion-card-title>{{ loadedEvent.title }} - 
-          <ion-text color="primary">{{ loadedEvent.price | currency }}</ion-text>
+      <ion-card-subtitle>
+        {{ loadedEvent.start_date| date }} - {{ loadedEvent.end_date | date}}
+        <ion-badge *ngIf="isEventEnded()">finalizado</ion-badge>
+      </ion-card-subtitle>
+      <ion-card-title>{{ loadedEvent.title }} -
+        <ion-text color="primary">R{{ loadedEvent.price | currency }}</ion-text>
       </ion-card-title>
     </ion-card-header>
 
     <ion-card-content>
-      {{ loadedEvent.about }}
+      <div class="ion-text-wrap">
+        {{ loadedEvent.about }}
+      </div>
       <ion-list>
-          <ion-icon name="alarm"></ion-icon>
-          <ion-text>Horário: </ion-text>
-          <ion-item>
-              <ion-label displayFormat="HH mm">{{ startHour }} até {{ endHour }}</ion-label>
-          </ion-item>
-          <ion-icon class="padding" name="people"></ion-icon>
-          <ion-text> Qtd. máxima: </ion-text>
-          <ion-item>
-            <ion-label>
-                {{ loadedEvent.max_guests }} pessoas</ion-label>
-          </ion-item>
-            <ion-icon name="globe"></ion-icon>
-          <ion-text>Endereço: </ion-text>
         <ion-item>
-            <ion-label>{{ loadedEvent.address }}</ion-label>
+          <ion-icon name="alarm" slot="start"></ion-icon>
+          <ion-label>
+            <h2>Horário</h2>
+            <p>{{ startHour }} até {{ endHour }}</p>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="people" slot="start"></ion-icon>
+          <ion-label>
+            <h2>Quantidade máxima</h2>
+            <p>{{ loadedEvent.max_guests }} pessoas</p>
+          </ion-label>
+        </ion-item>
+        <ion-item (click)="openAddress()">
+          <ion-icon name="globe" slot="start"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <h2>Endereço</h2>
+            <a>{{ loadedEvent.address }}</a>
+          </ion-label>
         </ion-item>
       </ion-list>
     </ion-card-content>
+    <ion-grid>
+      <ion-row>
+        <ion-col *ngIf="isEventEnded()">
+          <ion-button (click)="onRate()" expand="block" color="primary">
+            Avaliar
+          </ion-button>
+        </ion-col>
+        <ion-col *ngIf="!isEventEnded()">
+          <ion-button (click)="onPayEvent()" expand="block" color="primary">
+            Pagar
+          </ion-button>
+        </ion-col>
+        <ion-col>
+          <ion-button *ngIf="!isEventEnded()"(click)="onDeleteCurrent(loadedEvent.id) "expand="block" color="danger">
+            Cancelar
+          </ion-button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    
   </ion-card>
 </ion-content>

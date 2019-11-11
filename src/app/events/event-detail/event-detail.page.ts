@@ -1,9 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Event } from '../event.model';
 import { EventsService } from '../events.service';
 import { ActivatedRoute } from '@angular/router';
 import { NavController, LoadingController, AlertController } from '@ionic/angular';
-import { Subscription, of } from 'rxjs';
 import * as moment from 'moment';
 
 @Component({
@@ -11,11 +9,10 @@ import * as moment from 'moment';
   templateUrl: './event-detail.page.html',
   styleUrls: ['./event-detail.page.scss'],
 })
-export class EventDetailPage implements OnInit, OnDestroy {
+export class EventDetailPage implements OnInit {
   loadedEvent: any;
   startHour: any;
   endHour: any;
-  private eventSub: Subscription;
 
   constructor(
     private eventService: EventsService,
@@ -103,10 +100,20 @@ export class EventDetailPage implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    if (this.eventSub) {
-      this.eventSub.unsubscribe();
-    }
+  isEventEnded() {
+    let end_date = moment(this.loadedEvent.end_date);
+    let now = moment();
+
+    return end_date.diff(now, 'minutes') < 0;
+  }
+
+  openAddress() {
+    const url = 'https://maps.google.com?q=' + this.loadedEvent.address;
+    window.open(url, '_system');
+  }
+
+  onRate() {
+    //
   }
 
 }
