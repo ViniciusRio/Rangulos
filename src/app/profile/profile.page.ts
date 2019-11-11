@@ -9,19 +9,26 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
-  profile = {
-    name: 'Vinicius Rio',
-    email: 'viniciustrave@gmail.com',
-    urlPhoto: 'https://picsum.photos/200/300'
-  };
-
+  userLogin;
+  profile;
   constructor(
     private authService: AuthService,
     private router: Router,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
     ) {}
 
   ngOnInit() {
+  }
+
+  ionViewWillEnter() {
+    this.authService.user().then(result => {
+      this.userLogin = result;
+    });
+    this.profile = {
+      name: this.userLogin.name,
+      email: this.userLogin.email,
+      urlPhoto: 'https://picsum.photos/200/300'
+    };
   }
 
   onLogout() {
@@ -38,6 +45,8 @@ export class ProfilePage implements OnInit {
           cssClass: 'alertDangerColor',
           handler: () => {
             this.authService.logout();
+            localStorage.removeItem('token');
+            localStorage.clear();
             this.router.navigateByUrl('/auth');
           }
         }
