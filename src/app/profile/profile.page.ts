@@ -18,12 +18,18 @@ export class ProfilePage implements OnInit {
     ) {}
 
   ngOnInit() {
+      this.loadUser();
   }
 
-  ionViewWillEnter() {
+  ionViewDidEnter() {
+    this.loadUser();
+  }
+
+  loadUser() {
     this.authService.user().then(result => {
       this.userLogin = result;
     });
+
     this.profile = {
       name: this.userLogin.name,
       email: this.userLogin.email,

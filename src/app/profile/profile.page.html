@@ -15,16 +15,18 @@
 </ion-header>
 
 <ion-content>
-  <ion-avatar class="ion-margin-start" class="ion-margin">
-    <img [src]="profile?.urlPhoto" />
-  </ion-avatar>
-  <ion-item>
-    <ion-label position="stacked">Nome</ion-label>
-    <ion-input [placeholder]="profile?.name"></ion-input>
-    <ion-icon name="contact" slot="start"></ion-icon>  </ion-item>
-  <ion-item>
-    <ion-label position="stacked">E-mail</ion-label>
-    <ion-input [placeholder]="profile?.email"></ion-input>
-    <ion-icon name="mail" slot="start"></ion-icon>
-  </ion-item>
+  <ion-list *ngIf="profile">
+    <ion-avatar class="ion-margin-start" class="ion-margin">
+      <img [src]="profile.urlPhoto" />
+    </ion-avatar>
+    <ion-item>
+      <ion-label position="stacked">Nome</ion-label>
+      <ion-input [placeholder]="profile.name"></ion-input>
+      <ion-icon name="contact" slot="start"></ion-icon>  </ion-item>
+    <ion-item>
+      <ion-label position="stacked">E-mail</ion-label>
+      <ion-input [placeholder]="profile.email"></ion-input>
+      <ion-icon name="mail" slot="start"></ion-icon>
+    </ion-item>
+  </ion-list>
 </ion-content>
