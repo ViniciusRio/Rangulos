@@ -58,7 +58,7 @@ export class HomeDetailPage implements OnInit, OnDestroy {
               this.navCtrl.navigateForward('/events');
             }, () => {
               this.alerCtrl.create({
-                header: 'Não foi possível adiquirir convite',
+                header: 'Não foi possível adquirir convite',
                 subHeader: 'Tente novamente',
                 buttons: [
                   {
