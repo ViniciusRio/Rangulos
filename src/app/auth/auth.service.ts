@@ -7,16 +7,11 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class AuthService {
-  private userAuthenticate = true;
+  private userAuthenticate;
   // tslint:disable-next-line: variable-name
-  private _userId = 'xyz';
 
   get userAuth() {
     return this.userAuthenticate;
-  }
-
-  get userId() {
-    return this._userId;
   }
 
   constructor(private http: HttpClient) { }
@@ -38,7 +33,45 @@ export class AuthService {
     });
   }
 
+  user() {
+    const url = `${environment.urlApi}/user`;
+    const params = {
+      token: localStorage.getItem('token')
+    };
+    return new Promise((resolve, reject) => {
+      this.http.get(url, { params }).subscribe((data: any) => {
+        resolve(data);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
   logout() {
     this.userAuthenticate = false;
+    const url = `${environment.urlApi}/logout`;
+    const params = {
+      token: localStorage.getItem('token')
+    };
+    return new Promise((resolve, reject) => {
+      this.http.get(url, { params }).subscribe((data: any) => {
+        resolve(data);
+      }, (err) => {
+        reject(err);
+      });
+    });
+
+  }
+
+  register(credentials) {
+    const url = `${environment.urlApi}/register`;
+
+    return new Promise((resolve, reject) => {
+      this.http.post(url, credentials).subscribe((data: any) => {
+        resolve(data);
+      }, (err) => {
+        reject(err);
+      });
+    });
   }
 }

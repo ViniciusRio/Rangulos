@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController, AlertController } from '@ionic/angular';
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -16,7 +16,8 @@ export class AuthPage implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private alertCtrl: AlertController
   ) { }
 
   ngOnInit() {
@@ -30,10 +31,36 @@ export class AuthPage implements OnInit {
         setTimeout(() => {
           this.isLoading = false;
           loadingEl.dismiss();
-          this.router.navigateByUrl('/tabs/events');
         });
       });
-    this.router.navigateByUrl('/home');
+
+    console.log('IS LOGIN', this.isLogin);
+  }
+
+  onRegister() {
+    this.loadingCtrl.create({ keyboardClose: true, message: 'Registrando...' })
+      .then(loadingEl => {
+        loadingEl.present();
+        setTimeout(() => {
+          loadingEl.dismiss();
+          this.router.navigateByUrl('/auth');
+          this.alertCtrl.create({
+            header: 'Registro concluído com sucesso',
+            subHeader: 'Pronto para efetuar seu primeiro login.',
+            buttons: [
+              {
+                text: 'OK',
+              }
+            ]
+          }).then(alertElement => {
+            alertElement.present();
+          });
+        });
+      });
+  }
+
+  onLogout() {
+    this.authService.logout();
   }
 
   onSwitchAuthMode() {
@@ -45,6 +72,7 @@ export class AuthPage implements OnInit {
       return;
     }
     const credentials = {
+      name: form.value.name,
       email: form.value.email,
       password: form.value.password
     };
@@ -52,9 +80,26 @@ export class AuthPage implements OnInit {
     if (this.isLogin) {
       this.authService.login(credentials).then(result => {
         // console.log(result);
+        this.router.navigateByUrl('/tabs/home');
+        console.log(credentials);
       }, error => {
-        // console.log(error);
+        this.alertCtrl.create({
+          header: 'Login não efetuado',
+          subHeader: 'Verifique o email/senha e tente novamente.',
+          buttons: [
+            {
+              text: 'OK',
+              handler: () => {
+                this.alertCtrl.dismiss();
+              }
+            }
+          ]
+        }).then(alertCtrlError => {
+          alertCtrlError.present();
+        });
       });
+    } else {
+      this.authService.register(credentials);
     }
   }
 }
