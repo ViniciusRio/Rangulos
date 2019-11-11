@@ -68,7 +68,7 @@
           </div>
         </div>
         <div *ngIf="currentEvent">
-          <ion-item *ngFor="let event of currentEvent" [routerLink]="['./', 'tabs' ,event.id]">
+          <ion-item *ngFor="let event of currentEvent" [routerLink]="['./' + event.id]">
             <ion-label>
               <div class="events-details">
                 <ion-text color="tertiary" class="space-left">
