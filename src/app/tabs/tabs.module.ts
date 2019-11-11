@@ -23,7 +23,9 @@ const routes: Routes = [
           },
           {
             path: ':id',
-            loadChildren: '.././home/home-detail/home-detail.module#HomeDetailPageModule'
+            loadChildren: '.././home/home-detail/home-detail.module#HomeDetailPageModule',
+            canLoad: [AuthGuard]
+
           }
         ]
       },
@@ -37,19 +39,27 @@ const routes: Routes = [
           },
           {
             path: 'new',
-            loadChildren: '../events/new-event/new-event.module#NewEventPageModule'
+            loadChildren: '../events/new-event/new-event.module#NewEventPageModule',
+            canLoad: [AuthGuard]
+
           },
           {
             path: ':id',
-            loadChildren: '../events/event-detail/event-detail.module#EventDetailPageModule'
+            loadChildren: '../events/event-detail/event-detail.module#EventDetailPageModule',
+            canLoad: [AuthGuard]
+
           },
           {
             path: 'myEvent/:eventId',
-            loadChildren: '../events/my-events/my-events.module#MyEventsPageModule'
+            loadChildren: '../events/my-events/my-events.module#MyEventsPageModule',
+            canLoad: [AuthGuard]
+
           },
           {
             path: 'edit-my-events/:id',
-            loadChildren: '../events/my-events/edit-my-events/edit-my-events.module#EditMyEventsPageModule'
+            loadChildren: '../events/my-events/edit-my-events/edit-my-events.module#EditMyEventsPageModule',
+            canLoad: [AuthGuard]
+
           }
         ]
       },
