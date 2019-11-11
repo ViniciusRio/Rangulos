@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { EventsService } from '../../events/events.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NavController, LoadingController } from '@ionic/angular';
+import { NavController, LoadingController, AlertController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 import * as moment from 'moment';
 
@@ -22,6 +22,7 @@ export class HomeDetailPage implements OnInit, OnDestroy {
     private eventService: EventsService,
     private activedRoute: ActivatedRoute,
     private navCtrl: NavController,
+    private alerCtrl: AlertController
   ) { }
 
   ngOnInit() {
@@ -42,8 +43,40 @@ export class HomeDetailPage implements OnInit, OnDestroy {
     });
   }
   onEnsureInvitation(eventId) {
-    this.eventService.ensureInvitation(eventId).then(() => {
-      this.navCtrl.navigateForward('/events');
+    this.alerCtrl.create({
+      header: 'Garantir Convite?',
+      subHeader: 'Será mostrado em Eventos Atuais.',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Confirmar',
+          handler: () => {
+            this.eventService.ensureInvitation(eventId).then(() => {
+              this.navCtrl.navigateForward('/events');
+            }, () => {
+              this.alerCtrl.create({
+                header: 'Não foi possível adiquirir convite',
+                subHeader: 'Tente novamente',
+                buttons: [
+                  {
+                    text: 'OK',
+                    handler: () => {
+                        this.navCtrl.navigateForward('/events');
+                    }
+                  }
+                ]
+              }).then(alertElementError => {
+                alertElementError.present();
+              });
+            });
+          }
+        }
+      ]
+    }).then(alertElement => {
+      alertElement.present();
     });
   }
 
