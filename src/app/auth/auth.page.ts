@@ -17,7 +17,7 @@ export class AuthPage implements OnInit {
     private router: Router,
     private authService: AuthService,
     private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
   ) { }
 
   ngOnInit() {
@@ -78,10 +78,9 @@ export class AuthPage implements OnInit {
     };
 
     if (this.isLogin) {
-      this.authService.login(credentials).then(result => {
-        // console.log(result);
-        this.router.navigateByUrl('/tabs/home');
-        console.log(credentials);
+      this.authService.login(credentials).then((result) => {
+          this.router.navigateByUrl('/tabs/home');
+          console.log(credentials);
       }, error => {
         this.alertCtrl.create({
           header: 'Login não efetuado',
