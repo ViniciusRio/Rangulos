@@ -20,9 +20,14 @@ export class HomePage implements OnInit, OnDestroy {
     }
 
   ionViewWillEnter() {
+   this.availableEvents();
+  }
+
+  availableEvents() {
     this.isLoading = true;
     this.eventsService.fetchEvent().then(result => {
       this.loadEvents = result;
+      console.log('home events: ', this.loadEvents);
       this.isLoading = false;
     }, error => {
       this.loadEvents = [];

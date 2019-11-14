@@ -31,7 +31,7 @@
             </div>
             <p>
               <b>R${{ event.price }}</b> -
-              {{ event.start_date | date }}
+              {{ event.start_date | date }} até {{ event.end_date | date }}
             </p>
           </ion-label>
           <ion-badge slot="end" color="success" *ngIf="event.payment_confirmed">Pago</ion-badge>
