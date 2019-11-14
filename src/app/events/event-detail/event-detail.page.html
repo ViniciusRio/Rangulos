@@ -55,13 +55,13 @@
             Avaliar
           </ion-button>
         </ion-col>
-        <ion-col *ngIf="!isEventEnded()">
+        <ion-col *ngIf="!isEventEnded() && !loadedEvent.is_owner">
           <ion-button (click)="onPayEvent()" expand="block" color="primary">
             Pagar
           </ion-button>
         </ion-col>
         <ion-col>
-          <ion-button *ngIf="!isEventEnded()"(click)="onDeleteCurrent(loadedEvent.id) "expand="block" color="danger">
+          <ion-button *ngIf="!isEventEnded() && !loadedEvent.is_owner"(click)="onDeleteCurrent(loadedEvent.id) "expand="block" color="danger">
             Cancelar
           </ion-button>
         </ion-col>

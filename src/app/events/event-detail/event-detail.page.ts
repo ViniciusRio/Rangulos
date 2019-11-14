@@ -33,6 +33,7 @@ export class EventDetailPage implements OnInit {
         .getEvent(paramMap.get('id'))
         .then(event => {
           this.loadedEvent = event;
+          console.log('event detail: ', this.loadedEvent);
           this.startHour = moment(this.loadedEvent.start_date).format('HH:mm');
           this.endHour = moment(this.loadedEvent.endHour).format('HH:mm');
         });
@@ -113,7 +114,8 @@ export class EventDetailPage implements OnInit {
   }
 
   onRate() {
-    //
+    // TODO: ser possível atribuir nota ao evento
+    // e exibir quantos vão para o evento
   }
 
 }
