@@ -9,7 +9,6 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
-  userLogin;
   profile;
   constructor(
     private authService: AuthService,
@@ -23,18 +22,18 @@ export class ProfilePage implements OnInit {
 
   ionViewDidEnter() {
     this.loadUser();
+    console.log('did enter');
   }
 
   loadUser() {
-    this.authService.user().then(result => {
-      this.userLogin = result;
+    this.authService.user().then((result: any) => {
+      this.profile = {
+        name: result.name,
+        email: result.email,
+        urlPhoto: 'https://picsum.photos/200/300'
+      };
     });
 
-    this.profile = {
-      name: this.userLogin.name,
-      email: this.userLogin.email,
-      urlPhoto: 'https://picsum.photos/200/300'
-    };
   }
 
   onLogout() {
