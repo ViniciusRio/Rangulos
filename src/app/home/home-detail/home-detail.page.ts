@@ -28,7 +28,7 @@ export class HomeDetailPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.activedRoute.paramMap.subscribe(paramMap => {
       if (!paramMap.has('id')) {
-        this.navCtrl.navigateBack('/events');
+        this.navCtrl.navigateBack('/tabs/events');
         return;
       }
       this.isLoading = true;
@@ -55,7 +55,8 @@ export class HomeDetailPage implements OnInit, OnDestroy {
           text: 'Confirmar',
           handler: () => {
             this.eventService.ensureInvitation(eventId).then(() => {
-              this.navCtrl.navigateForward('/events');
+              this.navCtrl.navigateBack('/tabs/home');
+              this.navCtrl.navigateForward('/tabs/events');
             }, () => {
               this.alerCtrl.create({
                 header: 'Não foi possível adquirir convite',
@@ -64,7 +65,7 @@ export class HomeDetailPage implements OnInit, OnDestroy {
                   {
                     text: 'OK',
                     handler: () => {
-                        this.navCtrl.navigateForward('/events');
+                        this.navCtrl.navigateForward('/home/events');
                     }
                   }
                 ]
@@ -84,5 +85,10 @@ export class HomeDetailPage implements OnInit, OnDestroy {
     if (this.eventSub) {
       this.eventSub.unsubscribe();
     }
+  }
+
+  openAddress() {
+    const url = 'https://maps.google.com?q=' + this.loadedEvent.address;
+    window.open(url, '_system');
   }
 }
