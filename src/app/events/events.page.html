@@ -38,7 +38,7 @@
             <ion-button routerLink="/tabs/home">Procure um evento</ion-button>
           </div>
         </div>
-        <ion-item *ngFor="let pastEvent of pastEvents" [routerLink]="['./', pastEvent.id]">
+        <ion-item *ngFor="let pastEvent of pastEvents" [routerLink]="['./', pastEvent.event_id]">
           <ion-label>
             <div class="events-details">
               <ion-icon name="calendar" color="primary"></ion-icon>
@@ -46,8 +46,10 @@
                 {{ pastEvent.start_date | date }}
               </ion-text>
             </div>
-            <h2>{{ pastEvent.title }}</h2>
-            <p>R${{ pastEvent.price }}</p>
+            <p>
+              <b>R${{ pastEvent.price }}</b>  -
+              {{ pastEvent.start_date | date }} até {{ pastEvent.end_date | date }}
+            </p>
           </ion-label>
           <ion-thumbnail slot="end">
             <ion-img [src]="pastEvent.url_image"></ion-img>
@@ -70,14 +72,15 @@
         <div *ngIf="currentEvent">
           <ion-item *ngFor="let event of currentEvent" [routerLink]="['./' + event.id]">
             <ion-label>
+              <ion-badge slot="end" color="danger" *ngIf="event.deleted_at">Cancelado</ion-badge>
               <div class="events-details">
                 <ion-text color="tertiary" class="space-left">
                   {{ event.title }}
                 </ion-text>
               </div>
               <p>
-                R${{ event.price }} -
-                {{ event.start_date | date }}
+                <b>R${{ event.price }}</b>  -
+                {{ event.start_date | date }} até {{ event.end_date | date }}
               </p>
             </ion-label>
             <ion-badge slot="end" color="success" *ngIf="event.payment_confirmed">Pago</ion-badge>
