@@ -19,7 +19,7 @@
       <ion-label>Eventos anteriores</ion-label>
     </ion-segment-button>
     <ion-segment-button class="segmentTextSize" value="currentEvent">
-      <ion-label>Evento atual</ion-label>
+      <ion-label>Eventos atuais</ion-label>
     </ion-segment-button>
     <ion-segment-button class="segmentTextSize" value="myEvents">
       <ion-label>Meus eventos</ion-label>
@@ -101,7 +101,24 @@
           </ion-item>
         </div>
         <ion-item-sliding *ngFor="let event of myEvents" #slidingItem>
-          <app-my-events [myEvents]=event></app-my-events>
+          <ion-item [routerLink]="['./' + event.id]">
+            <ion-label>
+              <ion-badge slot="end" color="danger" *ngIf="event.deleted_at">Cancelado</ion-badge>
+              <div class="events-details">
+                <ion-text color="tertiary" class="space-left">
+                  {{ event.title }}
+                </ion-text>
+              </div>
+              <p>
+                <b>R${{ event.price }}</b>  -
+                {{ event.start_date | date }} até {{ event.end_date | date }}
+              </p>
+            </ion-label>
+            <ion-badge slot="end" color="success" *ngIf="event.payment_confirmed">Pago</ion-badge>
+            <ion-thumbnail slot="end">
+              <ion-img [src]="event.url_image"></ion-img>
+            </ion-thumbnail>
+          </ion-item>
           <ion-item-options>
             <ion-item-option (click)="onEdit(event.id, slidingItem)">
               <ion-icon name="create" slot="icon-only"></ion-icon>

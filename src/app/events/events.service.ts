@@ -201,5 +201,21 @@ export class EventsService {
         reject(err);
       });
     });
+
+  }
+
+  rate(id, value) {
+    const url = `${environment.urlApi}/guest/${id}/rate`;
+    const params = {
+      token: localStorage.getItem('token')
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post(url, { rate: value }, { params }).subscribe((data: any) => {
+        resolve(data);
+      }, (error) => {
+        reject(error);
+      });
+    });
   }
 }
