@@ -81,16 +81,11 @@ export class EventsPage implements OnInit, OnDestroy {
     this.selectedSegment = event.detail.value;
   }
 
-  onEdit(id: string, slidingItem: IonItemSliding) {
-    slidingItem.close();
-    this.router.navigate(['/', 'tabs', 'events', 'edit-my-events', id]);
-  }
-
   onDelete(eventId: string, slidingItem: IonItemSliding) {
     slidingItem.close();
     this.alertCtrl.create({
       header: 'Tem certeza disso?',
-      subHeader: 'Realmente deseja excluir o evento?',
+      subHeader: 'Realmente deseja suspender o evento?',
       buttons: [
         {
           text: 'Cancelar',
@@ -100,11 +95,11 @@ export class EventsPage implements OnInit, OnDestroy {
           }
         },
         {
-          text: 'Excluir',
+          text: 'Confirmar',
           cssClass: 'alertDangerColor',
           handler: () => {
             this.loadingCtrl.create({
-              message: 'Deletando...'
+              message: 'Suspendendo evento...'
             }).then(loadingElement => {
               loadingElement.present();
               this.eventsService.deleteEvent(eventId).then(() => {
@@ -136,7 +131,30 @@ export class EventsPage implements OnInit, OnDestroy {
     });
   }
 
+  onRestore(id, slidingItem: IonItemSliding) {
+    slidingItem.close();
+    this.alertCtrl.create({
+      header: 'Reativar evento?',
+      subHeader: 'Evento voltará a aparecer nas buscas',
+      buttons: [
+        {
+          text: 'cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Restaurar',
+          handler: () => {
+            this.eventsService.restore(id).then(() => {
+              this.loadMyEvents();
+            });
+          }
+        }
+      ]
+    }).then(alertElement => {
+      alertElement.present();
+    })
 
+  }
   ngOnDestroy() {
     if (this.eventsSub) {
       this.eventsSub.unsubscribe();

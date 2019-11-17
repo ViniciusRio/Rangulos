@@ -103,7 +103,7 @@
         <ion-item-sliding *ngFor="let event of myEvents" #slidingItem>
           <ion-item [routerLink]="['./' + event.id]">
             <ion-label>
-              <ion-badge slot="end" color="danger" *ngIf="event.deleted_at">Cancelado</ion-badge>
+              <ion-badge slot="end" color="danger" *ngIf="event.deleted_at">Suspenso</ion-badge>
               <div class="events-details">
                 <ion-text color="tertiary" class="space-left">
                   {{ event.title }}
@@ -120,13 +120,13 @@
             </ion-thumbnail>
           </ion-item>
           <ion-item-options>
-            <ion-item-option (click)="onEdit(event.id, slidingItem)">
-              <ion-icon name="create" slot="icon-only"></ion-icon>
+            <ion-item-option color="success" (click)="onRestore(event.id, slidingItem)">
+              <ion-icon name="undo" slot="icon-only"></ion-icon>
             </ion-item-option>
           </ion-item-options>
           <ion-item-options side="start">
             <ion-item-option color="danger" (click)="onDelete(event.id, slidingItem)">
-              <ion-icon name="trash" slot="icon-only"></ion-icon>
+              <ion-icon name="close" slot="icon-only"></ion-icon>
             </ion-item-option>
           </ion-item-options>
         </ion-item-sliding>

@@ -2,6 +2,8 @@ import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 import { Event } from './event.model';
 import { HttpClient } from '@angular/common/http';
+import { resolve } from 'url';
+import { reject } from 'q';
 
 @Injectable({
   providedIn: 'root'
@@ -212,6 +214,21 @@ export class EventsService {
 
     return new Promise((resolve, reject) => {
       this.http.post(url, { rate: value }, { params }).subscribe((data: any) => {
+        resolve(data);
+      }, (error) => {
+        reject(error);
+      });
+    });
+  }
+
+  restore(id) {
+    const url = `${environment.urlApi}/event/${id}/restore`;
+    const params = {
+      token: localStorage.getItem('token')
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post(url, null, {params}).subscribe((data: any) => {
         resolve(data);
       }, (error) => {
         reject(error);
