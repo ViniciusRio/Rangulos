@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { EventsService } from '../events.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NavController, LoadingController, AlertController } from '@ionic/angular';
 import * as moment from 'moment';
 
@@ -19,7 +19,8 @@ export class EventDetailPage implements OnInit {
     private activedRoute: ActivatedRoute,
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController
+    private alertCtrl: AlertController,
+    private router: Router
     ) { }
 
   ngOnInit() {
@@ -145,6 +146,10 @@ export class EventDetailPage implements OnInit {
     }).then(alertElement => {
       alertElement.present();
     });
+  }
+
+  onEdit() {
+    this.router.navigate(['/', 'tabs', 'events', 'edit-my-events', this.loadedEvent.id]);
   }
 
   onReactivate() {

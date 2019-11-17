@@ -3,6 +3,11 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/tabs/events"></ion-back-button>
     </ion-buttons>
+    <ion-buttons slot="primary">
+      <ion-button (click)="onEdit()">
+        <ion-icon name="create" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-title>Detalhes do evento</ion-title>
   </ion-toolbar>
 </ion-header>
