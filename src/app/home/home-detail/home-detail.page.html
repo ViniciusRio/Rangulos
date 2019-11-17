@@ -11,6 +11,7 @@
   <ion-card *ngIf="loadedEvent">
     <ion-img [src]="loadedEvent.url_image"></ion-img>
     <ion-card-header>
+      <ion-badge *ngIf="loadedEvent.is_owner">Meu evento</ion-badge>
       <ion-card-subtitle>{{ loadedEvent.start_date| date }} - {{ loadedEvent.end_date | date}}</ion-card-subtitle>
       <ion-card-title>{{ loadedEvent.title }} -
         <ion-text color="primary">R{{ loadedEvent.price | currency }}</ion-text>
@@ -43,11 +44,24 @@
             <a>{{ loadedEvent.address }}</a>
           </ion-label>
         </ion-item>
+        <ion-item>
+          <ion-icon name="person" slot="start"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <h2>Anfitrião</h2>
+            <a>{{ loadedEvent.owner }}</a>
+          </ion-label>
+        </ion-item>
       </ion-list>
     </ion-card-content>
     
-      <ion-button (click)="onEnsureInvitation(loadedEvent.id)" expand="block" color="primary">
+      <ion-button 
+      (click)="onEnsureInvitation(loadedEvent.id)"
+      expand="block"
+      color="primary"
+      *ngIf="!loadedEvent.is_owner"
+      >
         Garantir convite
       </ion-button>
+
   </ion-card>
 </ion-content>
