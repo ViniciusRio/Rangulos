@@ -33,10 +33,56 @@ export class EventDetailPage implements OnInit {
         .getEvent(paramMap.get('id'))
         .then(event => {
           this.loadedEvent = event;
-          console.log('event detail: ', this.loadedEvent);
           this.startHour = moment(this.loadedEvent.start_date).format('HH:mm');
           this.endHour = moment(this.loadedEvent.endHour).format('HH:mm');
         });
+    });
+  }
+  onDelete(eventId: string) {
+    this.alertCtrl.create({
+      header: 'Tem certeza disso?',
+      subHeader: 'Realmente deseja excluir o evento?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('cancelar');
+          }
+        },
+        {
+          text: 'Excluir',
+          cssClass: 'alertDangerColor',
+          handler: () => {
+            this.loadingCtrl.create({
+              message: 'Deletando...'
+            }).then(loadingElement => {
+              loadingElement.present();
+              this.eventService.deleteEvent(eventId).then(() => {
+                loadingElement.dismiss();
+              }, () => {
+                loadingElement.dismiss();
+                this.alertCtrl.create({
+                  header: 'Algo de inesperado ocorreu',
+                  subHeader: 'Não foi possível excluir',
+                  buttons: [
+                    {
+                      text: 'OK',
+                      handler: () => {
+                        this.navCtrl.pop();
+                      }
+                    }
+                  ]
+                }).then(alertElementError => {
+                  alertElementError.present();
+                });
+              });
+            });
+          }
+        }
+      ]
+    }).then(alertElement => {
+      alertElement.present();
     });
   }
 
@@ -101,10 +147,16 @@ export class EventDetailPage implements OnInit {
     });
   }
 
+  onReactivate() {
+    //TODO: ATIVAR EVENTO NOVAMENTE
+  }
   isEventEnded() {
+    if (!this.loadedEvent) {
+      return false;
+    }
     let end_date = moment(this.loadedEvent.end_date);
     let now = moment();
-
+    
     return end_date.diff(now, 'minutes') < 0;
   }
 
@@ -113,7 +165,9 @@ export class EventDetailPage implements OnInit {
     window.open(url, '_system');
   }
 
-  onRate() {
+  onRate(event) {
+    const rate = event.detail.value;
+    this.eventService.rate(this.loadedEvent.id, rate);
     // TODO: ser possível atribuir nota ao evento
     // e exibir quantos vão para o evento
   }
