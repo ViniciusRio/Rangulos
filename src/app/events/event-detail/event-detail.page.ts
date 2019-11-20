@@ -1,4 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { environment } from './../../../environments/environment.prod';
+import { HttpClient } from '@angular/common/http';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { EventsService } from '../events.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController, LoadingController, AlertController } from '@ionic/angular';
@@ -10,9 +13,11 @@ import * as moment from 'moment';
   styleUrls: ['./event-detail.page.scss'],
 })
 export class EventDetailPage implements OnInit {
+  @ViewChild('file', { static: false }) file;
   loadedEvent: any;
   startHour: any;
   endHour: any;
+  uploadForm: FormGroup;
 
   constructor(
     private eventService: EventsService,
@@ -20,8 +25,10 @@ export class EventDetailPage implements OnInit {
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
-    private router: Router
-    ) { }
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private http: HttpClient
+  ) { }
 
   ngOnInit() {
     this.activedRoute.paramMap.subscribe(paramMap => {
@@ -30,15 +37,104 @@ export class EventDetailPage implements OnInit {
         return;
       }
 
-      this.eventService
-        .getEvent(paramMap.get('id'))
-        .then(event => {
-          this.loadedEvent = event;
-          this.startHour = moment(this.loadedEvent.start_date).format('HH:mm');
-          this.endHour = moment(this.loadedEvent.endHour).format('HH:mm');
-        });
+      this.loadEvent(paramMap.get('id'));
+    });
+
+    this.formGrup();
+  }
+
+  loadEvent(id) {
+    this.eventService
+      .getEvent(id)
+      .then(event => {
+        this.loadedEvent = event;
+        if (this.loadedEvent.url_image) {
+          this.getImage();
+        }
+        this.startHour = moment(this.loadedEvent.start_date).format('HH:mm');
+        this.endHour = moment(this.loadedEvent.endHour).format('HH:mm');
+      });
+  }
+
+  onEdit() {
+    this.router.navigate(['/', 'tabs', 'events', 'edit-my-events', this.loadedEvent.id]);
+  }
+
+  onUpload() {
+    this.file.nativeElement.click();
+  }
+
+  formGrup() {
+    this.uploadForm = this.formBuilder.group({
+      file: ['']
+    });
+    console.log('formGroup');
+
+  }
+  onFileAdded(event) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.uploadForm.get('file').setValue(file);
+      const formData = new FormData();
+      formData.append('file', this.uploadForm.get('file').value);
+
+      this.eventService.uploadImage(this.loadedEvent.id, formData).then(() => {
+        //TODO TOAST
+        this.getImage();
+      }, (error) => {
+        // TODO TOAST
+      });
+    }
+  }
+
+  getImage() {
+    this.loadedEvent.url_image = this.eventService.getImage(this.loadedEvent.id);
+  }
+
+  onPayEvent() {
+    this.alertCtrl.create({
+      header: 'Pagando evento',
+      subHeader: 'Realmente pagar?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Sim',
+          handler: () => {
+            this.loadingCtrl.create({
+              message: 'Pagando..'
+            }).then(loadingElement => {
+              loadingElement.present();
+              console.log('lodedevent: ', this.loadedEvent);
+              this.eventService.payEvent(this.loadedEvent.id).then(() => {
+                loadingElement.dismiss();
+                this.navCtrl.pop();
+              }, () => {
+                loadingElement.dismiss();
+              });
+            });
+          }
+        }
+      ]
+    }).then(alertElement => {
+      alertElement.present();
     });
   }
+
+  openAddress() {
+    const url = 'https://maps.google.com?q=' + this.loadedEvent.address;
+    window.open(url, '_system');
+  }
+
+  onRate(event) {
+    const rate = event.detail.value;
+    this.eventService.rate(this.loadedEvent.id, rate);
+    // TODO: ser possível atribuir nota ao evento
+    // e exibir quantos vão para o evento
+  }
+
   onDelete(eventId: string) {
     this.alertCtrl.create({
       header: 'Tem certeza disso?',
@@ -116,65 +212,13 @@ export class EventDetailPage implements OnInit {
     });
   }
 
-  onPayEvent() {
-    this.alertCtrl.create({
-      header: 'Pagando evento',
-      subHeader: 'Realmente pagar?',
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel'
-        },
-        {
-          text: 'Sim',
-          handler: () => {
-            this.loadingCtrl.create({
-              message: 'Pagando..'
-            }).then(loadingElement => {
-              loadingElement.present();
-              console.log('lodedevent: ', this.loadedEvent);
-              this.eventService.payEvent(this.loadedEvent.id).then(() => {
-                loadingElement.dismiss();
-                this.navCtrl.pop();
-              }, () => {
-                loadingElement.dismiss();
-              });
-            });
-          }
-        }
-      ]
-    }).then(alertElement => {
-      alertElement.present();
-    });
-  }
-
-  onEdit() {
-    this.router.navigate(['/', 'tabs', 'events', 'edit-my-events', this.loadedEvent.id]);
-  }
-
-  onReactivate() {
-    //TODO: ATIVAR EVENTO NOVAMENTE
-  }
   isEventEnded() {
     if (!this.loadedEvent) {
       return false;
     }
     let end_date = moment(this.loadedEvent.end_date);
     let now = moment();
-    
+
     return end_date.diff(now, 'minutes') < 0;
   }
-
-  openAddress() {
-    const url = 'https://maps.google.com?q=' + this.loadedEvent.address;
-    window.open(url, '_system');
-  }
-
-  onRate(event) {
-    const rate = event.detail.value;
-    this.eventService.rate(this.loadedEvent.id, rate);
-    // TODO: ser possível atribuir nota ao evento
-    // e exibir quantos vão para o evento
-  }
-
 }

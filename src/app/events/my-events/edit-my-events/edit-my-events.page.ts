@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Event } from '../../event.model';
 import { EventsService } from '../../events.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NavController, LoadingController, AlertController } from '@ionic/angular';

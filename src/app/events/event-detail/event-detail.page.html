@@ -11,10 +11,21 @@
     <ion-title>Detalhes do evento</ion-title>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
   <ion-card *ngIf="loadedEvent">
-    <ion-img [src]="loadedEvent.url_image"></ion-img>
+
+    <form [formGroup]="uploadForm">
+      <ion-img 
+      (click)="onUpload()"
+      [src]="loadedEvent.url_image ? loadedEvent.url_image : 'assets/img/no-image.png'"></ion-img>
+      <input 
+      type="file"
+      (change)="onFileAdded($event)"
+      #file
+      style="display: none"
+      >
+    </form>
+
     <ion-card-header>
       <ion-card-subtitle>
         {{ loadedEvent.start_date| date }} - {{ loadedEvent.end_date | date}}
@@ -48,6 +59,13 @@
           <ion-label class="ion-text-wrap">
             <h2>Endereço</h2>
             <a>{{ loadedEvent.address }}</a>
+          </ion-label>
+        </ion-item>
+        <ion-item>
+          <ion-icon name="person" slot="start"></ion-icon>
+          <ion-label class="ion-text-wrap">
+            <h2>Anfitrião</h2>
+            <a>{{ loadedEvent.owner }}</a>
           </ion-label>
         </ion-item>
       </ion-list>
