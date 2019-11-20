@@ -66,14 +66,6 @@
           </ion-button>
         </ion-col>
       </ion-row>
-      <ion-row>
-          <ion-col>
-              <ion-button *ngIf="!isEventEnded() && loadedEvent.is_owner && loadedEvent.deleted_at" (click)="onReactivate(loadedEvent.id) "
-                expand="block" color="success">
-                Reativar
-              </ion-button>
-            </ion-col>
-      </ion-row>
     </ion-grid>
   </ion-card>
   <ion-card *ngIf="isEventEnded() && !loadedEvent.is_owner">
