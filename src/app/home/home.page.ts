@@ -35,6 +35,10 @@ export class HomePage implements OnInit, OnDestroy {
     });
   }
 
+  getImage(id) {
+    return this.eventsService.getImage(id);
+  }
+
   ngOnDestroy() {
     if (this.eventsSub) {
       this.eventsSub.unsubscribe();

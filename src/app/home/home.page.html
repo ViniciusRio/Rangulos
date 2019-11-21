@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <div class="ion-text-center" *ngIf="isLoading">
+  <div class="ion-text-center ion-padding" *ngIf="isLoading">
     <ion-spinner color="primary"></ion-spinner>
   </div>
   <div *ngIf="!isLoading && loadEvents && loadEvents.length == 0">
@@ -21,24 +21,29 @@
   </div>
 
   <ion-list>
-      <div *ngIf="loadEvents">
-        <ion-item *ngFor="let event of loadEvents" [routerLink]="['./', event.id]">
-          <ion-label>
-            <div class="events-details">
-              <ion-text color="tertiary" class="space-left">
-                {{ event.title }}
-              </ion-text>
-            </div>
-            <p>
-              <b>R${{ event.price }}</b> -
-              {{ event.start_date | date }} até {{ event.end_date | date }}
-            </p>
-          </ion-label>
-          <ion-badge slot="end" color="success" *ngIf="event.payment_confirmed">Pago</ion-badge>
-          <ion-thumbnail slot="end">
-            <ion-img [src]="event.url_image"></ion-img>
-          </ion-thumbnail>
-        </ion-item>
-      </div>
-    </ion-list>
+    <div *ngIf="loadEvents">
+      <ion-item *ngFor="let event of loadEvents" [routerLink]="['/tabs/events/' + event.id]">
+        <ion-label class="ion-text-wrap">
+          <div class="events-details">
+            <ion-text color="tertiary" class="space-left">
+              {{ event.title }}
+            </ion-text>
+          </div>
+          <p>
+            <b>R${{ event.price }}</b> -
+            {{ event.start_date | date }} até {{ event.end_date | date }}
+          </p>
+        </ion-label>
+        <ion-badge slot="end" color="success" *ngIf="event.payment_confirmed">Pago</ion-badge>
+        <ion-thumbnail slot="end" *ngIf="event.url_image">
+          <ion-img [src]="getImage(event.id)"></ion-img>
+        </ion-thumbnail>
+      </ion-item>
+    </div>
+  </ion-list>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="ion-margin-vertical">
+    <ion-fab-button [routerLink]="['/tabs/events/new']">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
