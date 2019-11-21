@@ -74,7 +74,7 @@ export class NewEventPage implements OnInit {
           this.form.value.maxGuests,
           new Date(this.form.value.startDate),
           new Date(this.form.value.endDate),
-          'https://estrangeira.com.br/wp-content/uploads/2016/09/Captura-de-Tela-2016-09-12-a%CC%80s-18.36.47-602x500.png',
+          null,
           null
         );
         console.log('NOVO EVENTO: ', newEvent);

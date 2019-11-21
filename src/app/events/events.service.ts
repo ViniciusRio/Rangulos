@@ -2,8 +2,6 @@ import { environment } from './../../environments/environment';
 import { Injectable } from '@angular/core';
 import { Event } from './event.model';
 import { HttpClient } from '@angular/common/http';
-import { resolve } from 'url';
-import { reject } from 'q';
 
 @Injectable({
   providedIn: 'root'
@@ -104,32 +102,9 @@ export class EventsService {
     });
   }
 
-  updateEvent(
-    id: string,
-    title: string,
-    about: string,
-    address: string,
-    price: number,
-    // tslint:disable-next-line: variable-name
-    max_guests: number,
-    // tslint:disable-next-line: variable-name
-    start_date: Date,
-    // tslint:disable-next-line: variable-name
-    end_date: Date
-  ) {
-    const event = new Event(
-      id,
-      title,
-      about,
-      address,
-      price,
-      max_guests,
-      start_date,
-      end_date,
-      'https://estrangeira.com.br/wp-content/uploads/2016/09/Captura-de-Tela-2016-09-12-a%CC%80s-18.36.47-602x500.png',
-      null
-    );
-    const url = `${environment.urlApi}/event/${id}`;
+  updateEvent(event) {
+    console.log('update event id: ', event.id);
+    const url = `${environment.urlApi}/event/${event.id}`;
     const params = {
       token: localStorage.getItem('token')
     };
@@ -158,9 +133,7 @@ export class EventsService {
     });
   }
 
-  ensureInvitation(
-   eventId: string
-    ) {
+  ensureInvitation(eventId: string) {
     const url = `${environment.urlApi}/guest/${eventId}`;
     const params = {
       token: localStorage.getItem('token')
@@ -253,7 +226,7 @@ export class EventsService {
 
   getImage(id) {
     let token = localStorage.getItem('token');
-    let time = new Date().getMilliseconds();
+    let time = new Date().getSeconds();
     return `${environment.urlApi}/event/${id}/image?token=${token}&${time}`;
   }
 }

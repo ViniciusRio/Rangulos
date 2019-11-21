@@ -27,7 +27,6 @@ export class EventDetailPage implements OnInit {
     private alertCtrl: AlertController,
     private router: Router,
     private formBuilder: FormBuilder,
-    private http: HttpClient
   ) { }
 
   ngOnInit() {
@@ -37,23 +36,21 @@ export class EventDetailPage implements OnInit {
         return;
       }
 
-      this.loadEvent(paramMap.get('id'));
+      this.getEvent(paramMap.get('id'));
     });
 
-    this.formGrup();
+    this.formGroup();
   }
 
-  loadEvent(id) {
-    this.eventService
-      .getEvent(id)
-      .then(event => {
-        this.loadedEvent = event;
-        if (this.loadedEvent.url_image) {
-          this.getImage();
-        }
-        this.startHour = moment(this.loadedEvent.start_date).format('HH:mm');
-        this.endHour = moment(this.loadedEvent.endHour).format('HH:mm');
-      });
+  getEvent(id) {
+    this.eventService.getEvent(id).then(event => {
+      this.loadedEvent = event;
+      if (this.loadedEvent.url_image) {
+        this.getImage();
+      }
+      this.startHour = moment(this.loadedEvent.start_date).format('HH:mm');
+      this.endHour = moment(this.loadedEvent.endHour).format('HH:mm');
+    });
   }
 
   onEdit() {
@@ -64,13 +61,13 @@ export class EventDetailPage implements OnInit {
     this.file.nativeElement.click();
   }
 
-  formGrup() {
+  formGroup() {
     this.uploadForm = this.formBuilder.group({
       file: ['']
     });
     console.log('formGroup');
-
   }
+
   onFileAdded(event) {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
@@ -85,6 +82,42 @@ export class EventDetailPage implements OnInit {
         // TODO TOAST
       });
     }
+  }
+
+  onEnsureInvitation() {
+    this.alertCtrl.create({
+      header: 'Garantir Convite?',
+      subHeader: 'Será mostrado em Eventos Atuais.',
+      buttons: [{
+        text: 'Cancelar',
+        role: 'cancel'
+      }, {
+        text: 'Confirmar',
+        handler: () => {
+          this.eventService.ensureInvitation(this.loadedEvent.id).then(() => {
+            this.getEvent(this.loadedEvent.id);
+          }, () => {
+            this.alertCtrl.create({
+              header: 'Não foi possível adquirir convite',
+              subHeader: 'Tente novamente',
+              buttons: [
+                {
+                  text: 'OK',
+                  handler: () => {
+                    this.navCtrl.navigateForward('/home/events');
+                  }
+                }
+              ]
+            }).then(alertElementError => {
+              alertElementError.present();
+            });
+          });
+        }
+      }
+      ]
+    }).then(alertElement => {
+      alertElement.present();
+    });
   }
 
   getImage() {

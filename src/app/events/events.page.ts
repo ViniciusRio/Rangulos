@@ -1,9 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { NavController, IonItemSliding, AlertController, LoadingController } from '@ionic/angular';
+import { IonItemSliding, AlertController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { EventsService } from './events.service';
 import { Event } from './event.model';
-import { MyEventsPage } from './my-events/my-events.page';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -75,6 +74,10 @@ export class EventsPage implements OnInit, OnDestroy {
     }, error => {
       this.isLoading = false;
     });
+  }
+
+  getImage(id) {
+    return this.eventsService.getImage(id);
   }
 
   onSegmentChanged(event) {

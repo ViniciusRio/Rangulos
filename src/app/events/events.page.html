@@ -12,19 +12,22 @@
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment (ionChange)="onSegmentChanged($event)" [value]="selectedSegment">
+      <ion-segment-button class="segmentTextSize" value="currentEvent">
+        <ion-label>Atuais</ion-label>
+      </ion-segment-button>
+      <ion-segment-button class="segmentTextSize" value="myEvents">
+        <ion-label>Meus eventos</ion-label>
+      </ion-segment-button>
+      <ion-segment-button class="segmentTextSize" value="pastEvents">
+        <ion-label>Anteriores</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-segment (ionChange)="onSegmentChanged($event)" [value]="selectedSegment">
-    <ion-segment-button class="segmentTextSize" value="pastEvents">
-      <ion-label>Eventos anteriores</ion-label>
-    </ion-segment-button>
-    <ion-segment-button class="segmentTextSize" value="currentEvent">
-      <ion-label>Eventos atuais</ion-label>
-    </ion-segment-button>
-    <ion-segment-button class="segmentTextSize" value="myEvents">
-      <ion-label>Meus eventos</ion-label>
-    </ion-segment-button>
-  </ion-segment>
+
   <div [ngSwitch]="selectedSegment">
     <div *ngSwitchCase="segments.PAST_EVENTS">
       <ion-list>
@@ -47,13 +50,13 @@
               </ion-text>
             </div>
             <p>
-              <b>R${{ pastEvent.price }}</b>  -
+              <b>R${{ pastEvent.price }}</b> -
               {{ pastEvent.start_date | date }} até {{ pastEvent.end_date | date }}
             </p>
           </ion-label>
-          <ion-thumbnail slot="end">
-            <ion-img [src]="pastEvent.url_image"></ion-img>
-          </ion-thumbnail>
+          <ion-thumbnail slot="end" *ngIf="event.url_image">
+              <ion-img [src]="getImage(event.id)"></ion-img>
+            </ion-thumbnail>
         </ion-item>
       </ion-list>
     </div>
@@ -61,7 +64,7 @@
       <ion-list>
         <div *ngIf="!currentEvent || currentEvent.length <= 0">
           <ion-item *ngIf="!currentEvent || currentEvent.length <= 0" class="ion-text-center">
-            <ion-label>
+            <ion-label class="ion-text-wrap">
               <ion-text>Ainda não estou indo para nenhum evento.</ion-text>
             </ion-label>
           </ion-item>
@@ -71,7 +74,7 @@
         </div>
         <div *ngIf="currentEvent">
           <ion-item *ngFor="let event of currentEvent" [routerLink]="['./' + event.id]">
-            <ion-label>
+            <ion-label class="ion-text-wrap">
               <ion-badge slot="end" color="danger" *ngIf="event.deleted_at">Cancelado</ion-badge>
               <div class="events-details">
                 <ion-text color="tertiary" class="space-left">
@@ -79,13 +82,13 @@
                 </ion-text>
               </div>
               <p>
-                <b>R${{ event.price }}</b>  -
+                <b>R${{ event.price }}</b> -
                 {{ event.start_date | date }} até {{ event.end_date | date }}
               </p>
             </ion-label>
             <ion-badge slot="end" color="success" *ngIf="event.payment_confirmed">Pago</ion-badge>
-            <ion-thumbnail slot="end">
-              <ion-img [src]="event.url_image"></ion-img>
+            <ion-thumbnail slot="end" *ngIf="event.url_image">
+              <ion-img [src]="getImage(event.id)"></ion-img>
             </ion-thumbnail>
           </ion-item>
         </div>
@@ -102,7 +105,7 @@
         </div>
         <ion-item-sliding *ngFor="let event of myEvents" #slidingItem>
           <ion-item [routerLink]="['./' + event.id]">
-            <ion-label>
+            <ion-label class="ion-text-wrap">
               <ion-badge slot="end" color="danger" *ngIf="event.deleted_at">Suspenso</ion-badge>
               <div class="events-details">
                 <ion-text color="tertiary" class="space-left">
@@ -110,14 +113,14 @@
                 </ion-text>
               </div>
               <p>
-                <b>R${{ event.price }}</b>  -
+                <b>R${{ event.price }}</b> -
                 {{ event.start_date | date }} até {{ event.end_date | date }}
               </p>
             </ion-label>
             <ion-badge slot="end" color="success" *ngIf="event.payment_confirmed">Pago</ion-badge>
-            <ion-thumbnail slot="end">
-              <ion-img [src]="event.url_image"></ion-img>
-            </ion-thumbnail>
+            <ion-thumbnail slot="end" *ngIf="event.url_image">
+                <ion-img [src]="getImage(event.id)"></ion-img>
+              </ion-thumbnail>
           </ion-item>
           <ion-item-options>
             <ion-item-option color="success" (click)="onRestore(event.id, slidingItem)">
@@ -133,4 +136,9 @@
       </ion-list>
     </div>
   </div>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="ion-margin-vertical">
+    <ion-fab-button [routerLink]="['/tabs/events/new']">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-content>
