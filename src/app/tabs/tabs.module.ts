@@ -21,12 +21,6 @@ const routes: Routes = [
             loadChildren: '../home/home.module#HomePageModule',
             canLoad: [AuthGuard]
           },
-          {
-            path: ':id',
-            loadChildren: '.././home/home-detail/home-detail.module#HomeDetailPageModule',
-            canLoad: [AuthGuard]
-
-          }
         ]
       },
       {

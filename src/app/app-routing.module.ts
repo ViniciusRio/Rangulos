@@ -44,7 +44,6 @@ const routes: Routes = [
   //     }
   //   ]
   // },
-  // { path: 'profile', loadChildren: './profile/profile.module#ProfilePageModule', canLoad: [AuthGuard]},
   { path: 'auth', loadChildren: './auth/auth.module#AuthPageModule' },
   { path: 'my-events', loadChildren: './events/my-events/my-events.module#MyEventsPageModule' },
   { path: 'edit-my-events', loadChildren: './events/my-events/edit-my-events/edit-my-events.module#EditMyEventsPageModule' },
