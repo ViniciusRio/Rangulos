@@ -147,15 +147,21 @@ export class EventsPage implements OnInit, OnDestroy {
         {
           text: 'Restaurar',
           handler: () => {
-            this.eventsService.restore(id).then(() => {
-              this.loadMyEvents();
+            this.loadingCtrl.create({
+              message: 'Ativando evento...'
+            }).then(loadingElement => {
+              loadingElement.present();
+              this.eventsService.restore(id).then(() => {
+                loadingElement.dismiss();
+                this.loadMyEvents();
+              });
             });
           }
         }
       ]
     }).then(alertElement => {
       alertElement.present();
-    })
+    });
 
   }
   ngOnDestroy() {
