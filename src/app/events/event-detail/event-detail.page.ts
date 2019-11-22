@@ -1,5 +1,3 @@
-import { environment } from './../../../environments/environment.prod';
-import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { EventsService } from '../events.service';
@@ -30,12 +28,12 @@ export class EventDetailPage implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log('init');
     this.activedRoute.paramMap.subscribe(paramMap => {
       if (!paramMap.has('id')) {
         this.navCtrl.navigateBack('/home');
         return;
       }
-
       this.getEvent(paramMap.get('id'));
     });
 
@@ -48,13 +46,14 @@ export class EventDetailPage implements OnInit {
       if (this.loadedEvent.url_image) {
         this.getImage();
       }
+      console.log('detail', this.loadedEvent);
       this.startHour = moment(this.loadedEvent.start_date).format('HH:mm');
       this.endHour = moment(this.loadedEvent.endHour).format('HH:mm');
     });
   }
 
   onEdit() {
-    this.router.navigate(['/', 'tabs', 'events', 'edit-my-events', this.loadedEvent.id]);
+    this.router.navigate(['/', 'edit', this.loadedEvent.id]);
   }
 
   onUpload() {
@@ -122,6 +121,7 @@ export class EventDetailPage implements OnInit {
 
   getImage() {
     this.loadedEvent.url_image = this.eventService.getImage(this.loadedEvent.id);
+    console.log('GET IMAGE', this.loadedEvent.url_image);
   }
 
   onPayEvent() {

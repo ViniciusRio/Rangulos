@@ -1,26 +1,25 @@
 <ion-header>
   <ion-toolbar color="tertiary">
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/tabs/events"></ion-back-button>
+      <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-buttons slot="primary">
-      <ion-button (click)="onEdit()">
-        <ion-icon name="create" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+    <ion-buttons slot="primary" *ngIf="loadedEvent && loadedEvent.is_owner">
+        <ion-button [routerLink]="['/edit/' + loadedEvent.id]">
+          <ion-icon name="create" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
     <ion-title>Evento</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content>
   <ion-card *ngIf="loadedEvent">
-
-    <form [formGroup]="uploadForm">
-      <ion-img (click)="onUpload()" [src]="loadedEvent.url_image ? loadedEvent.url_image : 'assets/img/no-image.png'">
-      </ion-img>
+    <form [formGroup]="uploadForm" *ngIf="loadedEvent.is_owner">
+      <img [src]="loadedEvent.url_image ? loadedEvent.url_image : 'assets/img/no-image.png'" (click)="onUpload()">
       <input type="file" (change)="onFileAdded($event)" #file style="display: none">
     </form>
-
+    <img *ngIf="loadedEvent.url_image && !loadedEvent.is_owner" [src]="loadedEvent.url_image">
     <ion-card-header>
+      <ion-badge *ngIf="loadedEvent.is_owner">Meu evento</ion-badge>
       <ion-card-subtitle>
         {{ loadedEvent.start_date| date }} - {{ loadedEvent.end_date | date}}
         <ion-badge color="danger" *ngIf="isEventEnded()">finalizado</ion-badge>
@@ -73,7 +72,7 @@
         </ion-button>
       </ion-col>
       <ion-col *ngIf="!isEventEnded() && loadedEvent.is_owner && !loadedEvent.deleted_at">
-        <ion-button (click)="onDelete(loadedEvent.id) " expand="block" color="danger">
+        <ion-button (click)="onDelete(loadedEvent.id)" expand="block" color="danger">
           Cancelar
         </ion-button>
       </ion-col>
