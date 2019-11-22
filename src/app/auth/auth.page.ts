@@ -10,7 +10,6 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./auth.page.scss'],
 })
 export class AuthPage implements OnInit {
-  isLoading = false;
   isLogin = true;
 
   constructor(
@@ -24,17 +23,7 @@ export class AuthPage implements OnInit {
   }
 
   onLogin() {
-    this.isLoading = true;
-    this.loadingCtrl.create({ keyboardClose: true, message: 'Autenticando...' })
-      .then(loadingEl => {
-        loadingEl.present();
-        setTimeout(() => {
-          this.isLoading = false;
-          loadingEl.dismiss();
-        });
-      });
 
-    console.log('IS LOGIN', this.isLogin);
   }
 
   onRegister() {
@@ -78,25 +67,30 @@ export class AuthPage implements OnInit {
     };
 
     if (this.isLogin) {
-      this.authService.login(credentials).then((result) => {
-          this.router.navigateByUrl('/tabs/home');
-          console.log(credentials);
-      }, error => {
-        this.alertCtrl.create({
-          header: 'Login não efetuado',
-          subHeader: 'Verifique o email/senha e tente novamente.',
-          buttons: [
-            {
-              text: 'OK',
-              handler: () => {
-                this.alertCtrl.dismiss();
-              }
-            }
-          ]
-        }).then(alertCtrlError => {
-          alertCtrlError.present();
+      this.loadingCtrl.create({ keyboardClose: true, message: 'Autenticando...' })
+        .then(loadingEl => {
+          loadingEl.present();
+          this.authService.login(credentials).then(() => {
+            this.router.navigateByUrl('/tabs/home');
+            loadingEl.dismiss();
+          }, error => {
+            this.alertCtrl.create({
+              header: 'Login não efetuado',
+              subHeader: 'Verifique o email/senha e tente novamente.',
+              buttons: [
+                {
+                  text: 'OK',
+                  handler: () => {
+                    this.alertCtrl.dismiss();
+                  }
+                }
+              ]
+            }).then(alertCtrlError => {
+              alertCtrlError.present();
+            });
+          });
+
         });
-      });
     } else {
       this.authService.register(credentials);
     }
