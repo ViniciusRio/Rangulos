@@ -1,4 +1,4 @@
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { AuthService } from './../auth/auth.service';
 import { Component, OnInit } from '@angular/core';
@@ -10,10 +10,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProfilePage implements OnInit {
   profile;
+  isLoading = false;
   constructor(
     private authService: AuthService,
     private router: Router,
     private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController
     ) {}
 
   ngOnInit() {
@@ -26,14 +28,16 @@ export class ProfilePage implements OnInit {
   }
 
   loadUser() {
+    this.isLoading = true;
     this.authService.user().then((result: any) => {
       this.profile = {
         name: result.name,
         email: result.email,
         urlPhoto: 'https://picsum.photos/200/300'
       };
-    });
+      this.isLoading = false;
 
+    });
   }
 
   onLogout() {
@@ -49,10 +53,17 @@ export class ProfilePage implements OnInit {
           text: 'Confirmar',
           cssClass: 'alertDangerColor',
           handler: () => {
-            this.authService.logout();
-            localStorage.removeItem('token');
-            localStorage.clear();
-            this.router.navigateByUrl('/auth');
+            this.loadingCtrl.create({
+              message: 'Saindo...'
+            }).then(loadingElement => {
+              loadingElement.present();
+              this.authService.logout().then(() => {
+                loadingElement.dismiss();
+                localStorage.removeItem('token');
+                localStorage.clear();
+                this.router.navigate(['/auth'], { replaceUrl: true });
+              });
+            });
           }
         }
       ]
