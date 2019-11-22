@@ -54,8 +54,8 @@
               {{ pastEvent.start_date | date }} até {{ pastEvent.end_date | date }}
             </p>
           </ion-label>
-          <ion-thumbnail slot="end" *ngIf="event.url_image">
-              <ion-img [src]="getImage(event.id)"></ion-img>
+          <ion-thumbnail slot="end" *ngIf="pastEvent.url_image">
+              <ion-img [src]="getImage(pastEvent.id)"></ion-img>
             </ion-thumbnail>
         </ion-item>
       </ion-list>

@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  // urlApi: 'https://rangulos-api.herokuapp.com/api'
-  urlApi: 'http://localhost:8081/api'
+  urlApi: 'https://rangulos-api.herokuapp.com/api'
+  // urlApi: 'http://localhost:8081/api'
 
 };
 
