@@ -22,7 +22,7 @@
 
   <ion-list>
     <div *ngIf="loadEvents">
-      <ion-item *ngFor="let event of loadEvents" [routerLink]="['/tabs/events/' + event.id]">
+      <ion-item *ngFor="let event of loadEvents" [routerLink]="['/events/' + event.id]">
         <ion-label class="ion-text-wrap">
           <div class="events-details">
             <ion-text color="tertiary" class="space-left">
@@ -42,7 +42,7 @@
     </div>
   </ion-list>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="ion-margin-vertical">
-    <ion-fab-button [routerLink]="['/tabs/events/new']">
+    <ion-fab-button [routerLink]="['/new']">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
