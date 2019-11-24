@@ -16,6 +16,8 @@ export class EventDetailPage implements OnInit {
   startHour: any;
   endHour: any;
   uploadForm: FormGroup;
+  isLoading = false;
+  isLoadingImage = false;
 
   constructor(
     private eventService: EventsService,
@@ -41,6 +43,7 @@ export class EventDetailPage implements OnInit {
   }
 
   getEvent(id) {
+    this.isLoading = true;
     this.eventService.getEvent(id).then(event => {
       this.loadedEvent = event;
       if (this.loadedEvent.url_image) {
@@ -49,6 +52,7 @@ export class EventDetailPage implements OnInit {
       console.log('detail', this.loadedEvent);
       this.startHour = moment(this.loadedEvent.start_date).format('HH:mm');
       this.endHour = moment(this.loadedEvent.endHour).format('HH:mm');
+      this.isLoading = false;
     });
   }
 
@@ -73,10 +77,10 @@ export class EventDetailPage implements OnInit {
       this.uploadForm.get('file').setValue(file);
       const formData = new FormData();
       formData.append('file', this.uploadForm.get('file').value);
-
+      this.isLoadingImage = true;
       this.eventService.uploadImage(this.loadedEvent.id, formData).then(() => {
-        //TODO TOAST
         this.getImage();
+        this.isLoadingImage = false;
       }, (error) => {
         // TODO TOAST
       });
@@ -121,7 +125,6 @@ export class EventDetailPage implements OnInit {
 
   getImage() {
     this.loadedEvent.url_image = this.eventService.getImage(this.loadedEvent.id);
-    console.log('GET IMAGE', this.loadedEvent.url_image);
   }
 
   onPayEvent() {
