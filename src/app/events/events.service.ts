@@ -117,8 +117,22 @@ export class EventsService {
     });
   }
 
+  forceDelete(id) {
+    const url = `${environment.urlApi}/event/${id}/delete`;
+    const params = {
+      token: localStorage.getItem('token')
+    };
 
-  deleteEvent(id: string) {
+    return new Promise((resolve, reject) => {
+      this.http.delete(url, { params }).subscribe((data: any) => {
+        resolve(data);
+      }, (err) => {
+        reject(err);
+      });
+    });
+  }
+
+  suspendedEvent(id: string) {
     const url = `${environment.urlApi}/event/${id}`;
     const params = {
       token: localStorage.getItem('token')
@@ -155,7 +169,7 @@ export class EventsService {
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post(url, {id: eventId}, { params }).subscribe((data: any) => {
+      this.http.post(url, { id: eventId }, { params }).subscribe((data: any) => {
         resolve(data);
       }, (error) => {
         reject(error);
@@ -201,7 +215,7 @@ export class EventsService {
     };
 
     return new Promise((resolve, reject) => {
-      this.http.post(url, null, {params}).subscribe((data: any) => {
+      this.http.post(url, null, { params }).subscribe((data: any) => {
         resolve(data);
       }, (error) => {
         reject(error);

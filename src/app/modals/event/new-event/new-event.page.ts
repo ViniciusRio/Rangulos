@@ -1,8 +1,8 @@
-import { Event } from './../event.model';
+import { Event } from '../../../events/event.model';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { LoadingController, AlertController, NavController } from '@ionic/angular';
-import { EventsService } from '../events.service';
+import { LoadingController, AlertController, NavController, ModalController } from '@ionic/angular';
+import { EventsService } from '../../../events/events.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -17,7 +17,8 @@ export class NewEventPage implements OnInit {
     private eventsService: EventsService,
     private router: Router,
     private alertCtrl: AlertController,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private modalCtrl: ModalController
   ) { }
 
   ngOnInit() {
@@ -53,8 +54,6 @@ export class NewEventPage implements OnInit {
     });
   }
 
-
-
   onCreateEvent() {
     if (!this.form.valid) {
       return;
@@ -83,7 +82,7 @@ export class NewEventPage implements OnInit {
           .then(() => {
             loadingEl.dismiss();
             this.form.reset();
-            this.router.navigate(['/tabs/home']);
+            this.modalCtrl.dismiss(null, 'event created');
           }, () => {
             loadingEl.dismiss();
             this.alertCtrl.create({
@@ -102,6 +101,10 @@ export class NewEventPage implements OnInit {
             });
           });
       });
+  }
+
+  onModalDismiss() {
+    this.modalCtrl.dismiss(null, 'cancel');
   }
 
 }

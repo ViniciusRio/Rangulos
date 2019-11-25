@@ -1,5 +1,6 @@
+import { NewEventPage } from './../modals/event/new-event/new-event.page';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { IonItemSliding, AlertController, LoadingController } from '@ionic/angular';
+import { IonItemSliding, AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { EventsService } from './events.service';
 import { Event } from './event.model';
@@ -20,7 +21,7 @@ export class EventsPage implements OnInit, OnDestroy {
   // evento padrão
   private eventsSub: Subscription;
 
-  selectedSegment = this.segments.CURRENT_EVENT;
+  selectedSegment = this.segments.MY_EVENTS;
   events: Event[];
   pastEvents;
   currentEvent;
@@ -31,7 +32,8 @@ export class EventsPage implements OnInit, OnDestroy {
     private router: Router,
     private eventsService: EventsService,
     private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
+    private modalCtrl: ModalController
   ) { }
 
   ngOnInit() {
@@ -42,6 +44,15 @@ export class EventsPage implements OnInit, OnDestroy {
     this.loadCurrentEvent();
     this.loadMyEvents();
     this.loadPastEvents();
+    console.log('will enter');
+  }
+
+  ionViewWillLeave() {
+    console.log('will leave');
+  }
+
+  ionViewDidLeave() {
+    console.log('did leave');
   }
 
   loadCurrentEvent() {
@@ -76,6 +87,17 @@ export class EventsPage implements OnInit, OnDestroy {
     });
   }
 
+  newEvent() {
+    this.modalCtrl.create({
+      component: NewEventPage,
+    }).then(modalElement => {
+      modalElement.present();
+      return modalElement.onDidDismiss();
+    }).then(() => {
+      this.loadMyEvents();
+    });
+  }
+
   getImage(id) {
     return this.eventsService.getImage(id);
   }
@@ -84,7 +106,7 @@ export class EventsPage implements OnInit, OnDestroy {
     this.selectedSegment = event.detail.value;
   }
 
-  onDelete(eventId: string, slidingItem: IonItemSliding) {
+  onSuspended(eventId: string, slidingItem: IonItemSliding) {
     slidingItem.close();
     this.alertCtrl.create({
       header: 'Tem certeza disso?',
@@ -105,7 +127,7 @@ export class EventsPage implements OnInit, OnDestroy {
               message: 'Suspendendo evento...'
             }).then(loadingElement => {
               loadingElement.present();
-              this.eventsService.deleteEvent(eventId).then(() => {
+              this.eventsService.suspendedEvent(eventId).then(() => {
                 loadingElement.dismiss();
                 this.loadMyEvents();
               }, () => {

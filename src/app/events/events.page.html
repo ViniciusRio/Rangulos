@@ -24,9 +24,9 @@
 <ion-content>
 
   <div [ngSwitch]="selectedSegment">
-      <div class="ion-text-center ion-padding" *ngIf="isLoading">
-          <ion-spinner color="primary"></ion-spinner>
-        </div>
+    <div class="ion-text-center ion-padding" *ngIf="isLoading">
+      <ion-spinner color="primary"></ion-spinner>
+    </div>
     <div *ngSwitchCase="segments.PAST_EVENTS">
       <ion-list>
         <div *ngIf="!pastEvents || pastEvents.length <= 0">
@@ -53,8 +53,8 @@
             </p>
           </ion-label>
           <ion-thumbnail slot="end" *ngIf="pastEvent.url_image">
-              <ion-img [src]="getImage(pastEvent.id)"></ion-img>
-            </ion-thumbnail>
+            <ion-img [src]="getImage(pastEvent.id)"></ion-img>
+          </ion-thumbnail>
         </ion-item>
       </ion-list>
     </div>
@@ -117,8 +117,8 @@
             </ion-label>
             <ion-badge slot="end" color="success" *ngIf="event.payment_confirmed">Pago</ion-badge>
             <ion-thumbnail slot="end" *ngIf="event.url_image">
-                <ion-img [src]="getImage(event.id)"></ion-img>
-              </ion-thumbnail>
+              <ion-img [src]="getImage(event.id)"></ion-img>
+            </ion-thumbnail>
           </ion-item>
           <ion-item-options>
             <ion-item-option color="success" (click)="onRestore(event.id, slidingItem)">
@@ -126,7 +126,7 @@
             </ion-item-option>
           </ion-item-options>
           <ion-item-options side="start">
-            <ion-item-option color="danger" (click)="onDelete(event.id, slidingItem)">
+            <ion-item-option color="danger" (click)="onSuspended(event.id, slidingItem)">
               <ion-icon name="close" slot="icon-only"></ion-icon>
             </ion-item-option>
           </ion-item-options>
@@ -135,7 +135,7 @@
     </div>
   </div>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed" class="ion-margin-vertical">
-    <ion-fab-button [routerLink]="['/new']">
+    <ion-fab-button (click)="newEvent()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

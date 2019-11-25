@@ -171,7 +171,7 @@ export class EventDetailPage implements OnInit {
     // e exibir quantos vão para o evento
   }
 
-  onDelete(eventId: string) {
+  onForceDelete() {
     this.alertCtrl.create({
       header: 'Tem certeza disso?',
       subHeader: 'Realmente deseja excluir o evento?',
@@ -191,7 +191,55 @@ export class EventDetailPage implements OnInit {
               message: 'Deletando...'
             }).then(loadingElement => {
               loadingElement.present();
-              this.eventService.deleteEvent(eventId).then(() => {
+              this.eventService.forceDelete(this.loadedEvent.id).then(() => {
+                loadingElement.dismiss();
+              }, () => {
+                loadingElement.dismiss();
+                this.alertCtrl.create({
+                  header: 'Algo de inesperado ocorreu',
+                  subHeader: 'Não foi possível excluir',
+                  buttons: [
+                    {
+                      text: 'OK',
+                      handler: () => {
+                        this.navCtrl.pop();
+                      }
+                    }
+                  ]
+                }).then(alertElementError => {
+                  alertElementError.present();
+                });
+              });
+            });
+          }
+        }
+      ]
+    }).then(alertElement => {
+      alertElement.present();
+    });
+  }
+
+  onSuspended(eventId: string) {
+    this.alertCtrl.create({
+      header: 'Tem certeza disso?',
+      subHeader: 'Realmente deseja excluir o evento?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+            console.log('cancelar');
+          }
+        },
+        {
+          text: 'Excluir',
+          cssClass: 'alertDangerColor',
+          handler: () => {
+            this.loadingCtrl.create({
+              message: 'Deletando...'
+            }).then(loadingElement => {
+              loadingElement.present();
+              this.eventService.suspendedEvent(eventId).then(() => {
                 loadingElement.dismiss();
               }, () => {
                 loadingElement.dismiss();
