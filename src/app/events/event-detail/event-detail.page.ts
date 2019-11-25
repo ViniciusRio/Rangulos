@@ -1,8 +1,9 @@
+import { EditEventComponent } from './../../modals/event/edit-event/edit-event.component';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { EventsService } from '../events.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NavController, LoadingController, AlertController } from '@ionic/angular';
+import { NavController, LoadingController, AlertController, ModalController } from '@ionic/angular';
 import * as moment from 'moment';
 
 @Component({
@@ -25,8 +26,8 @@ export class EventDetailPage implements OnInit {
     private navCtrl: NavController,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
-    private router: Router,
     private formBuilder: FormBuilder,
+    private modalCtrl: ModalController
   ) { }
 
   ngOnInit() {
@@ -42,6 +43,23 @@ export class EventDetailPage implements OnInit {
     this.formGroup();
   }
 
+
+  editEvent() {
+    this.modalCtrl.create({
+      component: EditEventComponent,
+      componentProps: { id: this.loadedEvent.id }
+    }).then(modalElement => {
+      modalElement.onDidDismiss().then((result: any) => {
+        console.log('RESULT', result.data);
+        if (result.data && result.data.success ) {
+          this.loadedEvent = result.data.event;
+          this.eventService.fetchEvent();
+        }
+      });
+      modalElement.present();
+    });
+  }
+
   getEvent(id) {
     this.isLoading = true;
     this.eventService.getEvent(id).then(event => {
@@ -54,10 +72,6 @@ export class EventDetailPage implements OnInit {
       this.endHour = moment(this.loadedEvent.endHour).format('HH:mm');
       this.isLoading = false;
     });
-  }
-
-  onEdit() {
-    this.router.navigate(['/', 'edit', this.loadedEvent.id]);
   }
 
   onUpload() {
