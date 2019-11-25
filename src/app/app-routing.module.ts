@@ -10,12 +10,6 @@ const routes: Routes = [
     canLoad: [AuthGuard]
 
   },
-  {
-    path: 'edit/:id',
-    loadChildren: './events/edit-my-events/edit-my-events.module#EditMyEventsPageModule',
-    canLoad: [AuthGuard]
-
-  },
   { path: 'auth', loadChildren: './auth/auth.module#AuthPageModule' },
   { path: 'tabs', loadChildren: './tabs/tabs.module#TabsPageModule' },
   { path: 'register', loadChildren: './register/register.module#RegisterPageModule' },
