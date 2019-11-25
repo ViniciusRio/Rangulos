@@ -78,9 +78,9 @@
           Pagar
         </ion-button>
       </ion-col>
-      <ion-col *ngIf="!isEventEnded() && loadedEvent.is_owner && !loadedEvent.deleted_at">
-        <ion-button (click)="onDelete(loadedEvent.id)" expand="block" color="danger">
-          Cancelar
+      <ion-col *ngIf="loadedEvent.is_owner">
+        <ion-button (click)="onForceDelete()" expand="block" color="danger">
+          Excluir evento
         </ion-button>
       </ion-col>
       <ion-col *ngIf="!isEventEnded() && !loadedEvent.is_owner && !loadedEvent.is_guest">

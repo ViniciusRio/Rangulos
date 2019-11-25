@@ -11,14 +11,8 @@ const routes: Routes = [
 
   },
   {
-    path: 'new',
-    loadChildren: './events/new-event/new-event.module#NewEventPageModule',
-    canLoad: [AuthGuard]
-
-  },
-  {
     path: 'edit/:id',
-    loadChildren: './events/my-events/edit-my-events/edit-my-events.module#EditMyEventsPageModule',
+    loadChildren: './events/edit-my-events/edit-my-events.module#EditMyEventsPageModule',
     canLoad: [AuthGuard]
 
   },
