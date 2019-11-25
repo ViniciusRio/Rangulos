@@ -41,60 +41,75 @@ export class EventsPage implements OnInit, OnDestroy {
   }
 
   ionViewWillEnter() {
-    this.loadCurrentEvent();
     this.loadMyEvents();
-    this.loadPastEvents();
-    console.log('will enter');
   }
 
-  ionViewWillLeave() {
-    console.log('will leave');
-  }
-
-  ionViewDidLeave() {
-    console.log('did leave');
-  }
-
-  loadCurrentEvent() {
-    this.isLoading = true;
+  loadCurrentEvent(refresher = null) {
+    this.isLoading = refresher ? false : true;
     this.eventsService.getCurrentEvents().then(result => {
       console.log('currents', result);
       this.currentEvent = result;
       this.isLoading = false;
+      this.handlerRefresher(refresher);
     }, error => {
+      this.handlerRefresher(refresher);
       this.isLoading = false;
     });
   }
 
-  loadPastEvents() {
-    this.isLoading = true;
+  loadPastEvents(refresher = null) {
+    this.isLoading = refresher ? false : true;
     this.eventsService.getPastEvents().then(result => {
       this.pastEvents = result;
-      console.log('past: ', this.pastEvents);
       this.isLoading = false;
+      this.handlerRefresher(refresher);
     }, error => {
+      this.handlerRefresher(refresher);
       this.isLoading = false;
     });
   }
 
-  loadMyEvents() {
-    this.isLoading = true;
+  loadMyEvents(refresher = null) {
+    this.isLoading = refresher ? false : true;
     this.eventsService.getMyEvents().then(result => {
       this.myEvents = result;
       this.isLoading = false;
+      this.handlerRefresher(refresher);
     }, error => {
       this.isLoading = false;
+      this.handlerRefresher(refresher);
     });
   }
 
+  doRefresh(refresher) {
+    switch (this.selectedSegment) {
+      case this.segments.MY_EVENTS:
+        this.loadMyEvents(refresher);
+        break;
+      case this.segments.PAST_EVENTS:
+        this.loadPastEvents(refresher);
+        break;
+      case this.segments.CURRENT_EVENT:
+        this.loadCurrentEvent(refresher);
+        break;
+    }
+  }
+
+  handlerRefresher(refresher) {
+    if (refresher) {
+      refresher.target.complete();
+    }
+  }
   newEvent() {
     this.modalCtrl.create({
       component: NewEventPage,
     }).then(modalElement => {
       modalElement.present();
       return modalElement.onDidDismiss();
-    }).then(() => {
-      this.loadMyEvents();
+    }).then((result: any) => {
+      if (result.data.success) {
+        this.loadMyEvents();
+      }
     });
   }
 
@@ -104,6 +119,17 @@ export class EventsPage implements OnInit, OnDestroy {
 
   onSegmentChanged(event) {
     this.selectedSegment = event.detail.value;
+    if (this.selectedSegment === this.segments.CURRENT_EVENT) {
+      this.loadCurrentEvent();
+    }
+
+    if (this.selectedSegment === this.segments.MY_EVENTS) {
+      this.loadMyEvents();
+    }
+
+    if (this.selectedSegment === this.segments.PAST_EVENTS) {
+      this.loadPastEvents();
+    }
   }
 
   onSuspended(eventId: string, slidingItem: IonItemSliding) {
@@ -186,6 +212,7 @@ export class EventsPage implements OnInit, OnDestroy {
     });
 
   }
+
   ngOnDestroy() {
     if (this.eventsSub) {
       this.eventsSub.unsubscribe();

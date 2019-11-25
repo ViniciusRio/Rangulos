@@ -22,11 +22,13 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-
-  <div [ngSwitch]="selectedSegment">
-    <div class="ion-text-center ion-padding" *ngIf="isLoading">
-      <ion-spinner color="primary"></ion-spinner>
-    </div>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div class="ion-text-center ion-padding" *ngIf="isLoading">
+    <ion-spinner color="primary"></ion-spinner>
+  </div>
+  <div [ngSwitch]="selectedSegment" *ngIf="!isLoading">
     <div *ngSwitchCase="segments.PAST_EVENTS">
       <ion-list>
         <div *ngIf="!pastEvents || pastEvents.length <= 0">

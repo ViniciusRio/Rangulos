@@ -8,6 +8,9 @@
 </ion-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="availableEvents($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
   <div class="ion-text-center ion-padding" *ngIf="isLoading">
     <ion-spinner color="primary"></ion-spinner>
   </div>

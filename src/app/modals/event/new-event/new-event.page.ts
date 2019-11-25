@@ -82,7 +82,7 @@ export class NewEventPage implements OnInit {
           .then(() => {
             loadingEl.dismiss();
             this.form.reset();
-            this.modalCtrl.dismiss(null, 'event created');
+            this.modalCtrl.dismiss({ success: true });
           }, () => {
             loadingEl.dismiss();
             this.alertCtrl.create({
@@ -92,7 +92,7 @@ export class NewEventPage implements OnInit {
                 {
                   text: 'OK',
                   handler: () => {
-                    this.navCtrl.pop();
+                    this.modalCtrl.dismiss({ success: false });
                   }
                 }
               ]
@@ -104,7 +104,7 @@ export class NewEventPage implements OnInit {
   }
 
   onModalDismiss() {
-    this.modalCtrl.dismiss(null, 'cancel');
+    this.modalCtrl.dismiss({ success: false });
   }
 
 }

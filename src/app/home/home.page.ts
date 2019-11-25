@@ -14,22 +14,29 @@ export class HomePage implements OnInit, OnDestroy {
 
   constructor(
     private eventsService: EventsService,
-    ) { }
+  ) { }
 
-  ngOnInit() {
+  ngOnInit() { }
+
+  handlerRefresher(refresher) {
+    if (refresher) {
+      refresher.target.complete();
     }
-
-  ionViewWillEnter() {
-   this.availableEvents();
   }
 
-  availableEvents() {
-    this.isLoading = true;
+  ionViewWillEnter() {
+    this.availableEvents();
+  }
+
+  availableEvents(refresher = null) {
+    this.isLoading = !refresher;
     this.eventsService.fetchEvent().then(result => {
       this.loadEvents = result;
       console.log('home events: ', this.loadEvents);
       this.isLoading = false;
+      this.handlerRefresher(refresher);
     }, error => {
+      this.handlerRefresher(refresher);
       this.loadEvents = [];
       this.isLoading = false;
     });
