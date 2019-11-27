@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="tertiary">
     <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+      <ion-back-button defaultHref="/tabs/events"></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="primary" *ngIf="loadedEvent && loadedEvent.is_owner">
       <ion-button (click)="editEvent()">
@@ -73,7 +73,7 @@
   </ion-card>
   <ion-grid *ngIf="loadedEvent" class="ion-padding-horizontal">
     <ion-row>
-      <ion-col *ngIf="!isEventEnded() && !loadedEvent.is_owner && loadedEvent.is_guest">
+      <ion-col *ngIf="!isEventEnded() && !loadedEvent.is_owner && loadedEvent.is_guest && !loadedEvent.is_paid">
         <ion-button color="success" (click)="onPayEvent()" expand="block">
           Pagar
         </ion-button>
@@ -83,6 +83,11 @@
           Excluir evento
         </ion-button>
       </ion-col>
+      <ion-col *ngIf="!loadedEvent.is_guest && !isEventEnded()">
+        <ion-button (click)="onDeleteCurrent()" expand="block" color="danger">
+          Não ir mais
+        </ion-button>
+      </ion-col>
       <ion-col *ngIf="!isEventEnded() && !loadedEvent.is_owner && !loadedEvent.is_guest">
         <ion-button (click)="onEnsureInvitation()" expand="block" color="primary" *ngIf="!loadedEvent.is_owner">
           Garantir convite
@@ -90,11 +95,11 @@
       </ion-col>
     </ion-row>
   </ion-grid>
-  <ion-card *ngIf="isEventEnded() && !loadedEvent.is_owner">
+  <ion-card *ngIf="isEventEnded() && loadedEvent.is_paid">
     <ion-card-content>
       <ion-item>
-        <ion-label>Avaliação</ion-label>
-        <ion-select okText="confirmar" cancelText="cancelar" (ionChange)="onRate($event)">]
+        <ion-label>Nota: {{ loadedEvent.rate ? loadedEvent.rate : 'Avaliação'  }}</ion-label>
+        <ion-select okText="confirmar" cancelText="cancelar" (ionChange)="onRate($event)">
           <ion-select-option value="1">1 estrela</ion-select-option>
           <ion-select-option value="2">2 estrelas</ion-select-option>
           <ion-select-option value="3">3 estrelas</ion-select-option>

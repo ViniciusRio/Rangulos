@@ -1,4 +1,4 @@
-import { NewEventPage } from './../modals/event/new-event/new-event.page';
+import { NewEventPage } from '../events/new-event/new-event.page';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IonItemSliding, AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { Router } from '@angular/router';
@@ -41,7 +41,21 @@ export class EventsPage implements OnInit, OnDestroy {
   }
 
   ionViewWillEnter() {
-    this.loadMyEvents();
+    console.log('will enter');
+    this.loadPastEvents();
+    this.doRefresh(null);
+  }
+
+  ionViewDidEnter() {
+    console.log('did enter');
+  }
+
+  ionViewWillLeave() {
+    console.log('will leave');
+  }
+
+  ionViewDidLeave() {
+    console.log('Did leave');
   }
 
   loadCurrentEvent(refresher = null) {

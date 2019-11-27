@@ -7,7 +7,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { EventDetailPage } from './event-detail.page';
-import { NavigateBackDirective } from './navigate-back.directive';
 
 const routes: Routes = [
   {
@@ -24,7 +23,7 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [EventDetailPage, EditEventComponent, NavigateBackDirective],
+  declarations: [EventDetailPage, EditEventComponent],
   entryComponents: [EditEventComponent]
 })
 export class EventDetailPageModule {}

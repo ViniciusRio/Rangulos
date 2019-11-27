@@ -27,23 +27,24 @@ export class EventDetailPage implements OnInit {
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private formBuilder: FormBuilder,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private router: Router
   ) { }
 
-  ngOnInit() {
-    console.log('init');
+  ngOnInit() {}
+
+  ionViewWillEnter() {
     this.activedRoute.paramMap.subscribe(paramMap => {
       if (!paramMap.has('id')) {
         this.navCtrl.navigateBack('/home');
         return;
       }
+      console.log(this.getEvent(paramMap.get('id')));
       this.getEvent(paramMap.get('id'));
     });
 
     this.formGroup();
   }
-
-
   editEvent() {
     this.modalCtrl.create({
       component: EditEventComponent,
@@ -51,7 +52,7 @@ export class EventDetailPage implements OnInit {
     }).then(modalElement => {
       modalElement.onDidDismiss().then((result: any) => {
         console.log('RESULT', result.data);
-        if (result.data && result.data.success ) {
+        if (result.data && result.data.success) {
           this.loadedEvent = result.data.event;
           this.eventService.fetchEvent();
         }
@@ -64,6 +65,7 @@ export class EventDetailPage implements OnInit {
     this.isLoading = true;
     this.eventService.getEvent(id).then(event => {
       this.loadedEvent = event;
+      console.log('get event', this.loadedEvent);
       if (this.loadedEvent.url_image) {
         this.getImage();
       }
@@ -144,7 +146,7 @@ export class EventDetailPage implements OnInit {
   onPayEvent() {
     this.alertCtrl.create({
       header: 'Pagando evento',
-      subHeader: 'Realmente pagar?',
+      subHeader: 'Realmente pagar? Aparecerá em Eventos Atuais',
       buttons: [
         {
           text: 'Cancelar',
@@ -160,7 +162,7 @@ export class EventDetailPage implements OnInit {
               console.log('lodedevent: ', this.loadedEvent);
               this.eventService.payEvent(this.loadedEvent.id).then(() => {
                 loadingElement.dismiss();
-                this.navCtrl.pop();
+                this.router.navigate(['/tabs/events']);
               }, () => {
                 loadingElement.dismiss();
               });
@@ -205,7 +207,9 @@ export class EventDetailPage implements OnInit {
               message: 'Deletando...'
             }).then(loadingElement => {
               loadingElement.present();
+              console.log(this.loadedEvent);
               this.eventService.forceDelete(this.loadedEvent.id).then(() => {
+                this.router.navigate(['/tabs/events']);
                 loadingElement.dismiss();
               }, () => {
                 loadingElement.dismiss();
@@ -216,7 +220,7 @@ export class EventDetailPage implements OnInit {
                     {
                       text: 'OK',
                       handler: () => {
-                        this.navCtrl.pop();
+                        this.router.navigate(['/tabs/events']);
                       }
                     }
                   ]
@@ -281,10 +285,10 @@ export class EventDetailPage implements OnInit {
     });
   }
 
-  onDeleteCurrent(id: string) {
+  onDeleteCurrent() {
     this.alertCtrl.create({
-      header: 'Tem certeza disso?',
-      subHeader: 'A ação não poderá ser desfeita',
+      header: 'Não ir mais ao evento?',
+      subHeader: 'Deixará de ser convidado deste evento',
       buttons: [
         {
           text: 'Cancelar',
@@ -297,9 +301,9 @@ export class EventDetailPage implements OnInit {
               message: 'Removendo...'
             }).then(loadingElement => {
               loadingElement.present();
-              this.eventService.deleteGuest(id).then(() => {
+              this.eventService.deleteGuest(this.loadedEvent.id).then(() => {
                 loadingElement.dismiss();
-                this.navCtrl.pop();
+                this.navCtrl.navigateForward('/tabs/events');
               });
             });
           }
@@ -316,7 +320,7 @@ export class EventDetailPage implements OnInit {
     }
     let end_date = moment(this.loadedEvent.end_date);
     let now = moment();
-
+    console.log('event end', end_date.diff(now, 'minutes') < 0);
     return end_date.diff(now, 'minutes') < 0;
   }
 }
