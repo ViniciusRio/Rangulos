@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { EventsPage } from './events.page';
-import { NewEventPage } from '../modals/event/new-event/new-event.page';
 import { ReactiveFormsModule } from '@angular/forms';
 
 
@@ -23,7 +22,7 @@ const routes: Routes = [
     IonicModule,
     RouterModule.forChild(routes)
   ],
-  declarations: [EventsPage, NewEventPage],
-  entryComponents: [NewEventPage]
+  declarations: [EventsPage],
+  entryComponents: []
 })
 export class EventsPageModule {}

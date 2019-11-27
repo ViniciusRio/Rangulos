@@ -1,9 +1,9 @@
-import { Event } from '../../../events/event.model';
+import { Router } from '@angular/router';
+import { Event } from '../../events/event.model';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { LoadingController, AlertController, NavController, ModalController } from '@ionic/angular';
-import { EventsService } from '../../../events/events.service';
-import { Router } from '@angular/router';
+import { LoadingController, AlertController, ModalController, NavController } from '@ionic/angular';
+import { EventsService } from '../../events/events.service';
 
 @Component({
   selector: 'app-new-event',
@@ -15,11 +15,10 @@ export class NewEventPage implements OnInit {
   constructor(
     private loadingCtrl: LoadingController,
     private eventsService: EventsService,
-    private router: Router,
     private alertCtrl: AlertController,
-    private navCtrl: NavController,
-    private modalCtrl: ModalController
-  ) { }
+    private modalCtrl: ModalController,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.form = new FormGroup({
@@ -79,10 +78,10 @@ export class NewEventPage implements OnInit {
         console.log('NOVO EVENTO: ', newEvent);
         this.eventsService
           .addEvent(newEvent)
-          .then(() => {
+          .then((result: any) => {
             loadingEl.dismiss();
             this.form.reset();
-            this.modalCtrl.dismiss({ success: true });
+            this.router.navigate(['/events/' + result.id ], { replaceUrl: true });
           }, () => {
             loadingEl.dismiss();
             this.alertCtrl.create({
@@ -92,7 +91,7 @@ export class NewEventPage implements OnInit {
                 {
                   text: 'OK',
                   handler: () => {
-                    this.modalCtrl.dismiss({ success: false });
+                    this.router.navigate(['/tabs/events']);
                   }
                 }
               ]

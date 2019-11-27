@@ -10,6 +10,12 @@ const routes: Routes = [
     canLoad: [AuthGuard]
 
   },
+  {
+    path: 'new-event',
+    loadChildren: './events/new-event/new-event.module#NewEventPageModule',
+    canLoad: [AuthGuard]
+
+  },
   { path: 'auth', loadChildren: './auth/auth.module#AuthPageModule' },
   { path: 'tabs', loadChildren: './tabs/tabs.module#TabsPageModule' },
   { path: 'register', loadChildren: './register/register.module#RegisterPageModule' },

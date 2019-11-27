@@ -2,9 +2,7 @@
   <ion-toolbar color="tertiary">
     <ion-title>Novo evento</ion-title>
     <ion-buttons slot="start">
-      <ion-button (click)="onModalDismiss()">
-        <ion-icon name=close></ion-icon>
-      </ion-button>
+      <ion-back-button></ion-back-button>
     </ion-buttons>
     <ion-buttons slot="primary">
       <ion-button (click)="onCreateEvent()" [disabled]="form.invalid">
@@ -103,7 +101,7 @@
                 <ion-item>
                     <ion-label position="floating">Inicío do evento</ion-label>
                   <ion-datetime
-                  displayFormat="DD MMM, YYYY HH:mm"
+                  displayFormat="DD MMM, YYYY HH:mmZ"
                   minuteValues="0, 15, 30, 45"
                   formControlName="startDate"
                   >
@@ -123,7 +121,7 @@
                 <ion-item>
                     <ion-label position="floating">Fim do evento</ion-label>
                   <ion-datetime
-                  displayFormat="DD MMM, YYYY HH:mm"
+                  displayFormat="DD MMM, YYYY HH:mmZ"
                   minuteValues="0, 15, 30, 45"
                   formControlName="endDate"
                   >
