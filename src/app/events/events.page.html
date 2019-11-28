@@ -44,10 +44,11 @@
         <ion-item *ngFor="let pastEvent of pastEvents" [routerLink]="['/events/', pastEvent.event_id]">
           <ion-label>
             <div class="events-details">
-              <ion-icon name="calendar" color="primary"></ion-icon>
-              <ion-text color="tertiary" class="space-left">
-                {{ pastEvent.start_date | date }}
-              </ion-text>
+                <div class="events-details">
+                    <ion-text color="tertiary" class="space-left">
+                      {{ pastEvent.title }}
+                    </ion-text>
+                  </div>
             </div>
             <p>
               <b>R${{ pastEvent.price }}</b> -

@@ -74,6 +74,7 @@ export class EventsPage implements OnInit, OnDestroy {
   loadPastEvents(refresher = null) {
     this.isLoading = refresher ? false : true;
     this.eventsService.getPastEvents().then(result => {
+      console.log('pasts', result);
       this.pastEvents = result;
       this.isLoading = false;
       this.handlerRefresher(refresher);
@@ -86,6 +87,7 @@ export class EventsPage implements OnInit, OnDestroy {
   loadMyEvents(refresher = null) {
     this.isLoading = refresher ? false : true;
     this.eventsService.getMyEvents().then(result => {
+      console.log('my', result);
       this.myEvents = result;
       this.isLoading = false;
       this.handlerRefresher(refresher);

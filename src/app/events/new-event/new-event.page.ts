@@ -12,6 +12,7 @@ import { EventsService } from '../../events/events.service';
 })
 export class NewEventPage implements OnInit {
   form: FormGroup;
+  
   constructor(
     private loadingCtrl: LoadingController,
     private eventsService: EventsService,
@@ -70,8 +71,8 @@ export class NewEventPage implements OnInit {
           this.form.value.address,
           this.form.value.price,
           this.form.value.maxGuests,
-          new Date(this.form.value.startDate),
-          new Date(this.form.value.endDate),
+          this.form.value.startDate,
+          this.form.value.endDate,
           null,
           null
         );
