@@ -84,9 +84,9 @@ export class AuthPage implements OnInit {
               ]
             }).then(alertCtrlError => {
               alertCtrlError.present();
+              loadingEl.dismiss();
             });
           });
-
         });
     } else {
       this.authService.register(credentials);
