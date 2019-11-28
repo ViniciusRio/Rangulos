@@ -24,6 +24,10 @@ export class RegisterPage implements OnInit {
   }
 
   onCreateAccount(form: NgForm) {
+    if (!form.valid) {
+      return;
+    }
+
     const credentials = {
       name: form.value.name,
       email: form.value.email,

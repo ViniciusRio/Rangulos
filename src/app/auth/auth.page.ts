@@ -52,9 +52,6 @@ export class AuthPage implements OnInit {
     this.authService.logout();
   }
 
-  onSwitchAuthMode() {
-    this.isLogin = !this.isLogin;
-  }
 
   onSubmit(form: NgForm) {
     if (!form.valid) {

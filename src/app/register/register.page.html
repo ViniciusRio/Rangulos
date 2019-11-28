@@ -7,11 +7,16 @@
       <ion-list>
           <ion-item color="white">
               <ion-label position="floating">Nome</ion-label>
-              <ion-input type="text" ngModel name="name" required email #nomeCtrl="ngModel"></ion-input>
+              <ion-input type="text" ngModel name="name" required #nameCtrl="ngModel"></ion-input>
+            </ion-item>
+            <ion-item color="white" *ngIf="!nameCtrl.valid && nameCtrl.touched" lines="none">
+              <ion-badge>
+                Nome obrigatório
+              </ion-badge>
             </ion-item>
         <ion-item color="white">
           <ion-label position="floating">Email</ion-label>
-          <ion-input type="email" ngModel name="email" required email #emailCtrl="ngModel"></ion-input>
+          <ion-input type="email" ngModel name="email" required #emailCtrl="ngModel"></ion-input>
         </ion-item>
         <ion-item color="white" *ngIf="!emailCtrl.valid && emailCtrl.touched" lines="none">
           <ion-badge>
@@ -30,7 +35,7 @@
         </ion-item>
       </ion-list>
       <ion-card-content>
-        <ion-button type="submit" color="primary" (click)="onCreateAccount(f)" expand="block">
+        <ion-button type="submit" color="primary" (click)="onCreateAccount(f)" expand="block" [disabled]="!f.valid">
           Criar conta
         </ion-button>
       </ion-card-content>
