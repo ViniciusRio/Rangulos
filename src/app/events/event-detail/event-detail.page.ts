@@ -53,8 +53,13 @@ export class EventDetailPage implements OnInit {
       modalElement.onDidDismiss().then((result: any) => {
         console.log('RESULT', result.data);
         if (result.data && result.data.success) {
-          this.loadedEvent = result.data.event;
-          this.eventService.fetchEvent();
+          this.loadedEvent.title = result.data.event.title;
+          this.loadedEvent.about = result.data.event.about;
+          this.loadedEvent.address = result.data.event.address;
+          this.loadedEvent.price = result.data.event.price;
+          this.loadedEvent.max_guests = result.data.event.max_guests;
+          this.loadedEvent.start_envent = result.data.event.start_event;
+          this.loadedEvent.end_envent = result.data.event.end_envent;
         }
       });
       modalElement.present();
@@ -71,7 +76,7 @@ export class EventDetailPage implements OnInit {
       }
       console.log('detail', this.loadedEvent);
       this.startHour = moment(this.loadedEvent.start_date).format('HH:mm');
-      this.endHour = moment(this.loadedEvent.endHour).format('HH:mm');
+      this.endHour = moment(this.loadedEvent.end_date).format('HH:mm');
       this.isLoading = false;
     });
   }
@@ -104,38 +109,45 @@ export class EventDetailPage implements OnInit {
   }
 
   onEnsureInvitation() {
-    this.alertCtrl.create({
-      header: 'Garantir Convite?',
-      subHeader: 'Será mostrado em Eventos Atuais.',
-      buttons: [{
-        text: 'Cancelar',
-        role: 'cancel'
-      }, {
-        text: 'Confirmar',
-        handler: () => {
-          this.eventService.ensureInvitation(this.loadedEvent.id).then(() => {
-            this.getEvent(this.loadedEvent.id);
-          }, () => {
-            this.alertCtrl.create({
-              header: 'Não foi possível adquirir convite',
-              subHeader: 'Tente novamente',
-              buttons: [
-                {
-                  text: 'OK',
-                  handler: () => {
-                    this.navCtrl.navigateForward('/home/events');
+    this.loadingCtrl.create({
+      message: 'Garantindo Evento...'
+    }).then(loadingElement => {
+      this.alertCtrl.create({
+        header: 'Garantir Convite?',
+        subHeader: 'Será mostrado em Eventos Atuais.',
+        buttons: [{
+          text: 'Cancelar',
+          role: 'cancel'
+        }, {
+          text: 'Confirmar',
+          handler: () => {
+            this.eventService.ensureInvitation(this.loadedEvent.id).then(() => {
+              loadingElement.present();
+              this.getEvent(this.loadedEvent.id);
+              loadingElement.dismiss();
+            }, () => {
+              this.alertCtrl.create({
+                header: 'Não foi possível adquirir convite',
+                subHeader: 'Tente novamente',
+                buttons: [
+                  {
+                    text: 'OK',
+                    handler: () => {
+                      loadingElement.dismiss();
+                      this.navCtrl.navigateForward('/home/events');
+                    }
                   }
-                }
-              ]
-            }).then(alertElementError => {
-              alertElementError.present();
+                ]
+              }).then(alertElementError => {
+                alertElementError.present();
+              });
             });
-          });
+          }
         }
-      }
-      ]
-    }).then(alertElement => {
-      alertElement.present();
+        ]
+      }).then(alertElement => {
+        alertElement.present();
+      });
     });
   }
 
