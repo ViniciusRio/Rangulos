@@ -16,7 +16,6 @@ export class EditEventComponent implements OnInit {
 
   constructor(
     private eventsService: EventsService,
-    private navCtrl: NavController,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private modalCtrl: ModalController,

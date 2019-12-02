@@ -79,7 +79,7 @@ export class AppComponent {
         loadingElement.dismiss();
         localStorage.removeItem('token');
         localStorage.clear();
-        this.router.navigate(['/auth']);
+        this.router.navigate(['/auth'], { replaceUrl: true });
       });
     });
   }

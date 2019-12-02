@@ -70,7 +70,7 @@ export class AuthPage implements OnInit {
           loadingEl.present();
           this.authService.login(credentials).then(() => {
             this.event.publish('login');
-            this.router.navigateByUrl('/home');
+            this.router.navigate(['/home'], { replaceUrl: true });
             loadingEl.dismiss();
           }, error => {
             this.alertCtrl.create({

@@ -13,27 +13,7 @@ const routes: Routes = [
     path: 'tabs',
     component: TabsPage,
     children: [
-      {
-        path: 'home',
-        children: [
-          {
-            path: '',
-            loadChildren: '../home/home.module#HomePageModule',
-            canLoad: [AuthGuard]
-          },
-        ]
-      },
-      {
-        path: 'events',
-        children: [
-          {
-            path: '',
-            loadChildren: '../events/events.module#EventsPageModule',
-            canLoad: [AuthGuard]
-          },
-        ]
-      },
-      { path: 'profile', loadChildren: '../profile/profile.module#ProfilePageModule', canLoad: [AuthGuard]},
+      { path: 'profile', loadChildren: '../profile/profile.module#ProfilePageModule', canLoad: [AuthGuard] },
     ]
   },
   {
@@ -52,4 +32,4 @@ const routes: Routes = [
   ],
   declarations: [TabsPage]
 })
-export class TabsPageModule {}
+export class TabsPageModule { }
