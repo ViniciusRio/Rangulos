@@ -3,7 +3,27 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './auth/auth.guard';
 
 const routes: Routes = [
-  { path: '', loadChildren: './tabs/tabs.module#TabsPageModule' },
+  { path: '', loadChildren: './home/home.module#HomePageModule' },
+  {
+    path: 'home',
+    children: [
+      {
+        path: '',
+        loadChildren: './home/home.module#HomePageModule',
+        canLoad: [AuthGuard]
+      },
+    ]
+  },
+  {
+    path: 'events',
+    children: [
+      {
+        path: '',
+        loadChildren: './events/events.module#EventsPageModule',
+        canLoad: [AuthGuard]
+      },
+    ]
+  },
   {
     path: 'events/:id',
     loadChildren: './events/event-detail/event-detail.module#EventDetailPageModule',
