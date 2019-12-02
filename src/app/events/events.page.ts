@@ -1,7 +1,7 @@
 import { NewEventPage } from '../events/new-event/new-event.page';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { IonItemSliding, AlertController, LoadingController, ModalController } from '@ionic/angular';
-import { Router } from '@angular/router';
+import { IonItemSliding, AlertController, LoadingController, ModalController, NavParams } from '@ionic/angular';
+import { Router, ActivatedRoute } from '@angular/router';
 import { EventsService } from './events.service';
 import { Event } from './event.model';
 import { Subscription } from 'rxjs';
@@ -33,15 +33,25 @@ export class EventsPage implements OnInit, OnDestroy {
     private eventsService: EventsService,
     private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
-    private modalCtrl: ModalController
-  ) { }
+    private modalCtrl: ModalController,
+    private route: ActivatedRoute
+  ) {
+    this.route.paramMap.subscribe((paramsAsMap: any) => {
+      const params = paramsAsMap.params;
+      console.log(params);
+
+      if (params && params.segment) {
+        this.selectedSegment = params.segment;
+
+      }
+    });
+  }
 
   ngOnInit() {
 
   }
 
   ionViewWillEnter() {
-    console.log('will enter');
     this.loadPastEvents();
     this.doRefresh(null);
   }
