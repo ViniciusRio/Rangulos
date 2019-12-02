@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
-import { LoadingController, AlertController } from '@ionic/angular';
+import { LoadingController, AlertController, Events } from '@ionic/angular';
 import { NgForm } from '@angular/forms';
 
 @Component({
@@ -17,7 +17,8 @@ export class AuthPage implements OnInit {
     private authService: AuthService,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
-  ) { }
+    public event: Events
+  ) {  }
 
   ngOnInit() {
   }
@@ -68,7 +69,8 @@ export class AuthPage implements OnInit {
         .then(loadingEl => {
           loadingEl.present();
           this.authService.login(credentials).then(() => {
-            this.router.navigateByUrl('/tabs/home');
+            this.event.publish('login');
+            this.router.navigateByUrl('/home');
             loadingEl.dismiss();
           }, error => {
             this.alertCtrl.create({
