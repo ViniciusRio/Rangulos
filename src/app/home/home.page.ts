@@ -32,7 +32,6 @@ export class HomePage implements OnInit, OnDestroy {
     this.isLoading = !refresher;
     this.eventsService.fetchEvent().then(result => {
       this.loadEvents = result;
-      console.log('home events: ', this.loadEvents);
       this.isLoading = false;
       this.handlerRefresher(refresher);
     }, error => {

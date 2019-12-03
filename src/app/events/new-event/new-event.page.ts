@@ -76,7 +76,6 @@ export class NewEventPage implements OnInit {
           null,
           null
         );
-        console.log('NOVO EVENTO: ', newEvent);
         this.eventsService
           .addEvent(newEvent)
           .then((result: any) => {
@@ -92,7 +91,7 @@ export class NewEventPage implements OnInit {
                 {
                   text: 'OK',
                   handler: () => {
-                    this.router.navigate(['/tabs/events']);
+                    this.router.navigate(['/events']);
                   }
                 }
               ]

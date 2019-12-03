@@ -24,7 +24,6 @@ export class ProfilePage implements OnInit {
 
   ionViewDidEnter() {
     this.loadUser();
-    console.log('did enter');
   }
 
   loadUser() {

@@ -83,7 +83,6 @@ export class EditEventComponent implements OnInit {
     this.loadingCtrl.create({
       message: 'Atualizando evento...'
     }).then(loadingEvent => {
-      console.log('ID EVENTO', this.event.id);
       loadingEvent.present();
 
       const event = {
@@ -100,7 +99,6 @@ export class EditEventComponent implements OnInit {
       this.eventsService.updateEvent(event).then(() => {
         this.loadingCtrl.dismiss();
         this.modalCtrl.dismiss({ success: true, event });
-        console.log('update event');
       }, () => {
         loadingEvent.dismiss();
         this.alertCtrl.create({

@@ -103,7 +103,6 @@ export class EventsService {
   }
 
   updateEvent(event) {
-    console.log('update event id: ', event.id);
     const url = `${environment.urlApi}/event/${event.id}`;
     const params = {
       token: localStorage.getItem('token')
