@@ -37,7 +37,6 @@ const routes: Routes = [
 
   },
   { path: 'auth', loadChildren: './auth/auth.module#AuthPageModule' },
-  { path: 'tabs', loadChildren: './tabs/tabs.module#TabsPageModule' },
   { path: 'register', loadChildren: './register/register.module#RegisterPageModule' },
 ];
 
