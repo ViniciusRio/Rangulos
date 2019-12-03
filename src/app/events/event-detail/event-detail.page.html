@@ -68,13 +68,27 @@
         <ion-icon name="person" slot="end"></ion-icon>
         <ion-label>
           <p>Anfitrião</p>
-          <h2>{{ loadedEvent.owner }}</h2>
+          <h2>{{ loadedEvent.user_creator.name }}</h2>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ion-card>
+  <ion-card *ngIf="loadedEvent && loadedEvent.guests && loadedEvent.is_owner">
+    <ion-card-header>
+      <ion-card-subtitle>Convidados</ion-card-subtitle>
+    </ion-card-header>
+    <ion-list>
+      <ion-item *ngFor="let guest of loadedEvent.guests">
+        <ion-badge slot="end" color="success" >Pago</ion-badge>
+        <ion-label>
+          <h2>{{ guest.name }}</h2>
+          <p>{{ guest.email }}</p>
         </ion-label>
       </ion-item>
     </ion-list>
   </ion-card>
   <ion-grid *ngIf="loadedEvent" class="ion-padding-horizontal">
-    <ion-card *ngIf="loadedEvent.is_paid">
+    <ion-card *ngIf="loadedEvent.is_paid && !loadedEvent.is_owner">
       <ion-card-content>
         <ion-item>
           <ion-label>Avaliação: {{ loadedEvent.rate ? loadedEvent.rate  : ''  }}</ion-label>
@@ -88,6 +102,7 @@
         </ion-item>
       </ion-card-content>
     </ion-card>
+   
     <ion-row>
       <ion-col *ngIf="!isEventEnded() && !loadedEvent.is_owner && loadedEvent.is_guest && !loadedEvent.is_paid">
         <ion-button color="success" (click)="onPayEvent()" expand="block">

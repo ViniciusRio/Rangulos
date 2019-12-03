@@ -39,7 +39,6 @@ export class EventDetailPage implements OnInit {
         this.navCtrl.navigateBack('/home');
         return;
       }
-      console.log(this.getEvent(paramMap.get('id')));
       this.getEvent(paramMap.get('id'));
     });
 
@@ -51,7 +50,6 @@ export class EventDetailPage implements OnInit {
       componentProps: { id: this.loadedEvent.id }
     }).then(modalElement => {
       modalElement.onDidDismiss().then((result: any) => {
-        console.log('RESULT', result.data);
         if (result.data && result.data.success) {
           this.loadedEvent.title = result.data.event.title;
           this.loadedEvent.about = result.data.event.about;
@@ -68,13 +66,11 @@ export class EventDetailPage implements OnInit {
 
   getEvent(id) {
     this.isLoading = true;
-    this.eventService.getEvent(id).then(event => {
+    this.eventService.getEvent(id).then((event: any) => {
       this.loadedEvent = event;
-      console.log('get event', this.loadedEvent);
       if (this.loadedEvent.url_image) {
         this.getImage();
       }
-      console.log('detail', this.loadedEvent);
       this.startHour = moment(this.loadedEvent.start_date).format('HH:mm');
       this.endHour = moment(this.loadedEvent.end_date).format('HH:mm');
       this.isLoading = false;
@@ -89,7 +85,6 @@ export class EventDetailPage implements OnInit {
     this.uploadForm = this.formBuilder.group({
       file: ['']
     });
-    console.log('formGroup');
   }
 
   onFileAdded(event) {
@@ -171,10 +166,9 @@ export class EventDetailPage implements OnInit {
               message: 'Pagando..'
             }).then(loadingElement => {
               loadingElement.present();
-              console.log('lodedevent: ', this.loadedEvent);
               this.eventService.payEvent(this.loadedEvent.id).then(() => {
                 loadingElement.dismiss();
-                this.router.navigate(['/tabs/events']);
+                this.router.navigate(['/events']);
               }, () => {
                 loadingElement.dismiss();
               });
@@ -206,10 +200,7 @@ export class EventDetailPage implements OnInit {
       buttons: [
         {
           text: 'Cancelar',
-          role: 'cancel',
-          handler: () => {
-            console.log('cancelar');
-          }
+          role: 'cancel'
         },
         {
           text: 'Excluir',
@@ -219,9 +210,8 @@ export class EventDetailPage implements OnInit {
               message: 'Deletando...'
             }).then(loadingElement => {
               loadingElement.present();
-              console.log(this.loadedEvent);
               this.eventService.forceDelete(this.loadedEvent.id).then(() => {
-                this.router.navigate(['/tabs/events']);
+                this.router.navigate(['/events']);
                 loadingElement.dismiss();
               }, () => {
                 loadingElement.dismiss();
@@ -232,7 +222,7 @@ export class EventDetailPage implements OnInit {
                     {
                       text: 'OK',
                       handler: () => {
-                        this.router.navigate(['/tabs/events']);
+                        this.router.navigate(['/events']);
                       }
                     }
                   ]
@@ -256,10 +246,7 @@ export class EventDetailPage implements OnInit {
       buttons: [
         {
           text: 'Cancelar',
-          role: 'cancel',
-          handler: () => {
-            console.log('cancelar');
-          }
+          role: 'cancel'
         },
         {
           text: 'Excluir',
@@ -315,7 +302,7 @@ export class EventDetailPage implements OnInit {
               loadingElement.present();
               this.eventService.deleteGuest(this.loadedEvent.id).then(() => {
                 loadingElement.dismiss();
-                this.navCtrl.navigateForward('/tabs/events');
+                this.navCtrl.navigateForward('/events');
               });
             });
           }
@@ -332,7 +319,6 @@ export class EventDetailPage implements OnInit {
     }
     let end_date = moment(this.loadedEvent.end_date);
     let now = moment();
-    console.log('event end', end_date.diff(now, 'minutes') < 0);
     return end_date.diff(now, 'minutes') < 0;
   }
 }
