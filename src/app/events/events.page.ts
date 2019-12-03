@@ -38,7 +38,6 @@ export class EventsPage implements OnInit, OnDestroy {
   ) {
     this.route.paramMap.subscribe((paramsAsMap: any) => {
       const params = paramsAsMap.params;
-      console.log(params);
 
       if (params && params.segment) {
         this.selectedSegment = params.segment;
@@ -56,22 +55,10 @@ export class EventsPage implements OnInit, OnDestroy {
     this.doRefresh(null);
   }
 
-  ionViewDidEnter() {
-    console.log('did enter');
-  }
-
-  ionViewWillLeave() {
-    console.log('will leave');
-  }
-
-  ionViewDidLeave() {
-    console.log('Did leave');
-  }
 
   loadCurrentEvent(refresher = null) {
     this.isLoading = refresher ? false : true;
     this.eventsService.getCurrentEvents().then(result => {
-      console.log('currents', result);
       this.currentEvent = result;
       this.isLoading = false;
       this.handlerRefresher(refresher);
@@ -84,8 +71,8 @@ export class EventsPage implements OnInit, OnDestroy {
   loadPastEvents(refresher = null) {
     this.isLoading = refresher ? false : true;
     this.eventsService.getPastEvents().then(result => {
-      console.log('pasts', result);
       this.pastEvents = result;
+      console.log('past events', this.pastEvents);
       this.isLoading = false;
       this.handlerRefresher(refresher);
     }, error => {
@@ -97,7 +84,6 @@ export class EventsPage implements OnInit, OnDestroy {
   loadMyEvents(refresher = null) {
     this.isLoading = refresher ? false : true;
     this.eventsService.getMyEvents().then(result => {
-      console.log('my', result);
       this.myEvents = result;
       this.isLoading = false;
       this.handlerRefresher(refresher);
@@ -168,7 +154,6 @@ export class EventsPage implements OnInit, OnDestroy {
           text: 'Cancelar',
           role: 'cancel',
           handler: () => {
-            console.log('cancelar');
           }
         },
         {
@@ -191,7 +176,7 @@ export class EventsPage implements OnInit, OnDestroy {
                     {
                       text: 'OK',
                       handler: () => {
-                        this.router.navigateByUrl('/tabs/events');
+                        this.router.navigateByUrl('/events');
                       }
                     }
                   ]
