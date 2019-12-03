@@ -38,10 +38,10 @@
             </ion-label>
           </ion-item>
           <div class="ion-text-center ion-margin">
-            <ion-button routerLink="/tabs/home">Procure um evento</ion-button>
+            <ion-button routerLink="/home">Procure um evento</ion-button>
           </div>
         </div>
-        <ion-item *ngFor="let pastEvent of pastEvents" [routerLink]="['/events/', pastEvent.event_id]">
+        <ion-item *ngFor="let pastEvent of pastEvents" [routerLink]="['/events/', pastEvent.id]">
           <ion-label>
             <div class="events-details">
                 <div class="events-details">
@@ -55,6 +55,7 @@
               {{ pastEvent.start_date | date }} até {{ pastEvent.end_date | date }}
             </p>
           </ion-label>
+          <ion-badge slot="end" color="success" *ngIf="pastEvent.payment_confirmed">Pago</ion-badge>
           <ion-thumbnail slot="end" *ngIf="pastEvent.url_image">
             <ion-img [src]="getImage(pastEvent.id)"></ion-img>
           </ion-thumbnail>
@@ -70,7 +71,7 @@
             </ion-label>
           </ion-item>
           <div class="ion-text-center ion-margin">
-            <ion-button routerLink="/tabs/home">Que tal procurar por um?</ion-button>
+            <ion-button routerLink="/home">Que tal procurar por um?</ion-button>
           </div>
         </div>
         <div *ngIf="currentEvent">

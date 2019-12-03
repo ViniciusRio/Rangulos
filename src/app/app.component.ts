@@ -54,7 +54,6 @@ export class AppComponent {
   ) {
     this.initializeApp();
     event.subscribe('login', () => {
-      console.log('SUBSCRIBE');
       this.loadUser();
     });
   }
@@ -64,7 +63,6 @@ export class AppComponent {
       this.profile.name = result.name;
       this.profile.email = result.email;
 
-      console.log('profile: ', this.profile.name, this.profile.email);
     });
   }
 
