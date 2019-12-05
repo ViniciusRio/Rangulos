@@ -31,7 +31,7 @@ const routes: Routes = [
 
   },
   {
-    path: 'new-event',
+    path: 'new',
     loadChildren: './events/new-event/new-event.module#NewEventPageModule',
     canLoad: [AuthGuard]
 
