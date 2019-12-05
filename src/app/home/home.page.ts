@@ -11,6 +11,7 @@ export class HomePage implements OnInit, OnDestroy {
   loadEvents: any;
   private eventsSub: Subscription;
   isLoading = false;
+  query = '';
 
   constructor(
     private eventsService: EventsService,
@@ -30,7 +31,7 @@ export class HomePage implements OnInit, OnDestroy {
 
   availableEvents(refresher = null) {
     this.isLoading = !refresher;
-    this.eventsService.fetchEvent().then(result => {
+    this.eventsService.fetchEvent(this.query).then(result => {
       this.loadEvents = result;
       this.isLoading = false;
       this.handlerRefresher(refresher);
@@ -39,6 +40,12 @@ export class HomePage implements OnInit, OnDestroy {
       this.loadEvents = [];
       this.isLoading = false;
     });
+  }
+
+  filterEvents(event) {
+    this.query = event.detail.value;
+    console.log(this.query);
+    this.availableEvents(null);
   }
 
   getImage(id) {

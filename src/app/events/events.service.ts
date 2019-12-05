@@ -9,9 +9,10 @@ import { HttpClient } from '@angular/common/http';
 export class EventsService {
   constructor(private http: HttpClient) { }
 
-  fetchEvent() {
+  fetchEvent(q = '') {
     const url = `${environment.urlApi}/events`;
     const options = {
+      params: { q },
       headers: {
         Authorization: `Bearer ${localStorage.getItem('token')}`
       }
