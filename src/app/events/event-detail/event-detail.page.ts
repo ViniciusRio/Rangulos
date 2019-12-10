@@ -68,6 +68,7 @@ export class EventDetailPage implements OnInit {
     this.isLoading = true;
     this.eventService.getEvent(id).then((event: any) => {
       this.loadedEvent = event;
+      console.log('get event', this.loadedEvent);
       if (this.loadedEvent.url_image) {
         this.getImage();
       }

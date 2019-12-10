@@ -39,6 +39,7 @@
           </p>
         </ion-label>
         <ion-badge slot="end" color="success" *ngIf="event.payment_confirmed">Pago</ion-badge>
+        <!-- <ion-badge slot="end" color="primary" *ngIf="event.is">Meu evento</ion-badge> -->
         <ion-thumbnail slot="end" *ngIf="event.url_image">
           <ion-img [src]="getImage(event.id)"></ion-img>
         </ion-thumbnail>

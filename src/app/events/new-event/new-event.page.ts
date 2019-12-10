@@ -28,7 +28,7 @@ export class NewEventPage implements OnInit {
         validators: [Validators.required]
       }),
       about: new FormControl(null, {
-        updateOn: 'blur',
+        updateOn: 'change',
         validators: [Validators.required, Validators.maxLength(100)]
       }),
       address: new FormControl(null, {

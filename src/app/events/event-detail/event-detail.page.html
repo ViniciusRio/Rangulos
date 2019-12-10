@@ -87,7 +87,7 @@
       </ion-item>
     </ion-list>
   </ion-card>
-  <ion-card *ngIf="loadedEvent && loadedEvent.is_paid && !loadedEvent.is_owner">
+  <ion-card *ngIf="loadedEvent && loadedEvent.is_paid && !loadedEvent.is_owner && isEventEnded()">
     <ion-card-content>
       <ion-item>
         <ion-label>Avaliação: {{ loadedEvent.rate ? loadedEvent.rate  : ''  }}</ion-label>
