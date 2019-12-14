@@ -106,4 +106,26 @@ export class NewEventPage implements OnInit {
     this.modalCtrl.dismiss({ success: false });
   }
 
+  onFillEvents() {
+    this.alertCtrl.create({
+      header: 'Criar três eventos?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Confirmar',
+          handler: () => {
+            this.eventsService.fillEvents().then(() => {
+              this.router.navigate(['/events']);
+            });
+          }
+        }
+      ]
+    }).then(alertElement => {
+      alertElement.present();
+    });
+  }
+
 }

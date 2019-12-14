@@ -224,6 +224,7 @@ export class EventsPage implements OnInit, OnDestroy {
 
   }
 
+
   ngOnDestroy() {
     if (this.eventsSub) {
       this.eventsSub.unsubscribe();

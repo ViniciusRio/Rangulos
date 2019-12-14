@@ -243,4 +243,21 @@ export class EventsService {
     let time = new Date().getSeconds();
     return `${environment.urlApi}/event/${id}/image?token=${token}&${time}`;
   }
+
+
+  fillEvents() {
+    const url = `${environment.urlApi}/events/fill`;
+    const params = {
+      token: localStorage.getItem('token')
+    };
+
+    return new Promise((resolve, reject) => {
+      this.http.post<any>(url, null, { params }).subscribe((data: any) => {
+        resolve(data);
+      }, (error) => {
+        reject(error);
+      });
+    });
+  }
+
 }
