@@ -3,8 +3,12 @@ Aplicativo que conecta Anfitriões e Convidados em meio a Eventos alimentícios,
 
 # Telas
  *Arte da logo idealizada por Ítalo Felipe*
+<p float="left">
+  <img src="resources/register.png" width="300">
+  <img src="resources/geral.png" width="300">
+</p>
 
-<img src="resources/register.png" width="500">
-<img src="resources/geral.png" width="500">
-<img src="resources/detail-my.png" width="500">
-<img src="resources/my.png" width="500">
+<p float="left">
+ <img src="resources/detail-my.png" width="300">
+<img src="resources/my.png" width="300">
+</p>
