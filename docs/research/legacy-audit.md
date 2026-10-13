@@ -1,6 +1,6 @@
 # Auditoria inicial do aplicativo legado
 
-Escopo: leitura estática do cliente Rangulos no commit `c7b51e1` e da API de primeira parte [ViniciusRio/Rangulos-API](https://github.com/ViniciusRio/Rangulos-API/tree/d118a5e68be386da31c31839a6dd4882c971d84b) no commit `d118a5e` (consultado em 2026-10-13). As referências `src/...` são deste repositório; `API:...` apontam para arquivos do commit vinculado da API. Esta auditoria descreve código e contrato observáveis, sem afirmar que fluxos foram executados com um servidor ativo.
+Escopo: leitura estática do cliente Rangulos no commit `c7b51e1` e da API de primeira parte [ViniciusRio/Rangulos-API](https://github.com/ViniciusRio/Rangulos-API/tree/d118a5e68be386da31c31839a6dd4882c971d84b) no commit `d118a5e` (consultado em 2026-10-13). As referências `src/...` são deste repositório; `API:...` apontam para arquivos do commit vinculado da API. Esta auditoria descreve código e contrato observáveis. Gravidade e impacto abaixo são prioridades de investigação, não confirmação de exploração. Não foram executados testes de integração nem provas de exploração.
 
 ## Comportamento do cliente
 
@@ -30,6 +30,18 @@ Base URL atual: `http://localhost:8081/api` em desenvolvimento **e** produção.
 | `POST /events/fill` | `?token=<JWT>`, corpo `null` | `src/app/events/events.service.ts:248-261`; `API:app/Http/Controllers/EventController.php:84-147` |
 
 A API retorna JWT no login; vários controladores fazem `JWTAuth::parseToken()->toUser()`. O cliente mistura Bearer no cabeçalho (somente na busca) com JWT na query string (demais operações). As rotas da API não declaram middleware `auth`; a autenticação ocorre dentro dos controladores. `API:app/Http/Controllers/AuthController.php:41-52,82-88`; `API:routes/api.php:3-29`; `API:app/Http/Kernel.php:42-45`; `src/app/events/events.service.ts:12-18,30-38`.
+
+## Matriz de riscos para investigação
+
+As gravidades priorizam revisão e testes futuros. Elas não afirmam que um ataque foi realizado ou que o comportamento ocorre em produção.
+
+| Prioridade | Risco | Evidência estática | Impacto potencial | Recomendação |
+| --- | --- | --- | --- | --- |
+| Alta | Autorização de ações sobre eventos no backend | `update`, `destroy`, `restore`, `upload` e `deleteEvent` obtêm usuário autenticado, mas não mostram checagem de propriedade antes da alteração; `update` redefine `user_creator_id`. `API:app/Http/Controllers/EventController.php:197-242,341-366,409-433`. | Se as rotas estiverem acessíveis e não houver proteção em outra camada, um usuário autenticado poderia modificar dados de evento alheio. | Mapear políticas de acesso por ação, aplicá-las no backend e verificar com testes de autorização para proprietário e não proprietário. |
+| Alta | JWT em URLs | O cliente envia `?token=<JWT>` em `/user`, `/logout`, consultas e alterações de eventos; a URL de imagem também contém o token. `src/app/auth/auth.service.ts:47-74`; `src/app/events/events.service.ts:30-245`. | URLs com token podem aparecer em logs de acesso, monitoramento, caches ou compartilhamentos, conforme a infraestrutura usada. | Definir transporte de autenticação fora da URL, revisar registros e caches, e validar a troca de contrato cliente/API antes de alterar o fluxo. |
+| Alta | Integridade do estado de pagamento | O detalhe calcula `is_paid` a partir de qualquer convidado pago; `/event/pay` marca `payment_confirmed = true` para o convite do usuário sem evidência de cobrança externa. `API:app/Http/Controllers/EventController.php:155-188,319-335`; `src/app/events/event-detail/event-detail.page.html:90-110`. | A interface pode esconder a ação de pagar de quem ainda não pagou e apresentar confirmação incompatível com uma cobrança real. | Validar a regra de cobrança e o estado por convidado; separar confirmação financeira de ação do usuário e cobrir cenários com vários convidados. |
+| Alta | URL de produção | `environment.prod.ts` aponta para `http://localhost:8081/api`, igual ao ambiente de desenvolvimento; a URL remota está comentada. `src/environments/environment.prod.ts:1-7`; `src/environments/environment.ts:5-9`. | Um app instalado em dispositivo tende a procurar a API no próprio dispositivo, impedindo os fluxos dependentes do backend; HTTP também não protege o tráfego em trânsito. | Definir endpoint de produção acessível por HTTPS e verificar configuração em build e dispositivo antes de qualquer publicação. |
+| Média, dependente da política | Proteção de dados de eventos | `show` usa ID e retorna endereço e dados do anfitrião sem filtro de visibilidade ou participação visível no método; a busca retorna eventos futuros. `API:app/Http/Controllers/EventController.php:27-48,155-188`. | Se endereço ou detalhes forem reservados a participantes, usuários autenticados podem recebê-los antes do momento pretendido. A política ainda não está definida. | Validar visibilidade e divulgação da localização com o responsável pelo produto; então aplicar filtro no backend e testar os estados de participação. |
 
 ## Dependências e pontos a confirmar
 
